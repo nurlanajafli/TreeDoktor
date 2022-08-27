@@ -1,0 +1,35 @@
+<script id="repair-status-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{repair_status_id}}">
+            <td class="text-center">
+                <div style="display:inline-block;width:15px;height:15px;background:{{repair_status_color}};"
+                     class="b-a"></div>
+            </td>
+            <td>{{repair_status_name}}</td>
+            <td class="text-center">
+                {{#if repair_status_flag_default}}<i class="fa text-success fa-lg fa-check-circle"></i>{{/if}}
+            </td>
+            <td class="text-center">
+                {{#if repair_status_flag_in_progress}}<i class="fa text-success fa-lg fa-check-circle"></i>{{/if}}
+            </td>
+            <td class="text-center">
+                {{#if repair_status_flag_completed}}<i class="fa text-success fa-lg fa-check-circle"></i>{{/if}}
+            </td>
+            <td>
+                <button data-id="{{repair_status_id}}" title="Edit {{repair_status_name}} Repair Status"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                {{#if (var "isAdmin")}}
+                    {{#eq (cast repair_status_locked "int") 0}}
+                        <button data-id="{{repair_status_id}}" title="{{repair_status_name}}  Repair Status"
+                                class="action-delete btn btn-xs btn-danger">
+                            <i class="fa fa-trash-o icon-white">
+                            </i>
+                        </button>
+                    {{/eq}}
+                {{/if}}
+            </td>
+        </tr>
+    {{/this}}
+</script>

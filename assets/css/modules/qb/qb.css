@@ -1,0 +1,17 @@
+.sync{
+    margin-top: 10px;
+    height: max-content;
+}
+#clientId, #clientSecret{
+    width: 400px;
+}
+.exportItem{
+    padding: 5px 15px 5px 15px;
+}
+.exportItem:hover{
+    cursor: pointer;
+    background-color: #f1f1f1 !important;
+}
+.height{
+    height: 280px;
+}

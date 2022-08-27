@@ -1,0 +1,90 @@
+<script id="note-block-template" type="text/x-handlebars-template">
+    {{#this}}
+        <article id="note_{{note_id}}" class="comment-item {{#if note_parent_id}}comment-reply{{/if}}">
+            <a class="pull-left thumb-sm avatar">
+                <img src="{{user.picture}}" class="img-circle">
+            </a>
+            <span class="arrow left"></span>
+            <form class="edit-note-form">
+                <section class="comment-body panel panel-default">
+                    <header class="panel-heading bg-white">
+                        <span>{{user.firstname}} {{user.lastname}}</span>
+                        <label class="label bg-primary m-l-xs">{{user.user_type}}</label>
+                        <label class="pull-right label
+                        {{#if (math (var "note_system_type") "!=" note_type)}}
+                            bg-info
+                         {{else}}
+                            bg-light
+                         {{/if}}
+                         m-l-xs" style="line-height: 15px;">{{note_type_str}}</label>
+                    </header>
+                    <textarea name="note_description" class="form-control no-border" rows="3"
+                              placeholder="Input your note here" style="display:none">{{note_description}}</textarea>
+                    <input type="hidden" name="note_id" value="{{note_id}}">
+                    <div class="panel-body">
+                        <div class="description">{{{note_description}}}</div>
+                        <div class="comment-action m-t-sm">
+                            {{#unless note_parent_id}}
+                                <button href="#" class="btn btn-info btn-xs action-reply" data-note-id="{{note_id}}">
+                                    <i class="fa fa-mail-reply text-muted"></i> Reply
+                                </button>
+                            {{/unless}}
+                            {{#if (or (math (var "user_id") "==" user_id) (var "isAdmin")) }}
+                                <button class="btn btn-danger btn-xs action-delete" data-note-id="{{note_id}}">
+                                    <i class="fa fa-trash-o text-muted"></i> Remove
+                                </button>
+                                {{#if (math (var "note_system_type") "!=" note_type)}}
+                                    <button class="btn btn-default btn-xs action-edit" data-note-id="{{note_id}}">
+                                        <i class="fa fa-pencil text-muted"></i> Edit
+                                    </button>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <footer class="panel-footer bg-light lter" {{#unless files}} style="display:none" {{/unless}} >
+                        <button class="btn btn-default pull-right btn-sm action-edit-cancel m-l-xs"
+                                style="display: none;">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-info pull-right btn-sm action-edit-submit"
+                                data-note-id="{{note_id}}" style="display: none;">
+                            Submit
+                        </button>
+                        <ul class="ul-upload nav nav-pills nav-sm m-b-none" style="display:none">
+                            <li>
+                                <a href="#" class="btn-file">
+                                    <i class="fa fa-paperclip text-muted"></i>
+                                    <input type="file" name="file" class="action-upload">
+                                </a>
+                                <span class="help-inline"></span>
+                            </li>
+                        </ul>
+                        <ul class="upload-list nav nav-pills nav-sm m-b-none" style="display:none">
+                        </ul>
+                        <ul class="uploaded-list nav nav-pills nav-sm m-b-none">
+                            {{#each files}}
+                                <li>
+                                    <a class="m-l-xs" target="_blank" href="{{this.file_url}}">
+                                        <i class="fa fa-file text-muted m-r-xs"></i>
+                                        {{this.file_name}}
+                                    </a>
+                                    <span class="action-remove-file text-danger pull-right"
+                                          style="cursor:pointer; display:none">x</span>
+                                    <input type="hidden" name="files[]" value="{{this.file_id}}">
+                                </li>
+                            {{/each}}
+                        </ul>
+                    </footer>
+                    <div class="text-muted comment-id">
+                        #{{note_id}}
+                    </div>
+                    <div class="text-muted comment-date">
+                        <i class="fa fa-clock-o"></i>
+                        {{note_created_at}}
+                    </div>
+                </section>
+            </form>
+        </article>
+    {{/this}}
+</script>

@@ -1,0 +1,121 @@
+.billing-menu {
+    position: relative;
+}
+@media (min-width: 768px) and (max-width: 992px) {
+    .billing-menu {
+        width: 220px;
+    }
+}
+.billing-menu .nav-primary ul.nav > li > a {
+    font-weight: normal;
+}
+.billing-menu-add-block {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: #fafafb;
+    border-top: 1px solid #d4d4d4;
+}
+.active-services-block {
+    overflow-x: hidden !important;
+}
+.billing-action-block {
+    position: absolute;
+    right: 9px;
+    top: 6px;
+}
+.billing-action-block > .dropdown-menu {
+    right: 0;
+    left: auto;
+}
+.billing-action-block > .dropdown-menu a {
+    text-decoration: none !important;
+}
+.billing-action-block .billing-action-btn {
+    font-size: 20px;
+    padding: 5px 5px;
+    line-height: 1;
+    display: inline-block;
+}
+.subscription-content,
+.payment-content {
+    position: relative;
+}
+.sub-header .sub-progress {
+    font-size: 12px;
+    margin-top: 3px;
+}
+.subscription-content > div {
+    display: inline-block;
+}
+.subscription-image {
+    font-size: 40px;
+    line-height: 1;
+    text-align: center;
+}
+.sub-main-info {
+    font-size: 24px;
+    color: #2e3e4e;
+}
+.sub-additional-info {
+    font-size: 20px;
+    line-height: 1.3;
+    color: #2e3e4e;
+}
+.sub-additional-info > a {
+    margin-top: -4px;
+}
+.payment-image {
+    text-align: center;
+}
+.payment-image > img {
+    width: 100%;
+    max-width: 80px;
+}
+.payment-action {
+    padding: 0;
+    margin-left: -5px;
+    line-height: 1.5;
+    text-align: center;
+}
+a.delete-card {
+    font-size: 15px;
+}
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+    margin-right: -4px;
+}
+.default-card-block {
+    position: absolute;
+    left: -8px;
+    top: calc(50% - 11px);
+    font-size: 18px;
+    z-index: 1;
+}
+.default-card,
+.set-default-card {
+    background: #fff;
+}
+i.default-card {
+    display: none;
+}
+.is-default-card i.default-card {
+    display: block;
+    padding-top: 4px;
+}
+.is-default-card a.set-default-card {
+    display: none;
+}
+a.set-default-card:hover {
+    color: #8ec165;
+    text-shadow: 1px 1px 3px #8ec165;
+}
+.height-280 {
+    height: 280px;
+}
+.height-240 {
+    height: 240px;
+}

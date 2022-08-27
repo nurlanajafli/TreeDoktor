@@ -1,0 +1,21 @@
+<script id="sale-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="counter_value">Sale Cost</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="number" step="0.01" min="0" type="text" name="eq_sold_cost"
+                           value="">
+                    <span class="help-block" id="eq_sold_cost-error"></span>
+                </div>
+            </div>
+            {{#if eq_id}}
+                <input type="hidden" name="eq_id" value="{{eq_id}}">
+            {{/if}}
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

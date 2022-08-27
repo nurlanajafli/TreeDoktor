@@ -1,0 +1,52 @@
+.renewal-subscriptions .billing-action-block {
+    top: 33%;
+}
+#add_order_subscription .form-group > label.control-label {
+    padding-top: 0 !important;
+}
+#add_order_subscription .modal-body {
+    /*min-height: 433px;*/
+}
+.on-out-limit-info {
+    position: absolute;
+    right: -6px;
+    top: 12px;
+}
+span.card_info {
+    display: block;
+    font-size: 12px;
+    font-style: italic;
+    color: #4cc0c1;
+    font-weight: bold;
+}
+.subscription-system-edit {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+.subscription-system-edit > a {
+    font-size: 20px;
+    text-shadow: rgba(0, 0, 0, 0.15) 3px 3px 5px;
+}
+.subscription-system-edit > a.sub-text-white {
+    color: white !important;
+}
+.subscription-system-edit > a:hover {
+    opacity: 0.7;
+}
+.sub-description-textarea {
+    resize: vertical !important;
+    max-width: 350px;
+}
+li.sub-description-text {
+    white-space: pre-wrap;
+}
+#edit_free_subscription_btn {
+    text-decoration: none !important;
+    font-weight: 600;
+    font-size: 15px;
+}
+#edit_free_subscription_btn:hover {
+    color: #717171 !important;
+}
+

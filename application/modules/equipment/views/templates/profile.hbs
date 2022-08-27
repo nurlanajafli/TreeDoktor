@@ -1,0 +1,122 @@
+<script id="profile-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="clearfix m-b">
+            <div class="title">
+                <div class="h4 m-t-xs m-b-xs">{{eq_name}}</div>
+            </div>
+        </div>
+        <div class="clearfix m-b">
+            {{#if (notEmpty eq_sold_at)}}
+                <img src="/assets/img/sold_out.png" class="img-sold">
+            {{/if}}
+            <a href="#" class="pull-left thumb m-r btn-file">
+                <img src="{{eq_photo_url}}" class="img-circle">
+                <input type="file" name="thumb" class="action-upload">
+            </a>
+            <div>
+                <div class="text-muted"><i
+                        class="fa fa-code"></i> {{eq_code}}
+                </div>
+                <div class="text-muted"><i
+                        class="fa fa-folder-open"></i> {{group.group_name}}
+                </div>
+                <div class="text-muted"><i
+                        class="fa fa-road"></i> {{last_counter}} {{eq_counter_type_str}}
+                </div>
+            </div>
+        </div>
+        {{#if (notEmpty eq_sold_at)}}
+            <div>
+                <small class="text-uc text-xs text-muted">Sold on</small>
+                <p>{{#if (notEmpty eq_sold_at)}} {{eq_sold_at}} {{else}} - {{/if}}</p>
+                <small class="text-uc text-xs text-muted">Sold cost</small>
+                <p>{{#if (notEmpty eq_sold_cost)}} {{eq_sold_cost}} {{else}} - {{/if}}</p>
+                <small class="text-uc text-xs text-muted">Sold by</small>
+                <p>{{#if (notEmpty seller_id)}} {{seller.firstname}} {{seller.lastname}} {{else}} - {{/if}}</p>
+                <div class="line"></div>
+            </div>
+        {{else}}
+            <div>
+                <label class="switch action-schedule-checkbox">
+                    <input type="checkbox"
+                           class="" {{#if eq_schedule}}checked="checked"{{/if}}>
+                    <span></span>
+                    <small>Display On Crew Schedule</small>
+                </label>
+            </div>
+            <div>
+                <label class="switch action-schedule-tool-checkbox {{#unless eq_schedule}} disabled {{/unless}}">
+                    <input type="checkbox"
+                           class="" {{#unless eq_schedule}}disabled="disabled"{{/unless}} {{#if eq_schedule_tool}}checked="checked"{{/if}}>
+                    <span></span>
+                    <small>{{^if eq_schedule_tool}}As an Equipment {{/if}} {{#if eq_schedule_tool}}As a Tool {{/if}}</small>
+                </label>
+            </div>
+            <div>
+                <label class="switch action-repair-checkbox">
+                    <input type="checkbox"
+                           class="" {{#if eq_repair}}checked="checked"{{/if}}>
+                    <span></span>
+                    Under repair
+                </label>
+            </div>
+            <div class="btn-group btn-group-justified m-b eq-buttons">
+                <a class="action-edit btn btn-default btn-rounded" data-id="{{eq_id}}"
+                   title="Edit {{eq_name}} Profile">
+                                    <span class="text">
+                                        <i class="fa fa-cog"></i> Edit
+                                    </span>
+                </a>
+                <a class="action-repair btn btn-info btn-rounded" title="Create {{eq_name}} Repair Request">
+                                    <span class="text" style="margin-left: -7px;">
+                                        <i class="fa fa-wrench"></i> Repair Req.
+                                    </span>
+                </a>
+            </div>
+        {{/if}}
+        <div>
+            <small class="text-uc text-xs text-muted">Serial/VIN</small>
+            <p>{{#if (notEmpty eq_serial)}} {{eq_serial}} {{else}} - {{/if}}</p>
+            <small class="text-uc text-xs text-muted">License Plate</small>
+            <p>{{#if (notEmpty eq_license_plate)}} {{eq_license_plate}} {{else}} - {{/if}}</p>
+            <div class="line"></div>
+            <small class="text-uc text-xs text-muted">Year</small>
+            <p>{{#if (notEmpty eq_year)}} {{eq_year}} {{else}} - {{/if}}</p>
+            <small class="text-uc text-xs text-muted">Make</small>
+            <p>{{#if (notEmpty eq_make)}} {{eq_make}} {{else}} - {{/if}}</p>
+            <small class="text-uc text-xs text-muted">Model</small>
+            <p>{{#if (notEmpty eq_model)}} {{eq_model}} {{else}} - {{/if}}</p>
+            <small class="text-uc text-xs text-muted">Color</small>
+            <p>{{#if (notEmpty eq_color)}} {{eq_color}} {{else}} - {{/if}}</p>
+            <div class="line"></div>
+            <small class="text-uc text-xs text-muted">Purchased Date</small>
+            <p>{{#if (notEmpty eq_purchased_date)}} {{eq_purchased_date}} {{else}} - {{/if}}</p>
+            <small class="text-uc text-xs text-muted">Cost</small>
+            <p>{{#if (notEmpty eq_cost)}} {{eq_cost}} {{else}} - {{/if}}</p>
+            <div class="line"></div>
+            <small class="text-uc text-xs text-muted">Description</small>
+            <p class="m-t-sm"
+               style="white-space: pre-line">{{#if (notEmpty eq_description)}} {{eq_description}} {{else}}
+                - {{/if}}</p>
+        </div>
+        {{#if (var "isAdmin")}}
+            <div class="btn-group btn-group-justified m-b eq-buttons">
+                {{#if (notEmpty eq_sold_at)}}
+                    <a class="action-unsold btn btn-success btn-rounded" data-id="{{eq_id}}"
+                       title="Return {{eq_name}} ">
+                                        <span class="text">
+                                            <i class="fa fa-mail-reply"></i> Return
+                                        </span>
+                    </a>
+                {{else}}
+                    <a class="action-sale btn btn-danger btn-rounded" data-id="{{eq_id}}"
+                       title="Sale {{eq_name}}">
+                                        <span class="text">
+                                            <i class="fa fa-money"></i> Decomission
+                                        </span>
+                    </a>
+                {{/if}}
+            </div>
+        {{/if}}
+    {{/this}}
+</script>

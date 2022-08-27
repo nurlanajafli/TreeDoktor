@@ -1,0 +1,472 @@
+<aside class="aside-xl b-l b-r  bg-white" style="width: 100%;">
+  <section class="vbox flex">                
+    <section>
+      <section>
+        <section id="fieldWorksSection">
+          <div class="padder">
+            <div class="row b-b p-bottom-20" id="teamsBlock">
+              <?php foreach ($dashboardTeams as $key => $value) : ?>
+                <div class="col-md-4">
+                  <h3>
+
+                  	<?php if(isset($value->team_id)) : ?>
+	                  	<a href="<?php echo base_url('team_overview/' . $value->team_id); ?>" class="btn btn-sm btn-default btn-mini" title="Team Events PDF"><i class="fa fa-file"></i></a>
+						
+						<?php if(isset($value->team_leader_user_id) && $value->team_leader_user_id == $this->session->userdata('user_id') && $key != 'tomorrow') : ?>
+							<a  href="#teamReport-<?php echo $value->team_id ; ?>" class="btn btn-sm btn-default " data-toggle="modal" data-backdrop="static" data-keyboard="false" title="Team Report"><i class="fa fa-book"></i></a>
+						<?php endif; ?>
+					<?php endif; ?>
+
+                  	<?php echo ucfirst($key); ?>, <?php echo date('D j M Y', strtotime($value->date)); ?>
+                  </h3>
+                <?php if($value->absence) : ?>
+                  <li class="label m-t-xs label-info" style="background:#f21b1b;border:1px solid #000;display: block;font-size: 12px;white-space: normal; margin-top: 1px;">
+                    <?php echo $value->absence['firstname'] ?> <?php echo $value->absence['lastname'] ?>
+                    (<?php echo $value->absence['reason_name'] ?>)
+                  </li>
+                <?php elseif($value->items) : ?>
+                  <?php foreach ($value->items as $itemValue) : ?>
+                    <?php if($itemValue['type'] == 'user') : ?>
+                      <div class="label label-info" style="background:<?php echo $value->team_color; ?>; border:1px solid #000; text-overflow: ellipsis;overflow: hidden; display: block; font-size: 14px; margin-top: 1px; color: #000;">
+                      	<?php if($value->team_leader_user_id == $itemValue['item_id']) echo "* "; ?>
+                        <?php echo $itemValue['name']; ?>
+                      </div>
+                    <?php else : ?>
+                      <div class="label" style="background:#fff; color:#000; border:1px solid; display: block; margin-top: 1px; font-size: 14px; white-space: normal;">
+                        <?php echo $itemValue['name']; ?>
+                      </div>
+                    <?php endif; ?>
+                  <?php endforeach; ?>
+                <?php else : ?>
+                   <div class="label label-info bg-light" style="border:1px solid #000; text-overflow: ellipsis;overflow: hidden; display: block; font-size: 14px; margin-top: 1px; color: #000;">
+                        <h4>No Data</h4>
+                    </div>
+                <?php endif; ?>
+                </div>
+              <?php endforeach; ?>
+              <div class="clear"></div>
+            </div>
+
+            <div class="row p-bottom-20 p-top-20" id="eventsBlock">
+              <?php foreach ($dashboardTeams as $key => $value) : ?>
+                <div class="col-md-4">
+                  
+                  <ul class="list-group list-group-sp" style="height: 100%;">
+                  <?php if($value->events && !$value->absence) : ?>
+                    <?php foreach ($value->events as $event) : ?>
+						<?php $eventReport = ($event['event_report'] != '' && $event['event_report'] != NULL) ? json_decode($event['event_report']) : NULL; ?>
+						<?php $height = ($event['event_end'] - $event['event_start']) / 3600 * 10; ?>
+						<?php $height = $height > 100 ? 100 : $height; ?>
+                      	<li class="list-group-item block bg-success" style="height: <?php echo $height; ?>%;">
+	                        <a href="/events/team_event/<?php echo $event['id']; ?>" class="btn-block" style="color:#fff">
+		                        <div class="view" id="note-2">
+		                          	<div class="text-center"><?php echo $event['emailid']; ?> <?php echo date('H:i', $event['event_start']) ?> - <?php echo date('H:i', $event['event_end']) ?>
+										<?php if(isset($value->team_leader_user_id) && $value->team_leader_user_id == $this->session->userdata('user_id') && $key != 'tomorrow') : ?>
+											<?php /*
+											<a href="#eventReport-<?php echo $event['id'] ; ?>" class="btn btn-xs btn-default pull-right" data-toggle="modal" data-backdrop="static" data-keyboard="false">Report</a>
+											*/ ?>
+										<?php endif; ?>
+		                          	</div>
+		                          	<span style="color: #fff;">
+										<div class="note-name">
+											<strong><?php echo $event['client_name']; ?></strong>
+										</div>
+										<div class="note-desc">
+											<?php echo $event['lead_address']; ?>, <?php echo $event['lead_city']; ?> <br>
+										</div>
+			                       	</span>
+		                          <?php /*
+		                          <a href="<?php echo base_url($event['workorder_no'] . '/pdf/' . $event['id']); ?>" style="color: #fff;">
+			                          <div class="note-name">
+			                            <strong><?php echo $event['client_name']; ?></strong>
+			                          </div>
+			                          <div class="note-desc">
+			                            <?php echo $event['lead_address']; ?>, <?php echo $event['lead_city']; ?> <br>
+			                          </div>
+			                       </a>
+			                       */ ?>
+		                        </div>
+		                        <div class="clearfix"></div>
+	                        </a>
+                      	</li>
+                      <?php /*
+                      <div id="eventReport-<?php echo $event['id'] ; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<form id="eventDataReport-<?php echo $event['id'] ; ?>" class="form-horizontal" method="POST" data-close_day="<?php echo $key; ?>">
+										<div class="modal-body">
+											<div class="event">
+												<div class="form-group m-b-none">
+													<label class="col-sm-4 control-label">Workorder:</label>
+													<div class="col-sm-7">
+														<p class="form-control-static">
+															<strong>
+																<?php echo $event['workorder_no']; ?> - 
+																<?php echo $event['lead_address']; ?>
+															</strong>
+														</p>
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+													<input type="hidden" name="workorder" value="<?php echo $event['workorder_no'] . '-' . $event['lead_address']; ?>">
+												</div>
+												<div class="form-group m-b-none">
+													<label class="col-sm-4 control-label">Work(start/finish):</label>
+													<div class="col-sm-4">
+														<select class="form-control begin hrs p-n" style="width: 68px; display:inline-block;" name="event_start_hours[<?php echo $event['id'];?>]">
+															<option value=""></option>
+															
+															<?php for($i=0; $i <= 23; $i++) : ?>
+																<option value="<?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?>" <?php if(isset($eventReport->event_start_work) && date('h A', strtotime($eventReport->event_start_work)) == date('h A', strtotime(date('Y-m-d ' . $i . ':00:00')))) : ?>selected="selected"<?php endif; ?>> <?php echo date('h A', strtotime(date('Y-m-d ' . $i . ':00:00'))); ?></option>
+															<?php endfor;?>
+														</select> : 
+														<select class="form-control begin min" style="width: 68px; display:inline-block;" name="event_start_min[<?php echo $event['id'];?>]">
+															<option value=""></option>
+															<?php for($i=0; $i < 60; $i+=5) : ?>
+																<option value="<?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?>" <?php if(isset($eventReport->event_start_work) && date('i', strtotime($eventReport->event_start_work)) == str_pad($i, 2, '0', STR_PAD_LEFT)) : ?>selected="selected"<?php endif; ?>> <?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?></option>
+															<?php endfor;?>
+														</select>
+														
+													</div>
+													<div class="col-sm-4">
+														<select class="form-control finish hrs p-n" style="width: 68px; display:inline-block;" name="event_finish_hours[<?php echo $event['id'];?>]">
+															<option value=""></option>
+
+															<?php for($i=0; $i <= 23; $i++) : ?>
+																<option value="<?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?>" <?php if(isset($eventReport->event_finish_work) && date('h A', strtotime($eventReport->event_finish_work)) == date('h A', strtotime(date('Y-m-d ' . $i . ':00:00')))) : ?>selected="selected"<?php endif; ?>> <?php echo date('h A', strtotime(date('Y-m-d ' . $i . ':00:00'))); ?></option>
+															<?php endfor;?>
+														</select> : 
+														<select class="form-control finish min text-center" style="width: 68px; display:inline-block;" name="event_finish_min[<?php echo $event['id'];?>]">
+															<option value=""></option>
+															<?php for($i=0; $i < 60; $i+=5) : ?>
+																<option value="<?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?>" <?php if(isset($eventReport->event_finish_work) && date('i', strtotime($eventReport->event_finish_work)) == str_pad($i, 2, '0', STR_PAD_LEFT)) : ?>selected="selected"<?php endif; ?>> <?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?></option>
+															<?php endfor;?>
+														</select>
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+												<div class="form-group m-b-none">
+													<label class="col-sm-4 control-label">Finished:</label>
+													<div class="col-sm-7">
+														<div class="radio">
+														  <label>
+															<input type="radio" class="status" <?php if(isset($eventReport->event_status_work) && $eventReport->event_status_work == 'finished') : ?>checked="checked"<?php endif; ?> name="status[<?php echo $event['id'];?>]" value="finished">
+															Yes
+														  </label>
+														</div>
+														<div class="radio">
+														  <label>
+															<input type="radio" class="status" <?php if(isset($eventReport->event_status_work) && $eventReport->event_status_work == 'unfinished') : ?>checked="checked"<?php endif; ?> name="status[<?php echo $event['id'];?>]" value="unfinished">
+															No
+														  </label>
+														</div>
+														<input type="hidden" name="wo_id[<?php echo $event['id'];?>]" value="<?php echo $event['event_wo_id']; ?>">
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+												<div class="form-group m-b-none payment" style="display:<?php if(isset($eventReport->event_status_work) && $eventReport->event_status_work == 'finished') : ?>block;<?php else : ?>none;<?php endif; ?>">
+													<label class="col-sm-4 control-label">Payment:</label>
+													<div class="col-sm-7">
+														<div class="radio">
+														  <label>
+															<input type="radio" class="payment" <?php if(isset($eventReport->event_payment) && $eventReport->event_payment == 'yes') : ?>checked="checked"<?php endif; ?> name="payment[<?php echo $event['id'];?>]" value="yes">
+															Yes
+														  </label>
+														</div>
+														<div class="radio">
+														  <label>
+															<input type="radio" class="payment" <?php if(isset($eventReport->event_payment) && $eventReport->event_payment == 'no') : ?>checked="checked"<?php endif; ?> name="payment[<?php echo $event['id'];?>]" value="no">
+															No
+														  </label>
+														</div>
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+												<div class="form-group m-b-none paymentSum" style="display:<?php if(isset($eventReport->event_payment) && $eventReport->event_payment == 'yes') : ?>block;<?php else: ?>none;<?php endif; ?>">
+													<label class="col-sm-4 control-label">Payment Type:</label>
+													<div class="col-sm-7">
+														<div class="radio">
+														  <label>
+															<input type="radio" class="payment_type" <?php if(isset($eventReport->event_payment_type) && $eventReport->event_payment_type == 'Cash') : ?>checked="checked"<?php endif; ?> name="payment_type[<?php echo $event['id'];?>]" value="Cash">
+															Cash
+														  </label>
+														</div>
+														<div class="radio">
+														  <label>
+															<input type="radio" class="payment_type" <?php if(isset($eventReport->event_payment_type) && $eventReport->event_payment_type == 'Check') : ?>checked="checked"<?php endif; ?> name="payment_type[<?php echo $event['id'];?>]" value="Check">
+															Check
+														  </label>
+														</div>
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+												<div class="form-group m-b-none paymentSum" style="display:<?php if(isset($eventReport->event_payment)  && $eventReport->event_payment == 'yes') : ?>block;<?php else: ?>none;<?php endif; ?>">
+													<label class="col-sm-4 control-label">Payment Amount:</label>
+													<div class="col-sm-7">
+														<input type="text"  <?php if(isset($eventReport->event_payment_amount)) : ?>value="<?php echo str_replace('$', '', $eventReport->event_payment_amount); ?>"<?php else : ?>disabled<?php endif; ?> class="finished form-control" name="payment_amount[<?php echo $event['id'];?>]">
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+												
+												<div class="form-group m-b-none finishDescription" style="display:<?php if(isset($eventReport->event_status_work) && $eventReport->event_status_work == 'unfinished') : ?>block;<?php else : ?>none;<?php endif; ?>">
+													<label class="col-sm-4 control-label">Work Remaining:</label>
+													<div class="col-sm-7">
+														<textarea class="unfinished form-control" <?php if(!isset($eventReport->event_work_remaining)) : ?>disabled<?php endif; ?> name="work_description[<?php echo $event['id'];?>]" ><?php if(isset($eventReport->event_work_remaining)) : ?><?php echo $eventReport->event_work_remaining; ?><?php endif; ?></textarea>
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+												
+												<div class="form-group m-b-none">
+													<label class="col-sm-4 control-label">Damage:</label>
+													<div class="col-sm-7">
+														<div class="radio">
+														  <label>
+															<input type="radio" class="damage" <?php if(isset($eventReport->event_damage) && $eventReport->event_damage == 'yes') : ?>checked="checked"<?php endif; ?> name="damage[<?php echo $event['id'];?>]" value="yes">
+															Yes
+														  </label>
+														</div>
+														<div class="radio">
+														  <label>
+															<input type="radio" class="damage" <?php if(isset($eventReport->event_damage) && $eventReport->event_damage == 'no') : ?>checked="checked"<?php endif; ?> name="damage[<?php echo $event['id'];?>]" value="no">
+															No
+														  </label>
+														</div>
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+												<div class="form-group m-b-none dmgDescription" style="display:<?php if(isset($eventReport->event_damage) && $eventReport->event_damage == 'yes') : ?>block;<?php else : ?>none;<?php endif; ?>">
+													<label class="col-sm-4 control-label">Damage Description:</label>
+													<div class="col-sm-7">
+														<textarea class="form-control dmgText" <?php if(!isset($eventReport->event_damage_description)) : ?>disabled<?php endif; ?> name="demage_description[<?php echo $event['id'];?>]" ><?php if(isset($eventReport->event_damage_description)) : ?><?php echo $eventReport->event_damage_description;?><?php endif; ?></textarea>
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+												<div class="form-group m-b-none" >
+													<label class="col-sm-4 control-label">Event Description:</label>
+													<div class="col-sm-7">
+														<textarea class="form-control eventText" name="event_description[<?php echo $event['id'];?>]" ><?php if(isset($eventReport->event_description)) : ?><?php echo $eventReport->event_description; ?><?php endif; ?></textarea>
+													</div>
+													<div class="clear"></div>
+													<div class="line line-dashed line-lg"></div>
+												</div>
+											</div>
+											
+										</div>
+										<div class="modal-footer">
+											<?php if(isset($event['event_team_id'])) : ?>
+												<input type="hidden" name="team_id" value="<?php echo $event['event_team_id']; ?>">
+											<?php endif;?>
+											<input type="submit" name="submit" value="Send" class="btn btn-info" id="submit">
+											<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<script>
+							$("document").ready(function (){
+								var eventsBlockHeight = $('#fieldWorksSection').height() - $('#teamsBlock').height() - 21;
+								$('#eventsBlock').css('height', eventsBlockHeight + 'px');
+								$('#eventsBlock>div').css('height', (eventsBlockHeight - 40) + 'px');
+								//$.each($('#eventsBlock'))
+								$("#eventDataReport-<?php echo $event['id']?>").on("submit", function(){
+									var formValid = true;
+									var startTime = null;
+									var finishTime = null;
+									$('#eventDataReport-<?php echo $event['id']?>').find('div.form-group').removeClass('has-error');
+									var inputs = $('#eventDataReport-<?php echo $event['id']?>').find('textarea:visible, input:visible, select:visible').not('[type="submit"]');
+									$.each(inputs, function(key, val){
+										var inputName = $(val).attr('name');
+										var inputType = $(val).attr('type');
+										if(!inputType && !$('#eventDataReport-<?php echo $event['id']?>').find('[name="' + inputName + '"]').val())
+										{
+											$(val).parents('div.form-group:first').addClass('has-error');
+											formValid = false;
+										}
+										if(inputType == 'radio' && !$('#eventDataReport-<?php echo $event['id']?>').find('[name="' + inputName + '"]').is(':checked'))
+										{
+											$(val).parents('div.form-group:first').addClass('has-error');
+											formValid = false;
+										}
+										if(inputType && inputType != 'radio' && !$('#eventDataReport-<?php echo $event['id']?>').find('[name="' + inputName + '"]').val())
+										{
+											$(val).parents('div.form-group:first').addClass('has-error');
+											formValid = false;
+										}
+										if($(val).hasClass('hrs'))
+											var seconds = 3600;
+										if($(val).hasClass('min'))
+											var seconds = 60;
+										if($(val).hasClass('begin'))
+											startTime += $(val).val() * seconds;
+										if($(val).hasClass('finish'))
+											finishTime += $(val).val() * seconds;
+										if($(val).hasClass('status'))
+										{
+											if(startTime > finishTime)
+											{
+												$(val).parents('div.form-group:first').prev().addClass('has-error');
+												formValid = false;
+											}
+											finishTime = null;
+											startTime = null;
+										}
+											
+									});
+									if(formValid)
+									{
+										$.post(baseUrl + 'dashboard/ajax_save_report', $('#eventDataReport-<?php echo $event['id']?>').serialize(), function (resp) {
+											if(resp.status == 'ok')
+											{
+
+												$('.eventDataReport-<?php echo $event['id']?>').remove();
+												
+												if(confirm('Do you have any repair requests?'))
+													$('#addRepair').modal('show');
+												$('#eventReport-<?php echo $event['id'] ; ?>').modal('hide');
+											}
+											return false;
+										}, 'json');
+									}
+									else
+									{
+										$('#eventReport-<?php echo $event['id'] ; ?>').animate({
+											scrollTop: $('#eventReport-<?php echo $event['id'] ; ?>').scrollTop() + $('#eventReport-<?php echo $event['id'] ; ?>').find('.has-error:first').offset().top
+										},'slow');
+									}
+									return false;
+								});
+							});
+						</script>
+						*/ ?>
+                    <?php endforeach; ?>
+						<div id="teamReport-<?php echo $value->team_id ; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<form id="teamDataReport-<?php echo $value->team_id ; ?>" class="form-horizontal teamReport" method="POST">
+										<div class="modal-body">
+											<div class="form-group m-b-none">
+												<label class="col-sm-4 control-label">Expenses:</label>
+												<div class="col-sm-7">
+													<div class="radio">
+													  <label>
+														<input type="radio" <?php if($value->team_expenses || $value->team_expenses != '') : ?>checked="checked"<?php endif; ?> class="expenses" name="expenses" value="yes">
+														Yes
+													  </label>
+													</div>
+													<div class="radio">
+													  <label>
+														<input type="radio" <?php if($value->team_expenses == NULL) : ?>checked="checked"<?php endif; ?> class="expenses" name="expenses" value="no">
+														No
+													  </label>
+													</div>
+												</div>
+												<div class="clear"></div>
+												<div class="line line-dashed line-lg"></div>
+											</div>
+											<div class="form-group m-b-none expensesDesc" style="display:<?php if($value->team_expenses == NULL) : ?>none;<?php else : ?>block;<?php endif; ?>">
+												<label class="col-sm-4 control-label">Expenses Description:</label>
+												<div class="col-sm-7">
+													<textarea class="form-control expensesText" name="expenses_description" <?php if($value->team_expenses == NULL) : ?>disabled><?php else : ?>><?php echo $value->team_expenses; ?><?php endif; ?></textarea>
+												</div>
+												<div class="clear"></div>
+												<div class="line line-dashed line-lg"></div>
+											</div>
+											<div class="form-group m-b-none">
+												<label class="col-sm-4 control-label">Malfunctions Equipment:</label>
+												<div class="col-sm-7">
+													<div class="radio">
+													  <label>
+														<input type="radio" class="fail" <?php if($value->team_fail_equipment || $value->team_fail_equipment != '') : ?>checked="checked"<?php endif; ?> name="malfunctions_equipment" value="yes">
+														Yes
+													  </label>
+													</div>
+													<div class="radio">
+													  <label>
+														<input type="radio" class="fail" <?php if($value->team_fail_equipment == NULL) : ?>checked="checked"<?php endif; ?> name="malfunctions_equipment" value="no">
+														No
+													  </label>
+													</div>
+												</div>
+												<div class="clear"></div>
+												<div class="line line-dashed line-lg"></div>
+											</div>
+											<div class="form-group m-b-none failDesc" style="display:<?php if($value->team_fail_equipment == NULL) : ?>none;<?php else : ?>block;<?php endif; ?>">
+												<label class="col-sm-4 control-label">Malfunctions Description:</label>
+												<div class="col-sm-7">
+													<textarea class="form-control failText"  name="malfunctions_description" <?php if($value->team_fail_equipment == NULL) : ?>disabled><?php else : ?>><?php echo $value->team_fail_equipment; ?><?php endif; ?></textarea>
+												</div>
+												<div class="clear"></div>
+												<div class="line line-dashed line-lg"></div>
+											</div>
+											<?php if($value->team_members && !empty($value->team_members)) : ?>
+												<?php foreach($value->team_members as $jkey => $member) : ?>
+													<div class="form-group m-b-none">
+														<label class="col-sm-4 control-label">Finished Time<br><strong><?php echo $member['emp_name']; ?></strong>:</label>
+														<div class="col-sm-7">
+															<input type="time" class="form-control" name="logout_time[<?php echo $member['employee_id']; ?>]" class="" value="<?php if($member['employee_logout'] != '00:00:00') : ?><?php echo $member['employee_logout']?><?php endif; ?>">
+														</div>
+														<?php if($jkey + 1 != count($value->team_members)) : ?>
+															<div class="clear"></div>
+															<div class="line line-dashed line-lg"></div>
+														<?php endif; ?>
+													</div>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</div>
+										<div class="modal-footer">
+											<?php if(isset($event['event_team_id'])) : ?>
+												<input type="hidden" name="team_id" value="<?php echo $event['event_team_id']; ?>">
+											<?php endif;?>
+											<input type="submit" name="submit" value="Send" class="btn btn-info" id="submit">
+											<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					
+                  <?php else : ?>
+                    <li class="list-group-item block bg-light text-center">
+                        <h4>No Data</h4>
+                      </li>
+                  <?php endif; ?>
+                  </ul>
+
+                </div>
+                <?php if(isset($value->team_id)) :  ?>
+                <script>
+					$("document").ready(function (){
+						$("#teamDataReport-<?php echo $value->team_id; ?>").on("submit", function(){
+							$.post(baseUrl + 'dashboard/ajax_save_report', $('#teamDataReport-<?php echo $value->team_id ; ?>').serialize(), function (resp) {
+								if(resp.status == 'ok')
+								{
+									if('<?php echo $key;?>' == 'today')
+										teams = [];
+									$('.teamDataReport-<?php echo $value->team_id ; ?>').remove();
+									$('#teamReport-<?php echo $value->team_id ; ?>').modal('hide');
+								}
+								return false;
+							}, 'json');
+							
+							//saveReport('teamDataReport-<?php echo $value->team_id; ?>');
+							return false;
+						});
+					});
+                </script>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+        </section>
+      </section>
+    </section>
+  </section>
+</aside>

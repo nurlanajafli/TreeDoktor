@@ -1,0 +1,7 @@
+{
+	"name": "Voicemail",
+	"description": "Allows the caller to leave a voicemail",
+    "type" : "voice",
+	"order" : 3,
+	"icon": "fa fa-microphone"
+}

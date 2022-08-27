@@ -1,0 +1,32 @@
+{
+	"db" : {
+		"host":"localhost",
+		"user":"root",
+		"password":"R0q8NG5",
+		"database":"crm",
+		"dateStrings":"true"
+	},
+
+	"sslFiles" : {
+		"key":"uploads/ssl/5sites/5sites-treedoctors.ca.key",
+		"cert":"uploads/ssl/5sites/5sites-treedoctors.ca.crt",
+		"ca":"uploads/ssl/5sites/5sites-treedoctors.ca.bundle.crt"
+	},
+
+	"app" : {
+		"ssl":"true",
+		"number":"+14162018000",
+		"backendDomain":"https://td.onlineoffice.io/",
+		"accountSid":"ACba9a5eeb8b45a12e3973bd16e6ae83f2",
+		"workspaceSid":"WSd5ddf64bb22aa165abac6c6434764dec",
+		"workflowSid":"WWade680760e2f16066950ea0f956a99c9",
+		"taskQueueSid":"WQ4634bbda790aa3a5e589ac482f7229aa",
+		"onlineActivitySid":"WAfc57c478bd7cea19883d8908c85b0f6b",
+		"offlineActivitySid":"WAb59015c8ffd0c47bb1f812a8c06c38d6",
+		"appSid":"AP1b1806bca60981e676ba7c77a9636772",
+		"authToken":"59cd6e4b9e26182c4fc30956b950bc5f",
+		"messagingServiceSid":"MG8e404d25fa65f8554ea49b92ed79962e",
+		"wsport":"8895",
+		"interval":"300000"
+	}
+}

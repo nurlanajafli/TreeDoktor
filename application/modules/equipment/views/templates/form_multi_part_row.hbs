@@ -1,0 +1,74 @@
+<script id="form-multi-part-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="row part part-{{num}}">
+            <div class="field-col col-md-1 text-center" style="padding-top:8px">
+                <a href="javascript:void(0);" class="action-delete-part-row" type="button" data-num="{{num}}"><i
+                        class="fa fa-minus text-danger"></i></a>
+                {{#if part_id}}
+                    <input type="hidden" name="parts[{{num}}][part_id]" value="{{part_id}}">
+                {{/if}}
+                {{#if eq_id}}
+                    <input type="hidden" name="parts[{{num}}][eq_id]" value="{{eq_id}}">
+                {{/if}}
+            </div>
+            <div class="field-col col-md-2">
+                <input required name="parts[{{num}}][part_name]" type="text" class="form-control" placeholder="Name"
+                       value="{{part_name}}">
+            </div>
+            <div class="field-col col-md-1">
+                <input required name="parts[{{num}}][part_number]" type="text" class="form-control"
+                       placeholder="Part Number"
+                       value="{{part_number}}">
+            </div>
+            <div class="field-col col-md-1">
+                <input name="parts[{{num}}][part_seller]" type="text" class="form-control" placeholder="Seller"
+                       value="{{part_seller}}">
+            </div>
+            <div class="field-col col-md-1">
+                <input name="parts[{{num}}][part_purchased_date]" type="text"
+                       class="datepicker form-control text-center"
+                       value="{{part_purchased_date}}" readonly=""
+                       style="border-radius: 2px">
+            </div>
+            <div class="field-col col-md-1">
+                <button type="button" class="action-part-upload-file btn btn-file btn-default" title="Select"><i
+                        class="fa fa-paperclip"></i> <span>Select</span>
+                    <input type="file" name="part_files[{{num}}]" class="action-upload">
+                </button>
+            </div>
+            <div class="field-col col-md-2">
+                <textarea name="parts[{{num}}][part_description]" class="form-control" rows="1"
+                          placeholder="Description">{{part_description}}</textarea>
+            </div>
+            <div class="field-col col-md-1">
+                <select class="form-control part-tax" name="parts[{{num}}][part_tax_name]">
+                    {{#each (var "allTaxes")}}
+                        <option
+                            value="{{this.text}}"
+                            data-tax="{{this.rate}}"
+                            {{#if ../part_tax_name}}
+        {{#eq ../part_tax_name this.text}}
+                                    selected="selected"
+                                {{/eq}}
+    {{else}}
+        {{#eq (var "defaultTax" "text") this.text}}
+                                    selected="selected"
+                                {{/eq}}
+    {{/if}}
+                        >{{this.text}}</option>
+                    {{/each}}
+                </select>
+                <input type="hidden" class="part-tax-rate" name="parts[{{num}}][part_tax_rate]"
+                       value="{{#if part_tax_rate}}{{part_tax_rate}}{{else}}1{{/if}}">
+            </div>
+            <div class="field-col col-md-2">
+                <div class="input-group">
+                    <span class="input-group-addon">{{get_currency}}</span>
+                    <input required name="parts[{{num}}][part_price]" type="number" step="0.01"
+                           class="form-control part-price"
+                           placeholder="Cost" value="{{part_price}}">
+                </div>
+            </div>
+        </div>
+    {{/this}}
+</script>

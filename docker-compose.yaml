@@ -1,0 +1,67 @@
+version: '3.7'
+
+services:
+
+  arbostar:
+    image: arbostar:local
+    ports:
+      - 80:80
+      - 443:443
+      - 8895:8895
+    environment:
+      CI_ENV: development
+      CLIENT_ID: one
+      REGION_ZONE: us-east-2
+      CODEBASE: release
+      TZ: America/Toronto
+      PHP_DATE_TIMEZONE: America/Toronto
+      WEB_ALIAS_DOMAIN: localhost
+      PHP_DISPLAY_ERRORS: 0
+      PHP_MEMORY_LIMIT: "256M"
+      PHP_MAX_EXECUTION_TIME: "300"
+      PHP_POST_MAX_SIZE: "100M"
+      PHP_UPLOAD_MAX_FILESIZE: "100M"
+      php.opcache.validate_timestamps: "on"
+      fpm.global.emergency_restart_threshold: "10"
+      fpm.global.emergency_restart_interval: "1m"
+      fpm.global.process_control_timeout: "10s"
+      FPM_PM_MAX_CHILDREN: "4"
+      FPM_PM_START_SERVERS: "2"
+      FPM_PM_MIN_SPARE_SERVERS: "1"
+      FPM_PM_MAX_SPARE_SERVERS: "2"
+      FPM_MAX_REQUESTS: "500"
+      GIT_USER: <YOUR_GIT_USER>
+      GIT_TOKEN: <YOU_GIT_TOKEN>
+      AWS_KEY: AKIAV7WCIUMYPEJY4WE3
+      AWS_SECRET: C3qX//Yea1HQ4NOIcnvk2XVmJXDiDn8ukdz08PHD
+    volumes:
+      - ./deployments/local/conf:/opt/arbostar/deployment/conf
+      - ./deployments/local/ssl/server.crt:/etc/node-ssl/server.crt
+      - ./deployments/local/ssl/server.key:/etc/node-ssl/server.key
+      - ./deployments/local/ssl/server.crt:/opt/docker/etc/nginx/ssl/server.crt
+      - ./deployments/local/ssl/server.key:/opt/docker/etc/nginx/ssl/server.key
+      - ./:/app/
+    networks:
+      - arbonet
+
+  db:
+    image: mysql:5.7
+    ports:
+      - 33060:3306
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '0'
+      MYSQL_ROOT_PASSWORD: "banana"
+    command: mysqld --sql_mode="NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION" --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - arbonet
+
+networks:
+  arbonet:
+
+volumes:
+  db:

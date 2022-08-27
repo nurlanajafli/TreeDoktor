@@ -1,0 +1,86 @@
+<script id="profile-tab-part-edit-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="part_number">Part Number</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="part_number" value="{{part_number}}">
+                    <span class="help-block" id="part_number-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="part_name">Part Name</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="part_name" value="{{part_name}}">
+                    <span class="help-block" id="part_name-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="part_seller">Seller</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="part_seller" value="{{part_seller}}">
+                    <span class="help-block" id="part_seller-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="part_price">Price</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="number" name="part_price" value="{{part_price}}" step="0.01">
+                    <span class="help-block" id="part_price-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="part_description">Description</label>
+                <div class="col-sm-7">
+                <textarea name="part_description" class="form-control" rows="3"
+                          placeholder="Input your description here">{{part_description}}</textarea>
+                    <span class="help-block" id="part_description-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">File</label>
+                <div class="col-sm-7">
+                    <input type="file" class="input-file" data-icon="false" name="file"
+                           style="position: fixed; width: 0px;" id="file">
+                    <div class="bootstrap-filestyle" style="display: inline;">
+                        <input type="text"
+                               class="input-file-text form-control inline input-s"
+                               disabled="">
+                        <label for="file" class="btn btn-default action-file-upload"><span>Choose file</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="part_purchased_date">Purchased Date</label>
+                <div class="col-sm-7">
+                    <input type="text" class="datepicker form-control text-center" name="part_purchased_date"
+                           value="{{part_purchased_date}}" readonly=""
+                           style="margin-left: 5px;width: 100px;display: inline-block;height: 20px;">
+                    <span class="help-block" id="part_purchased_date-error"></span>
+                </div>
+            </div>
+            <ul class="uploaded-list nav nav-pills nav-sm m-b-none">
+                {{#each files}}
+                    <li><i class="fa fa-file text-muted m-r-xs">
+                        <a class="m-l-xs" target="_blank"
+                           href="{{this.file_url}}">{{this.file_name}}</a>
+                    </i>
+                        <span class="action-remove-file text-danger pull-right"
+                              style="cursor:pointer">x</span>
+                        <input type="hidden" name="files[]" value="{{this.file_id}}">
+                    </li>
+                {{/each}}
+            </ul>
+            {{#if part_id}}
+                <input type="hidden" name="part_id" value="{{part_id}}">
+            {{/if}}
+            {{#if eq_id}}
+                <input type="hidden" name="eq_id" value="{{eq_id}}">
+            {{/if}}
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

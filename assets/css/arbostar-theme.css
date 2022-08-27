@@ -1,0 +1,161 @@
+.no-bordered-input{
+    background: #fff!important;
+    border: none!important;
+    border-bottom: 1px solid #cccccc78!important;
+    border-radius: 0!important;
+    cursor: pointer!important;
+}
+
+.no-border-btn{
+    border-top: 0!important;
+    border-left: 0!important;
+    border-right: 0!important;
+    border-radius: 0!important;
+}
+
+.color-input-rounded{
+    border-radius: 45px;
+    width: 33px;
+    padding: 16px;
+}
+
+.has-error .form-control.no-bordered-input{
+    box-shadow: none;
+}
+
+.form-error{
+    color: #a94442;
+}
+
+.bg-white.btn-info, .open .bg-white.btn-info{
+    color: #4cc0c1!important;
+}
+
+.bg-white.btn-success, .open .bg-white.btn-success{
+    color: #8ec165!important;
+}
+.bg-white.btn-primary, .open .bg-white.btn-primary{
+    color: #53b567!important;
+}
+.bg-white.btn-danger, .open .bg-white.btn-danger{
+    color: #fa5542!important;
+}
+.bg-white.btn-warning, .open .bg-white.btn-warning{
+    color: #ffbc1a!important;
+}
+
+.bg-white.btn-primary:hover, .bg-white.btn-primary:focus, .bg-white.btn-primary:active, .bg-white.btn-primary.active, .open .bg-white.dropdown-toggle.btn-primary, .active>.bg-white.btn-primary{
+    background: #aaddb83b!important;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.bg-white.btn-success:hover, .bg-white.btn-success:focus, .bg-white.btn-success:active, .bg-white.btn-success.active, .open .bg-white.dropdown-toggle.btn-success, .active>.bg-white.btn-success{
+    background: #9eba532e!important;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.bg-white.btn-info:hover, .bg-white.btn-info:focus, .bg-white.btn-info:active, .bg-white.btn-info.active, .open .bg-white.dropdown-toggle.btn-info, .active>.bg-white.btn-info{
+    background: #aaddff54!important;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.bg-white.btn-warning:hover, .bg-white.btn-warning:focus, .bg-white.btn-warning:active, .bg-white.btn-warning.active, .open .bg-white.dropdown-toggle.btn-warning, .active>.bg-white.btn-warning{
+    background: #ffbc1a24!important;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.bg-white.btn-danger:hover, .bg-white.btn-danger:focus, .bg-white.btn-danger:active, .bg-white.btn-danger.active, .open .bg-white.dropdown-toggle.btn-danger, .active>.bg-white.btn-danger{
+    background: #fa554236!important;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.primary-hover:hover i .warning-hover:hover i{ text-shadow: 0px 0px #ffaa4b; }
+.info-hover{}
+.info-hover:hover, .info-hover.active, .active>.info-hover{
+    background: #aaddff54!important;
+    color: #4cc0c1!important;
+}
+
+.danger-hover{}
+.danger-hover:hover, .danger-hover.active, .active>.danger-hover{
+    background: #fa554236!important;
+    color: #fa5542!important;
+}
+
+.warning-hover{}
+.warning-hover:hover, .warning-hover.active, .active>.warning-hover{
+    background: #ffbc1a24!important;
+    color: #ffbc1a!important;
+}
+
+.primary-hover{}
+.primary-hover:hover, .primary-hover.active, .active>.primary-hover{
+    background: #16914838!important;
+    color: #53b567!important;
+}
+
+.border-0{
+    border: 0!important;
+}
+
+.border-bottom{
+    border-top: 0!important;
+    border-right: 0!important;
+    border-left: 0!important;
+}
+.br-radius-0{
+    border-radius: 0px!important;
+}
+.br-radius-5{
+    border-radius: 5px!important;
+}
+.br-radius-10{
+     border-radius: 10px!important;
+}
+.br-radius-15{
+    border-radius: 15px!important;
+}
+
+.br-radius-50{
+    border-radius: 50px!important;
+}
+
+.extra-status-logic-container .fa-square-o:before{
+    color: #8ec165;
+}
+.extra-status-logic-container .disabled.fa-square-o:before{
+    color: #9ac92e66!important;
+}
+
+.mycolorpicker:disabled{
+    background-color: #ebebeb!important;
+    background-image: url("/assets/img/glyphicons-halflings.png") !important;
+    background-repeat: no-repeat;
+    background-size: 500px;
+    background-position: -222px -94px;
+    cursor: not-allowed!important;
+}
+
+.midle-btn{
+    font-size: 17px;
+}
+
+.no-outline{
+
+}
+.no-outline:hover, .no-outline:focus, .no-outline:active{
+    outline: none!important;
+}
+
+.br-left-none{
+    border-left: none!important;
+}
+
+.p-right-1{
+    padding-right: 1px;
+}

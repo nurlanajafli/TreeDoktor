@@ -1,0 +1,45 @@
+.payroll-table,
+.payroll-table thead,
+.payroll-table thead tr,
+.payroll-table thead tr th,
+.payroll-table tbody,
+.payroll-table tbody tr,
+.payroll-table tbody tr td,
+.payroll-table input {
+    border: none!important;
+}
+
+.payroll-table .payroll-remove-btn {
+    border: none!important;
+    background-color:transparent;
+    color: #fb6b5b!important;
+}
+
+.payroll-question {
+    font: normal normal normal 16px/1 FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #b8b8b8;
+}
+
+.payroll-desktop,
+.payroll-edit {
+    font-size: 16px;
+}
+
+.payroll-desktop {
+    padding-top: 5px;
+}
+
+.exclamation_hide {
+    display: none;
+}
+
+.exclamation-yellow {
+    color: #ffc333;
+}
+
+.exclamation-grey {
+    color: #bebebe;
+}

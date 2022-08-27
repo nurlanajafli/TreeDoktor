@@ -1,0 +1,34 @@
+<script id="row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{eq_id}}">
+            <td>{{group/group_name}}</td>
+            <td><a href="{{eq_url}}">{{eq_name}}</a></td>
+            <td>{{eq_code}}</td>
+            <td>{{eq_serial}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title="" data-original-title="{{eq_description}}">{{eq_description}}</td>
+            <td>{{last_counter}}</td>
+            <td data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{eq_created_at}}">{{eq_created_date}}</td>
+            <td class="text-center">{{#if eq_repair}}<i class="fa text-danger fa-lg fa-exclamation-circle"></i>{{else}}
+                <i class="fa text-success fa-lg fa-check-circle"></i>{{/if}}</td>
+            <td>
+                <button data-id="{{eq_id}}" title="{{eq_name}}"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                {{#if (var "isAdmin")}}
+                    <button data-id="{{eq_id}}" title="Sold {{eq_name}}"
+                            class="action-sale btn btn-xs btn-danger">
+                        <i class="fa fa-money icon-white">
+                        </i>
+                    </button>
+                    <button data-id="{{eq_id}}" title="{{eq_name}}"
+                            class="action-delete btn btn-xs btn-danger">
+                        <i class="fa fa-trash-o icon-white">
+                        </i>
+                    </button>
+                {{/if}}
+            </td>
+        </tr>
+    {{/this}}
+</script>

@@ -1,0 +1,70 @@
+.day-off-btn {
+    position: absolute!important;
+    z-index: 1101;
+    right: -10px;
+    top: 15px;
+    padding: 1px 18px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.btn.btn-xs.btn-danger.btn-rounded.day-off-btn {
+    font-size: 17px;
+}
+.day-off-container {
+    z-index: 1040;
+    right: -50%;
+    height: 100%;
+    top: 0;
+    overflow: hidden;
+    width: 30%;
+}
+.day-off-btn:hover {
+    padding-right: 25px;
+}
+.day-off-btn {
+    top: 3px;
+}
+#freeAgents, #offAgents {
+    max-height: 50%;
+    height: 50%;
+    overflow-y: auto;
+}
+#freeAgents>ul li, #offAgents .crewInfo {
+    padding: .2em .6em .3em;
+}
+.ui-draggable, .ui-sortable-handle {
+    cursor: move;
+}
+#note-list li {
+    list-style: none;
+}
+.list-group-item .h6 {
+    font-size: 14px;
+}
+.filterForm .list-group-item:first-child {
+    border-top: unset;
+}
+.filterForm .list-group-item {
+    border-top: 1px solid #f1f1f1;
+    border-bottom: unset;
+    border-left: unset;
+    border-right: unset;
+}
+
+.filterForm .toggle.btn {
+    min-height: 25px;
+}
+.filterForm .btn.btn-primary.toggle-on, .filterForm .btn.btn-default.active.toggle-off {
+    padding: 2px 10px 0 0;
+}
+
+.leads-map-list-group-items {
+    padding-left: 0;
+}
+
+.filterForm .panel {
+    border: none!important;
+}

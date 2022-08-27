@@ -1,0 +1,6 @@
+{
+    "name" : "Hangup",
+    "description" : "Hangup a caller.",
+    "type" : "voice",
+    "icon": "fa fa-phone"
+}

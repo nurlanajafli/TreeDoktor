@@ -1,0 +1,25 @@
+<script id="profile-tab-part-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{part_id}}">
+            <td>{{part_number}}</td>
+            <td>{{part_name}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{part_description}}">{{part_description}}</td>
+            <td>{{part_price}}</td>
+            <td>{{part_seller}}</td>
+            <td>{{part_purchased_date}}</td>
+            <td><a href="{{user.url}}">{{user.firstname}} {{user.lastname}}</a></td>
+            <td>
+                <button data-id="{{part_id}}" title="Edit {{part_name}} Part"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button data-id="{{part_id}}" title="{{part_name}} Part"
+                        class="action-delete btn btn-xs btn-danger">
+                    <i class="fa fa-trash-o icon-white">
+                    </i>
+                </button>
+            </td>
+        </tr>
+    {{/this}}
+</script>

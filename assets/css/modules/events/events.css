@@ -1,0 +1,141 @@
+
+.galcolumn{
+	background-color: #fff;
+}
+
+.hospital-icon{
+	height: 115px;
+    background-image: url(../../../img/hospital.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.btn-start-stop{
+		position: fixed;
+	    right: 15px;
+	    bottom: 20px;
+	    z-index: 1;
+	    font-size: 19px;
+	    padding: 28px 10px;
+	    border-radius: 64px;
+
+	    
+	}
+	.btn-success.btn-start-stop{
+		animation: pulse-success 2s infinite;
+	}
+	.btn-warning.btn-start-stop{
+		animation: pulse-warning 2s infinite;
+	}
+
+    @-webkit-keyframes pulse-success {
+        0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(109, 206, 59, 0.86);
+        }
+        70% {
+          -webkit-box-shadow: 0 0 0 10px rgba(109, 206, 59, 0);
+        }
+        100% {
+          -webkit-box-shadow: 0 0 0 0 rgba(109, 206, 59, 0);
+        }
+    }
+    @keyframes  pulse-success {
+        0% {
+        -moz-box-shadow: 0 0 0 0 rgba(109, 206, 59, 0.86);
+        box-shadow: 0 0 0 0 rgba(109, 206, 59, 0.86);
+        }
+        70% {
+          -moz-box-shadow: 0 0 0 10px rgba(109, 206, 59, 0);
+          box-shadow: 0 0 0 10px rgba(109, 206, 59, 0);
+        }
+        100% {
+          -moz-box-shadow: 0 0 0 0 rgba(109, 206, 59, 0);
+          box-shadow: 0 0 0 0 rgba(109, 206, 59, 0);
+        }
+    }
+    @-webkit-keyframes pulse-warning {
+        0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(251, 200, 15, 0.86);
+        }
+        70% {
+          -webkit-box-shadow: 0 0 0 10px rgba(251, 200, 15, 0);
+        }
+        100% {
+          -webkit-box-shadow: 0 0 0 0 rgba(251, 200, 15, 0);
+        }
+    }
+    @keyframes  pulse-warning {
+        0% {
+        -moz-box-shadow: 0 0 0 0 rgba(251, 200, 15, 0.86);
+        box-shadow: 0 0 0 0 rgba(251, 200, 15, 0.86);
+        }
+        70% {
+          -moz-box-shadow: 0 0 0 10px rgba(251, 200, 15, 0);
+          box-shadow: 0 0 0 10px rgba(251, 200, 15, 0);
+        }
+        100% {
+          -moz-box-shadow: 0 0 0 0 rgba(251, 200, 15, 0);
+          box-shadow: 0 0 0 0 rgba(251, 200, 15, 0);
+        }
+    }
+
+    .call-button{
+    	animation: pulse-success 2s infinite;
+    	padding: 19px 26px;
+    	font-size: 22px;
+    	border-radius: 44px;
+    	position: absolute;
+    	right: 11px;
+		bottom: 0;
+    }
+
+
+
+
+.m-left-15{
+    margin-left: 15px;
+}
+
+.m-bottom-0{
+    margin-bottom: 0px;
+}
+
+.controls-container{
+    display: flex; flex-wrap: nowrap; flex-grow: 1; flex-direction: column; height: 265px; justify-content: space-between;
+}
+
+.hazards-container{
+    display: flex; flex-wrap: nowrap; flex-grow: 1; flex-direction: column; height: 255px; justify-content: space-between;
+}
+
+@media (min-width: 992px){
+    .b-r-md{
+        border-right: 1px solid #efe8e8;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .checkbox-custom i, .radio-custom i{
+        font-size: 26px;
+    }
+    .radio-custom i{
+        font-size: 22px;
+    }
+
+    .checkbox-custom, .radio-custom, .team-list-text, .work-activity-container, .report-label{
+        font-size: 17px;
+    }
+
+    .controls-container{
+        height: 415px;
+    }
+
+    .hazards-container{
+        height: 350px;
+    }
+
+    .checkbox-custom > i:before{
+        vertical-align: -16%;
+    }
+}

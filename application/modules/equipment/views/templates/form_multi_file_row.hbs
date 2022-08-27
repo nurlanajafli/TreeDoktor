@@ -1,0 +1,27 @@
+<script id="form-multi-file-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="row file file-{{num}}">
+            <div class="field-col col-md-1 text-center" style="padding-top:8px">
+                <a href="javascript:void(0);" class="action-delete-file-row" type="button" data-num="{{num}}"><i
+                        class="fa fa-minus text-danger"></i></a>
+            </div>
+            <div class="field-col col-md-5">
+                {{#if file_id}}
+                    <input type="text" class="form-control" name="exist_files[{{file_id}}]" value="{{file_name}}"
+                           readonly>
+                {{else}}
+                    <input type="file" class="file-row-input" id="file_{{num}}" data-icon="false" name="files[{{num}}]"
+                           style="position: fixed; width: 0px;">
+                    <div class="input-group bootstrap-filestyle">
+                        <input type="text" class="input-file-text form-control" disabled="">
+                        <span class="input-group-btn">
+                        <label for="file_{{num}}" class="btn btn-default action-file"><span>Choose file</span></label>
+                    </span>
+                    </div>
+                {{/if}}
+            </div>
+            <div class="field-col col-md-6">
+            </div>
+        </div>
+    {{/this}}
+</script>

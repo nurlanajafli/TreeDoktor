@@ -1,0 +1,20 @@
+--- /dev/null
++++ ../src\Illuminate\Foundation\helpers.php
+@@ -626,7 +626,7 @@
+     }
+ }
+ 
+-if (! function_exists('redirect')) {
++if (! function_exists('illuminate_redirect')) {
+     /**
+      * Get an instance of the redirector.
+      *
+@@ -636,7 +636,7 @@
+      * @param  bool|null  $secure
+      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+      */
+-    function redirect($to = null, $status = 302, $headers = [], $secure = null)
++    function illuminate_redirect($to = null, $status = 302, $headers = [], $secure = null)
+     {
+         if (is_null($to)) {
+             return app('redirect');

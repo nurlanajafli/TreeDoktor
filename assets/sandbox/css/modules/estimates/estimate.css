@@ -1,0 +1,90 @@
+.container {
+    border:solid 1px #ccc;
+    width:582px;
+    height:402px;
+    position:absolute;
+    left: 15px;
+    padding: 0;
+    overflow: hidden;
+}
+
+#accordion-resizer {
+    width:450px;
+    height:402px;
+}
+.imgs
+{
+    overflow:auto;
+    height: 345px;
+}
+.room {
+    width:100px;
+    border:4px solid black;
+    height:60px;
+    position:relative;
+    z-index:1;
+    background-color:ivory;
+}
+.imag {
+    position:relative;
+    z-index:2;
+}
+#accordion-resizer img
+{
+    margin-bottom: 5px;
+    border: 1px solid #000;
+}
+canvas{
+    position: relative!important;
+}
+.imag.textarea textarea{
+    outline: 0;
+    width: 50px;
+    height: 25px;
+    /*resize: none;*/
+}
+.imag.textarea textarea:hover{
+    /*resize: both;*/
+}
+.imag.textarea{
+    position: relative;
+}
+.imag-head{
+    position: absolute;
+    bottom: 100%;
+    width: 100%;
+    background-color: #626262;
+    color: #fff;
+    font-size: 10px;
+    text-align: center;
+    display: none;
+    cursor: pointer;
+}
+
+.imag-head:hover, .imag.textarea:hover .imag-head{
+    display: block;
+}
+
+.remove-file{
+    color: #FF9F9F!important;
+    top: -15px;
+    right: 0;
+    text-decoration: none!important;
+}
+.remove-file:hover{
+    color: #FF0000!important;
+    font-weight: bold;
+}
+
+.scheme_map{
+    width: 100%;
+    height: 100%;
+}
+
+.imag textarea {
+    background: rgba(0, 0, 0, 0.4);
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}

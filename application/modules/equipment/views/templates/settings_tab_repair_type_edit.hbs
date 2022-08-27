@@ -1,0 +1,20 @@
+<script id="repair-type-edit-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="repair_type_name">Name</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="repair_type_name" value="{{repair_type_name}}">
+                    <span class="help-block" id="repair_type_name-error"></span>
+                </div>
+            </div>
+            {{#if repair_type_id}}
+                <input type="hidden" name="repair_type_id" value="{{repair_type_id}}">
+            {{/if}}
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

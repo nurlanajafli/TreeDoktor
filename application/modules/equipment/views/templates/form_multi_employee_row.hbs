@@ -1,0 +1,45 @@
+<script id="form-multi-employee-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        {{setVar "currentUser" (var 'currentUserData')}}
+        <div class="row employee employee-{{num}}">
+            <div class="field-col col-md-1 text-center" style="padding-top:8px">
+                <a href="javascript:void(0);" class="action-delete-employee-row" type="button" data-num="{{num}}"><i
+                        class="fa fa-minus text-danger"></i></a>
+                {{#if emp_id}}
+                    <input type="hidden" name="employees[{{num}}][emp_id]" value="{{emp_id}}">
+                {{/if}}
+            </div>
+            <div class="field-col col-md-3">
+                <input required name="employees[{{num}}][user_id]" class="m-b select-two" data-select-route="users"
+                       data-name="{{#if user}} {{user.firstname}} {{user.lastname}} {{else}}{{var 'currentUserData'
+                                                                                                  'firstname'}} {{var
+                               'currentUserData' 'lastname'}}{{/if}}"
+                       data-num="{{num}}" value="{{#if user}}{{user.id}}{{else}}{{var 'currentUserData' 'id'}}{{/if}}">
+            </div>
+            <div class="field-col col-md-2">
+                <input name="employees[{{num}}][emp_worked_at]" type="text" class="datepicker form-control text-center"
+                       value="{{emp_worked_at}}" readonly=""
+                       style="border-radius: 2px">
+            </div>
+            <div class="field-col col-md-2">
+                <input required name="employees[{{num}}][emp_hours]" type="number" step="0.1"
+                       class="form-control employee-hours"
+                       placeholder="Hours" value="{{emp_hours}}">
+            </div>
+            <div class="field-col col-md-2">
+                <input required name="employees[{{num}}][emp_hourly_rate]" type="number" step="0.01"
+                       class="form-control employee-hourly-rate" placeholder="Hourly Rate"
+                       value=""><!--{{#if emp_hourly_rate}}{{emp_hourly_rate}}{{else}}{{round
+        currentUser.employee.emp_hourly_rate '2'}}{{/if}}-->
+            </div>
+            <div class="field-col col-md-2 text-right">
+                <div class="input-group">
+                    <span class="input-group-addon">{{get_currency}}</span>
+                    <input type="number" step="0.01" class="form-control employee-price employee-total-{{num}}"
+                           placeholder="Cost" value="0"
+                           disabled="disabled">
+                </div>
+            </div>
+        </div>
+    {{/this}}
+</script>

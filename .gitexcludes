@@ -1,0 +1,6 @@
+uploads/
+docs/
+.idea/
+application/config/database.php
+.htaccess
+

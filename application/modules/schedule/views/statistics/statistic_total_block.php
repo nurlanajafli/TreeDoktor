@@ -1,0 +1,1 @@
+<div class="teams-amount" style="bottom: 210px;">Total: {{:~currency_format(total, true)}}, Total Hours: {{:total_hrs}} hrs.</div>

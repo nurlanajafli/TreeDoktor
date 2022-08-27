@@ -1,0 +1,16 @@
+var wsd = {
+	allHistory: [],
+	outgoingCallerIds:{},
+	mvc: 0,
+	vc: 0,
+	history: {},
+	onhold: [],
+	serverTz: [],
+	historySearch: {},
+	agentsCounter: {},
+	queueSize: {},
+	tasks: {},
+	availableAgents: {},
+	forwardContacts: {},
+	agentsData: {linkClass:'',workers:[]},
+}

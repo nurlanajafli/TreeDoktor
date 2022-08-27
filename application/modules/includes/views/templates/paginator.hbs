@@ -1,0 +1,50 @@
+<script id="paginator-template" type="text/x-handlebars-template">
+    {{#this}}
+        <nav>
+            <ul class="pagination">
+                {{#eq on_first_page true}}
+                    <li class="page-item disabled" aria-disabled="true" aria-label="Previous">
+                        <span class="page-link" aria-hidden="true"><i class="fa fa-chevron-left"></i></span>
+                    </li>
+                {{else}}
+                    <li class="page-item">
+                        <a class="page-link" data-page-num="{{prev_page}}" href="{{toUrlPage prev_page}}"
+                           rel="prev"
+                           aria-label="Previous"><i class="fa fa-chevron-left"></i></a>
+                    </li>
+                {{/eq}}
+
+                {{#each elements as |element|}}
+                    {{#typeof element "string"}}
+                        <li class="page-item disabled" aria-disabled="true"><span class="page-link">{{element}}</span>
+                        </li>
+                    {{/typeof}}
+
+                    {{#typeof element 'object'}}
+                        {{#each element as |link page|}}
+                            {{#eq page (cast ../../current_page "string") }}
+                                <li class="page-item active" aria-current="page"><span class="page-link">{{page}}</span>
+                                </li>
+                            {{else}}
+                                <li class="page-item"><a class="page-link" data-page-num="{{page}}"
+                                                         href="{{toUrlPage page}}">{{page}}</a></li>
+                            {{/eq}}
+                        {{/each}}
+                    {{/typeof}}
+                {{/each}}
+
+                {{#eq has_more_pages true}}
+                    <li class="page-item">
+                        <a class="page-link" data-page-num="{{next_page}}" href="{{toUrlPage next_page}}"
+                           rel="next"
+                           aria-label="Next"><i class="fa fa-chevron-right"></i></a>
+                    </li>
+                {{else}}
+                    <li class="page-item disabled" aria-disabled="true" aria-label="Next">
+                        <span class="page-link" aria-hidden="true"><i class="fa fa-chevron-right"></i></span>
+                    </li>
+                {{/eq}}
+            </ul>
+        </nav>
+    {{/this}}
+</script>

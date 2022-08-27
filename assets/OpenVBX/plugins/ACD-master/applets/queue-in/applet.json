@@ -1,0 +1,6 @@
+{ 
+    "name" : "Queue In", 
+    "description" : "Add call to a queue",  
+    "type" : "voice",
+    "icon" : "fa fa-stack-exchange"
+}

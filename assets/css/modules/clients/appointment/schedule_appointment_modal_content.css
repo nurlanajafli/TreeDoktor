@@ -1,0 +1,47 @@
+#scheduled-datepicker > div {
+    margin: 0 auto;
+    padding-top: 0;
+}
+
+.list-group-item:hover {
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+/** recomendations */
+#recomendations-result .panel-heading{
+	background: #fff;
+}
+.selected-estimator.panel-heading{
+	background: #ffe00012!important;
+}
+.selected-estimator-appointment-today{ background: #fff8c9!important; }
+
+.w-85{ width: 85%; }
+.m-right-5{ margin-right:5px; }
+.information-table, .information-table:hover{
+	border-color: #2095fe;
+	color: #2095fe!important;
+}
+.information-table{
+	background: #fff;
+	padding: 0px;
+	width: 21px!important;
+}
+.appointment-recomendations .popover{
+	max-width: 2000px!important;
+}
+
+#recomendations-result a{ text-decoration: none; }
+
+.time-interval-label{
+	font-weight: 700;
+	background-color: #61b71c;
+	text-shadow: 0 1px 0 #96969633, 0 2px 0 #4848483b, 0 5px 10px rgba(0, 0, 0, 0.125), 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.time-interval-label.active{
+	background-color: #489a06;
+}
+.time-interval-label:hover{
+	background-color: #71d222;
+}

@@ -1,0 +1,120 @@
+> system\core\Config.php
+>> function __construct()
+>>> line 75
+>>> after:
+	if ($this->config['base_url'] == '')
+	{
+	...
+	}
+>>> deleted block:
+	else
+	{
+		$base_url = 'http://localhost/';
+	}
+
+DO NOT NEED IN v3
+> system\core\Input.php
+>> public function ip_address()
+>>> line 351
+>>> block: 
+	$this->ip_address = $_SERVER['REMOTE_ADDR'];
+>>> changed to:
+	/***BY GLEBA RUSLAN 10.06.2016**/
+	if(isset($_SERVER['REMOTE_ADDR']))
+		$this->ip_address = $_SERVER['REMOTE_ADDR'];
+	else
+		$this->ip_address = '0.0.0.0';
+
+DO NOT NEED IN v3
+> system\core\Loader.php
+>> private function _ci_autoloader()
+>>> line 1114
+>>> block: 
+	private function _ci_autoloader()
+>>> changed to:
+	protected function _ci_autoloader()
+
+DO NOT NEED IN v3
+> system\core\Security.php
+>> public function entity_decode($str, $charset='UTF-8')
+>>> line 512
+>>> block: 
+	$str = preg_replace('~&#x(0*[0-9a-f]{2,5})~ei', 'chr(hexdec("\\1"))', $str);
+	return preg_replace('~&#([0-9]{2,4})~e', 'chr(\\1)', $str);
+>>> changed to:
+	if(version_compare(PHP_VERSION,5.5,'>=')){
+		$str = preg_replace_callback('~&#x(0*[0-9a-f]{2,5})~i', function(){return chr(hexdec('\\1'));}, $str, -1, $matches);
+		$str = preg_replace_callback('~&#([0-9]{2,4})~', function(){return chr('\\1');}, $str, -1, $matches1);
+	}else{
+		$str = preg_replace('~&#x(0*[0-9a-f]{2,5})~ei', 'chr(hexdec("\\1"))', $str, -1, $matches);
+		$str = preg_replace('~&#([0-9]{2,4})~e', 'chr(\\1)', $str, -1, $matches1);
+	}
+	return $str;
+
+DO NOT NEED IN v3
+> system\database\DB_active_rec.php
+>> public function join($table, $cond, $type = '')
+>>> line 310
+>>> block: 
+	public function join($table, $cond, $type = '')
+>>> changed to:
+	public function join($table, $cond, $type = '', $escape = TRUE)
+
+DO NOT NEED IN v3
+> system\database\DB_active_rec.php
+>> public function join($table, $cond, $type = '')
+>>> line 333
+>>> block: 
+	$match[1] = $this->_protect_identifiers($match[1]);
+	$match[3] = $this->_protect_identifiers($match[3]);
+>>> changed to:
+	if ($escape === TRUE)
+	{
+		$match[1] = $this->_protect_identifiers($match[1]);
+		$match[3] = $this->_protect_identifiers($match[3]);
+	}
+	
+> system\database\DB_active_rec.php
+>> public function update_batch($table = '', $set = NULL, $index = NULL)
+>>> line 1322
+>>> after:
+	public function update_batch($table = '', $set = NULL, $index = NULL)
+	{
+>>> added block:
+	$this->ar_where = $customWhereArr;
+
+DO NOT NEED IN v3
+> system\database\DB_active_rec.php
+>> public function set_update_batch($key, $index = '', $escape = TRUE)
+>>> line 1407
+>>> block: 
+	$not[] = $k.'-'.$v;
+>>> changed to:
+	$not[] = $k2.'-'.$v2;
+	
+> system\database\DB_active_rec.php
+>> protected function _compile_select($select_override = FALSE)
+>>> line 1673
+>>> block: 
+	protected function _compile_select($select_override = FALSE)
+>>> changed to:
+	public function _compile_select($select_override = FALSE)
+
+> system\database\DB_active_rec.php
+>> protected function _reset_select()
+>>> line 1995
+>>> block: 
+	protected function _reset_select()
+>>> changed to:
+	public function _reset_select()
+
+
+---- SINCE 3.0.1 ---
+
+> system\libraries\Session\Session.php
+>> public function __construct(array $params = array())
+>>> line 134
+>>> block:
+	OR ! preg_match('/^[0-9a-f]{40}$/', $_COOKIE[$this->_config['cookie_name']])
+>>> changed to:
+	OR ! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $_COOKIE[$this->_config['cookie_name']])

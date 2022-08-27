@@ -1,0 +1,49 @@
+
+.estimate_table {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    padding: 5px 15px 5px 0;
+}
+
+.estimate_table pre {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+}
+
+.m-t-5 {
+    margin-top: 5px;
+}
+
+.m-t-b-5 {
+    margin: 5px 0;
+}
+
+.p-b-5 {
+    padding-bottom: 5px;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.clear {
+    clear: both;
+}

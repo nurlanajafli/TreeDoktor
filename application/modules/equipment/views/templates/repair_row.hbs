@@ -1,0 +1,41 @@
+<script id="repair-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{repair_id}}">
+            <td>{{repair_id}}</td>
+            <td class="hidden-on-tab truncate" data-container="body" data-toggle="tooltip" data-placement="left"
+                data-original-title="{{equipment.eq_name}}">
+                {{#if equipment.trashed}}
+                    <span style="text-decoration: line-through;">{{equipment.eq_name}}</span>
+                {{else}}
+                    <a href="{{equipment.eq_url}}">{{equipment.eq_name}}</a>
+                {{/if}}
+            </td>
+            <td>{{repair_status.repair_status_name}}</td>
+            <td>{{repair_type.repair_type_name}}</td>
+            <td>{{repair_priority_str}}</td>
+            <td>{{assigned.firstname}} {{assigned.lastname}}</td>
+            <td>{{counter.counter_value}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{repair_description}}">{{repair_description}}</td>
+            <td data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{repair_created_at}}">{{repair_created_date}}</td>
+            <td>{{repair_end_at}}</td>
+            <td>{{user.firstname}} {{user.lastname}}</td>
+            <td>
+                <button data-id="{{repair_id}}" title="Assign {{equipment.eq_name}} Repair request to"
+                        class="action-assign btn btn-default btn-xs">
+                    <i class="fa fa-user"></i>
+                </button>
+                <button data-id="{{repair_id}}" title="Edit {{equipment.eq_name}} Repair Request"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button data-id="{{repair_id}}" title="{{equipment.eq_name}} Repair Request"
+                        class="action-delete btn btn-xs btn-danger">
+                    <i class="fa fa-trash-o icon-white">
+                    </i>
+                </button>
+            </td>
+        </tr>
+    {{/this}}
+</script>

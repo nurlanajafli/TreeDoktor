@@ -1,0 +1,48 @@
+!INVITEM	NAME	REFNUM	TIMESTAMP	INVITEMTYPE	DESC	PURCHASEDESC	ACCNT	ASSETACCNT	COGSACCNT	QNTY	VALUE	PRICE	COST	TAXABLE	SALESTAXCODE	PAYMETH	TAXVEND	PREFVEND	REORDERPOINT	EXTRA	CUSTFLD1	CUSTFLD2	CUSTFLD3	CUSTFLD4	CUSTFLD5	DEP_TYPE	ISPASSEDTHRU	HIDDEN	DELCOUNT	USEID	ISNEW	PO_NUM	SERIALNUM	WARRANTY	LOCATION	VENDOR	ASSETDESC	SALEDATE	SALEEXPENSE	NOTES	ASSETNUM	COSTBASIS	ACCUMDEPR	UNRECBASIS	PURCHASEDATE
+INVITEM	"Scheduled Arborist Consultation"			SERV	"Provide an I.S.A. Certified Arborist consultation in order to assess the condition of [TREES AND LOCATION] and provide treatment options for maintenance. (30 minutes on-site time)"		Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"test prt"			PROD	wer		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"test prod colla[se"			PROD	wqe		Sales					123.00	123.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"test prod colapsed 2"			PROD	qwe		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	qwe			PROD	qwe		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	test			PROD	test		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"test 32"			PROD	4		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	rewr			PROD			Sales							Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	6666			PROD			Sales							Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	9999			PROD			Sales							Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	111111			PROD			Sales							Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	22222			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	333			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	8888			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	12345345345			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	98765			PROD			Sales							Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	ert			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	test			SERV	tee		Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	qaz			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"prod ffffffff"			PROD	ewrw		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	qwerty			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	qwerty			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	no			PROD	t		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"Test service tree!"			SERV	test		Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	ASQW			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	te			PROD	1		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"ser gey"			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"as d"			PROD	test		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"khy "			PROD	qw		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	qw			PROD	w		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	111			PROD	12		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"lk kl"			PROD	q		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"asd d"			PROD	reww		Sales					12.00	12.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"tes 1"			PROD	2		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"gtrre rr"			PROD	tesr		Sales					2.00	2.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"oyt qw"			PROD	"test "		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"rr rr2"			PROD	rr2		Sales					2.00	2.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"test ee2"			SERV	444		Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	3			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	gnoj			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	gnoj2			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"gogs nogi"			PROD	e		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"test crew"			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"let 2"			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"prod let"			PROD	1		Sales					1.00	1.00	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"Tree inventory"			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		
+INVITEM	"Tree inventory"			SERV			Sales						0	Y	Tax											0	N	N	0	N	Y								0			0	0	0		

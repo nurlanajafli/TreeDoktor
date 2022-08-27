@@ -1,0 +1,22 @@
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]:hover,
+input[type="number"]:focus {
+    -moz-appearance: number-input;
+}
+
+.note-block {
+    display: block;
+    margin: 5px 0;
+    color: #737373;
+    font-style: italic;
+}
+.switch.disabled span {background-color: #eee;}

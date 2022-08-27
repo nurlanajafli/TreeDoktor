@@ -1,0 +1,41 @@
+<script id="unsold-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="group_id">Group *</label>
+                <div class="col-sm-7">
+                    <input id="group_id" name="group_id" class="m-b select-two" data-select-route="groups"
+                           data-name="{{group.group_name}}" value="{{group_id}}">
+                    <span class="help-block" id="group_id-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_code">Prefix *</label>
+                <div class="col-sm-2">
+                    <input required class="form-control" type="text" name="eq_prefix"
+                           value="{{eq_sold_prefix}}">
+                    <span class="help-block" id="eq_prefix-error"></span>
+                </div>
+                <label class="col-sm-2 control-label" for="eq_code" style="white-space: nowrap;">Code *</label>
+                <div class="col-sm-3">
+                    <input required class="form-control" type="text" name="eq_code_num"
+                           value="{{eq_sold_code_num}}">
+                    <span class="help-block" id="eq_code_num-error"></span>
+                    <span class="help-block" id="eq_code-error"></span>
+                </div>
+            </div>
+            <div class="col-md-12 text-center text-success">
+                <strong>
+                    Please setup new services for this item.
+                </strong>
+            </div>
+            {{#if eq_id}}
+                <input type="hidden" name="eq_id" value="{{eq_id}}">
+            {{/if}}
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

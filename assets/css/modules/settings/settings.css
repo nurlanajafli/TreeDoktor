@@ -1,0 +1,49 @@
+.taxSelect {
+    width: 100% !important;
+}
+
+.select2-search::after {
+    top: 10px !important;
+}
+
+@media (min-width: 600px){
+    .taxSelect {
+        width: 55% !important;
+    }
+}
+
+@media (min-width: 768px){
+    .taxSelect {
+        width: 65% !important;
+    }
+}
+
+/*@media (min-width: 992px){*/
+/*    .taxSelect {*/
+/*        width: 65% !important;*/
+/*    }*/
+/*}*/
+
+@media (min-width: 1200px){
+    .taxSelect {
+        width: 100% !important;
+    }
+}
+
+@media (min-width: 1346px){
+    .taxSelect {
+        width: 50% !important;
+    }
+}
+
+@media (min-width: 1580px){
+    .taxSelect {
+        width: 60% !important;
+    }
+}
+
+@media (min-width: 1900px){
+    .taxSelect {
+        width: 70% !important;
+    }
+}

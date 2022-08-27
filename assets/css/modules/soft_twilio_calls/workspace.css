@@ -1,0 +1,37 @@
+w.workspaceSidebar a.active {
+    color: #1b252e;
+    background-color: #eee;
+}
+
+.panel.panel-default {
+    overflow: unset;
+    border: none;
+}
+
+.twilio-workspace-section #content a.edit {
+    padding-right: 10px;
+}
+
+.twilio-workspace-section #content a {
+    text-decoration: none;
+}
+
+.form-attribute-invalid {
+    color: red;
+}
+
+.workspaceSideBarBackButton {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.workspaceSideBarBackButton .m-t-xs {
+    color: #2e3e4e;
+    margin-top: 3px;
+}
+
+.open_attributes_textarea_block, .close_attributes_textarea_block {
+    cursor: pointer;
+}

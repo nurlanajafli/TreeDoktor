@@ -1,0 +1,66 @@
+.btn-save-note{
+    position: absolute;
+    top: 46px;
+    right: 1px;
+    border-bottom: 0;
+    border-right: 0;
+}
+
+#workorder-detaild-block .btn-primary.btn-reverse{
+    color: #65bd77!important;
+}
+
+#workorder-detaild-block .btn-primary.btn-reverse:hover{
+    color: #fff!important;
+}
+
+#workorder-detaild-block .workorders-profile-files{
+    box-shadow: none;border-right: 0; border-left: 0
+}
+
+
+.text-nowrap{ white-space: nowrap; overflow: hidden;}
+
+#workorder-detaild-block hr{
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+#workorder-detaild-block .dropfile{}
+#workorder-detaild-block .dropfile:hover span{
+    cursor: pointer;
+    font-weight: 500!important;
+}
+.inline-block {
+    display: inline-block;
+}
+.workorders-profile-files-list{
+    display: flex;
+    /*flex-flow: row wrap;*/
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.workorders-profile-files-list-item{
+    padding: 3px 7px 1px;
+    border-top-right-radius: 30px!important;
+    border-bottom-right-radius: 30px!important;
+    width: 32%;
+    max-width: 50%;
+    min-width: 200px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-bottom: 3px!important;
+}
+.workorders-profile-files-list-item:last-child{
+    max-width: 50%;
+}
+@media (max-width: 1189px){
+    .workorders-profile-files-list-item{
+        max-width: 100%;
+    }
+}
+@media (max-width: 1474px){
+    .workorders-profile-files-list-item:last-child{
+        max-width: 50%;
+    }
+}

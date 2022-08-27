@@ -1,0 +1,77 @@
+<script id="service-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{service_id}}" class="
+            {{#if (lt (cast service_next_date_due 'int') 0)}}bg-danger{{/if}}
+            {{#if (and (lte (cast service_next_date_due 'int') 5) (gte (cast service_next_date_due 'int') 0))}}bg-warning{{/if}}
+        ">
+            <td class="hidden-on-tab truncate" data-container="body" data-toggle="tooltip" data-placement="left"
+                data-original-title="{{equipment.eq_name}}">
+                {{#if equipment.trashed}}
+                    <span style="text-decoration: line-through;">{{equipment.eq_name}}</span>
+                {{else}}
+                    <a href="{{equipment.eq_url}}">{{equipment.eq_name}}</a>
+                {{/if}}
+            </td>
+            <td>{{service_type.service_type_form_str}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left"
+                data-original-title="{{service_name}}">{{service_name}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left"
+                data-original-title="{{service_description}}">{{service_description}}</td>
+            <td>
+                {{#if service_next_date}}
+                    {{service_next_date}},
+                    {{#eq (cast service_next_date_due 'int') 0 }}
+                        today
+                    {{else}}
+                        {{service_next_date_due}} {{plural "day" service_next_date_due}}
+                    {{/eq}}
+                {{/if}}
+            </td>
+            <td>
+                {{#if service_next_counter}}
+                    {{service_next_counter}} {{equipment.eq_counter_type_str}},
+                    {{service_next_counter_due}} {{equipment.eq_counter_type_str}}
+                {{/if}}
+            </td>
+            <td>
+                {{#if last_report}}
+        {{#if last_report.service_report_end_date}}
+            {{last_report.service_report_end_date}}
+        {{else}}
+            {{last_report.service_report_created_date}}
+        {{/if}}
+
+    {{/if}}
+            </td>
+            <td>
+                {{#if last_report}}
+                    {{#if last_report.counter}}
+                        {{last_report.counter.counter_value}}
+                    {{/if}}
+                {{/if}}
+            </td>
+            <td>
+                <button data-id="{{service_id}}" title="Complete {{service_name}} on {{equipment.eq_name}} Service"
+                        class="action-complete btn btn-success btn-xs">
+                    <i class="fa fa-check-square-o"></i>
+                    Complete
+                </button>
+                <button data-id="{{service_id}}" title="Postpone {{service_name}} on {{equipment.eq_name}} Service"
+                        class="action-postpone btn btn-xs btn-info">
+                    <i class="fa fa-clock-o icon-white">
+                    </i>
+                    Postpone
+                </button>
+                <button data-id="{{service_id}}" title="Edit {{service_name}} on {{equipment.eq_name}} Service"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button data-id="{{service_id}}" title="{{service_name}} on {{equipment.eq_name}} Service"
+                        class="action-delete btn btn-xs btn-danger">
+                    <i class="fa fa-trash-o icon-white">
+                    </i>
+                </button>
+            </td>
+        </tr>
+    {{/this}}
+</script>

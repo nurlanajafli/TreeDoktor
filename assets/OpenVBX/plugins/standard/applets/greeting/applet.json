@@ -1,0 +1,6 @@
+{
+    "name" : "Greeting",
+    "description" : "Send a greeting to the caller.",
+    "type" : "voice",
+    "icon": "fa fa-bullhorn"
+}

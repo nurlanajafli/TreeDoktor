@@ -1,0 +1,109 @@
+<?php
+
+use ElephantIO\Client as WSClient;
+use ElephantIO\Engine\SocketIO\Version1X;
+
+class appestimates_confirmBak extends CI_Driver implements JobsInterface
+{
+    var $payload, $body, $wsClient, $CI = [];
+
+    public function getPayload($data = NULL) {
+        return $data;
+    }
+
+    public function execute($job = NULL)
+    {
+        $this->CI =& get_instance();
+        $this->CI->load->model('mdl_estimates_orm');
+        $this->CI->load->model('mdl_est_status');
+        $this->CI->load->model('mdl_workorders');
+
+        $this->payload = json_decode($job->job_payload, TRUE);
+        $this->body = $this->payload['body'] ?? [];
+
+        $_POST = $this->body;
+        $this->CI->token = TRUE;
+        $this->CI->user = new stdClass();
+        $this->CI->user->id = $this->payload['user_id'];
+
+        $leadId = $this->body['lead_id'];
+        if(!$leadId) {
+            $this->_socketWrite('syncJobFailed', [
+                'request_id' => $this->payload['id'],
+                'message' => 'lead_id is required',
+            ]);
+            return TRUE;
+        }
+
+        $estimate = $this->CI->mdl_estimates_orm->get_by(['lead_id' => $leadId]);
+
+        $signature = str_replace('[removed]', '', $this->body['data']);
+        if($signature == $this->body['data'])
+            $signature = explode(',', $this->body['data'])[1];
+
+        if(!$estimate) {
+            $this->_socketWrite('syncJobFailed', [
+                'request_id' => $this->payload['id'],
+                'message' => 'Incorrect Estimate',
+            ]);
+            return TRUE;
+        }
+
+        $tmpPath = sys_get_temp_dir() . '/signature_' . $estimate->estimate_id . '.png';
+        $path =  'uploads/clients_files/' . $estimate->client_id . '/estimates/' . $estimate->estimate_no . '/signature.png';
+
+        $im = imagecreatefromstring(base64_decode($signature));
+        $white = imagecolorallocate($im, 241,243,247);
+        imagecolortransparent($im, $white);
+        imagepng($im, $tmpPath);
+        imagedestroy($im);
+
+        if(!getimagesize($tmpPath)) {
+            $this->_socketWrite('syncJobFailed', [
+                'request_id' => $this->payload['id'],
+                'message' => 'Incorrect Signature Data',
+            ]);
+            return TRUE;
+        }
+
+        bucket_move($tmpPath, $path, ['ContentType' => 'image/png']);
+        @unlink($tmpPath);
+
+        $confirmedStatus = $this->CI->mdl_est_status->get_by(['est_status_confirmed' => 1]);
+        $this->CI->mdl_estimates_orm->update($estimate->estimate_id, ['status' => $confirmedStatus->est_status_id]);
+
+        //make workorder
+        $work_order = str_replace('E', 'W', $estimate->estimate_no);
+        $data['wo_priority'] = 'Regular';
+        $data['wo_confirm_how'] = 'Signature';
+
+        $data['wo_extra_not_crew'] = NULL;
+        $data['client_id'] = $estimate->client_id;
+        $data['estimate_id'] = $estimate->estimate_id;
+        $data['workorder_no'] = $work_order;
+        $data['wo_pdf_files'] = $estimate->estimate_pdf_files;
+        $data['wo_status'] = $this->CI->mdl_workorders->getDefaultStatusId();
+        $data['date_created'] = date('Y-m-d');
+
+        $workorder_id = $this->CI->mdl_workorders->insert_workorders($data);
+
+        $this->_socketWrite('syncJobSuccess', [
+            'request_id' => $this->payload['id'],
+            'workorder_id' => $workorder_id,
+        ]);
+        return TRUE;
+    }
+
+    private function _socketWrite($msg, $response = []) {
+        if(config_item('wsClient')) {
+            if(!$this->wsClient) {
+                $this->wsClient = new WSClient(new Version1X(config_item('wsClient') . '?chat=1&user_id=' . $this->payload['user_id']));
+                $this->wsClient->initialize();
+            }
+            if($this->wsClient) {
+                $this->wsClient->emit('room', ['chat-' . $this->payload['user_id']]);
+                $this->wsClient->emit('message', ['method' => $msg, 'params' => $response]);
+            }
+        }
+    }
+}

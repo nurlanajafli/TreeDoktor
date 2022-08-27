@@ -1,0 +1,78 @@
+ARG IMAGETAG
+FROM ${IMAGETAG}
+ARG CONTEXT
+ARG DEPLOYMENT_PATH=deployments/${CONTEXT}
+
+ENV PHP_DISPLAY_ERRORS="0" \
+    PHP_MEMORY_LIMIT="512" \
+    PHP_MAX_EXECUTION_TIME="300" \
+    PHP_POST_MAX_SIZE="100M" \
+    PHP_UPLOAD_MAX_FILESIZE="100M" \
+    php.error_reporting="E_ALL" \
+    fpm.www.security.limit_extensions=".php" \
+    php.access.format='{"C":"%C","d":"%d","f":"%f","l":"%l","m":"%m","M":"%M","n":"%n","P":"%P","p":"%p","q":"%q","Q":"%Q","r":"%r","R":"%R","s":"%s","T":"%T","t":"%t","u":"%u"}' \
+    php.request_slowlog_timeout="3" \
+    php.slowlog="/proc/self/fd/2" \
+    fpm.www.pm.status_path="/stat"
+
+WORKDIR /app/
+COPY . /app
+
+# nginx setup
+COPY ${DEPLOYMENT_PATH}/conf.d/nginx/global.conf      /opt/docker/etc/nginx/global.conf
+COPY ${DEPLOYMENT_PATH}/conf.d/nginx/vhost.common.d/   /opt/docker/etc/nginx/vhost.common.d
+
+# php-fpm settings are done through Dockerfile ENV and deployent.yaml for ${DEPLOYMENT_PATH}
+# COPY ${DEPLOYMENT_PATH}/conf.d/php-fpm/php.ini /opt/docker/etc/php/php.ini
+# COPY ${DEPLOYMENT_PATH}/conf.d/php-fpm/php-fpm.conf /opt/docker/etc/php/fpm/php-fpm.conf
+
+
+# Install pm2 service and ecosystem
+# RUN mkdir /opt/docker/etc/pm2
+# COPY ${DEPLOYMENT_PATH}/conf.d/pm2/ecosystem.config.js /opt/docker/etc/pm2/ecosystem.config.js
+# COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/pm2.conf /opt/docker/etc/supervisor.d/pm2.conf
+
+# Install node
+COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/node.conf /opt/docker/etc/supervisor.d/node.conf
+
+# Install aws cli:latest
+# deprecated pulling: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+COPY ${DEPLOYMENT_PATH}/lib/awscliv2.zip .
+RUN unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip && rm -rf aws
+
+
+WORKDIR /opt/arbostar/
+# Install POD script and service
+COPY ${DEPLOYMENT_PATH}/scripts/pod.sh .
+RUN chmod +x pod.sh
+COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/pod.conf /opt/docker/etc/supervisor.d/pod.conf
+
+
+# Copy panic dispatch
+COPY ${DEPLOYMENT_PATH}/scripts/panic.sh .
+RUN chmod +x panic.sh
+
+
+# Install updated nginx supervisord service conf
+COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/nginx.conf /opt/docker/etc/supervisor.d/nginx.conf
+
+
+# Install queue service
+COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/queue.conf /opt/docker/etc/supervisor.d/queue.conf
+
+
+# Install process listener service
+COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/q_event.conf /opt/docker/etc/supervisor.d/q_event.conf
+COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/listener.py /opt/docker/bin/listener.py
+
+# Install watcher service
+COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/watch.sh /opt/docker/bin/watch.sh
+COPY ${DEPLOYMENT_PATH}/conf.d/supervisor/watch.conf /opt/docker/etc/supervisor.d/watch.conf
+RUN chmod +x /opt/docker/bin/watch.sh
+
+# Install laravel support
+RUN mkdir -p /tmp/framework/cache && chown -R application:application /tmp/framework
+RUN mkdir -p /tmp/mpdf && chown -R application:application /tmp/mpdf
+
+
+EXPOSE 80 443 8895 9000

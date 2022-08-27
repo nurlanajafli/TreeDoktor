@@ -1,0 +1,146 @@
+<section class="pull-md-right  clear" style="width:252px; margin-top: 15px">
+    <div class="col-md-12 p-left-0 p-right-0">
+        <div class="form-group  p-left-0">
+            <div class="d-flex">
+                <input class="form-control form-control-sm tag-input" placeholder="Tag name" value="" list="tag-input-dropdown" data-show-processing="false">
+                <datalist id="tag-input-dropdown"></datalist>
+
+                <button type="button" class="btn btn-sm btn-success js-add-tag">add</button>
+            </div>
+        </div>
+
+        <div class="form-group p-left-0 p-right-0 tags-container">
+            <?php if (isset($client_tags)): ?>
+                <?php  foreach ($client_tags as $client_tag): ?>
+                    <span class="tag-item-container" style="display: inline-flex">
+                    <a href="#" class="tag"><?= $client_tag['name'] ?></a>
+                    <span class="tag-delete js-tag-delete">
+                        &times;
+                    </span>
+                </span>
+                <?php endforeach; ?>
+            <?php endif;  ?>
+        </div>
+    </div>
+</section>
+
+
+<script>
+  $(document).ready(function(){
+
+    $(document).on('click', '.js-tag-delete', function () {
+      let clientId = $('#client_id').val();
+      let tagName = $(this).closest('.tag-item-container').find('.tag').text().trim();
+
+      deleteClientTag(clientId, tagName);
+
+    });
+
+    $(document).on('click', '.js-add-tag', function () {
+      addTagToClient();
+    });
+
+    $(document).on('keypress', '.tag-input', function() {
+      // debugger;
+      let  tagName = $('.tag-input').val();
+
+      $.ajax({
+        url: baseUrl + 'clients/ajax_search_tag',
+        data: {
+          tag_name: tagName
+        },
+        dataType: 'json',
+        success: function(resp){
+          if (typeof resp !== 'object') {
+            showTagInputDropdown([]);
+          }
+
+          showTagInputDropdown(resp);
+        },
+      });
+    });
+
+    $(document).on('focusout', '.tag-input', function() {
+      showTagInputDropdown([]);
+    });
+
+    function showTagInputDropdown(resultTags) {
+      let tagDropdownHtml = '';
+
+      $.each(resultTags, function(i, tag) {
+        tagDropdownHtml =  tagDropdownHtml  +  `<option value='${tag.name}'>`
+      });
+
+      $('#tag-input-dropdown').html(tagDropdownHtml);
+    }
+
+    function renderClientTags(clientTags) {
+      let tagsHtml = '';
+
+      $.each(clientTags, function(i, clientTag) {
+        tagsHtml =  tagsHtml  +
+          `
+             <span class="tag-item-container" style="display: inline-flex">
+                <a href="#" class="tag">${clientTag.name}</a>
+                <span style="font-size: 20px" class="tag-delete js-tag-delete">
+                    &times;
+                </span>
+            </span>
+          `;
+      });
+
+      $('.tags-container').html(tagsHtml);
+    }
+
+    function addTagToClient() {
+      let tagName = $('.tag-input').val().trim();
+      let clientId = $('#client_id').val();
+
+      if (tagName === '') {
+        return;
+      }
+
+      $.ajax({
+        url: baseUrl + 'clients/ajax_add_tag',
+        data: {
+          tag_name: tagName,
+          client_id: clientId
+        },
+        dataType: 'json',
+        method: 'post',
+        success: function(clientTags){
+          $('.tag-input').val('');
+          if (typeof clientTags !== 'object') {
+            renderClientTags([]);
+            return;
+          }
+
+          renderClientTags(clientTags);
+        },
+        error: function() {
+        }
+      });
+    }
+
+    function deleteClientTag(clientId, tagName) {
+      $.ajax({
+        url: baseUrl + 'clients/ajax_delete_tag',
+        data: {
+          tag_name: tagName,
+          client_id: clientId
+        },
+        dataType: 'json',
+        method: 'post',
+        success: function(clientTags){
+          if (typeof clientTags !== 'object') {
+            renderClientTags([]);
+          }
+
+          renderClientTags(clientTags);
+        },
+        error: function() {
+        }
+      });
+    }
+  });
+</script>

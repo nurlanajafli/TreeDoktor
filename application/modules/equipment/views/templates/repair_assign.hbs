@@ -1,0 +1,21 @@
+<script id="repair-assign-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            {{#if repair_id}}
+                <input type="hidden" name="repair_id" value="{{repair_id}}">
+            {{/if}}
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="user_id">Assign To</label>
+                <div class="col-sm-7">
+                    <input id="user_id" name="user_id" class="m-b select-two" data-select-route="users"
+                           data-name="{{user.firstname}} {{user.lastname}}" value="{{user_id}}">
+                    <span class="help-block" id="repair_type_id-error"></span>
+                </div>
+            </div>
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

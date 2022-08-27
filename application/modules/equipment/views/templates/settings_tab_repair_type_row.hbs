@@ -1,0 +1,21 @@
+<script id="repair-type-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{repair_type_id}}">
+
+            <td>{{repair_type_name}}</td>
+            <td>
+                <button data-id="{{repair_type_id}}" title="Edit {{repair_type_name}} Repair Type"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                {{#if (var "isAdmin")}}
+                    <button data-id="{{repair_type_id}}" title="{{repair_type_name}} Repair Type"
+                            class="action-delete btn btn-xs btn-danger">
+                        <i class="fa fa-trash-o icon-white">
+                        </i>
+                    </button>
+                {{/if}}
+            </td>
+        </tr>
+    {{/this}}
+</script>

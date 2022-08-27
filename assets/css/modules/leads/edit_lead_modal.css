@@ -1,0 +1,58 @@
+/** edit_lead_modal **/
+.p-2{padding: 2px!important;}
+
+.lead-description-container {
+    float: left;
+    width: 100%;
+    padding-left: 15px;
+}
+
+.lead-tags-parent-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.lead-tags-container {
+    float: left;
+    padding-right: 15px;
+    padding-left: 7px;
+}
+
+.lead-description-container, .lead-tags-container{
+    float: left;
+}
+
+@media (min-width: 768px) {
+    .lead-tags-parent-container {
+        width: 27%
+    }
+
+    .lead-description-container {
+        width: 73%;
+    }
+}
+
+.select2-choices{
+    background-image: none!important;
+    border: none!important;
+    border-bottom: 1px solid #d9d9d9!important;
+    border-radius: 0px!important;
+}
+
+.select2-container{height: auto!important;}
+.other_comment{
+    height: 35px!important;
+}
+.other_comment:focus{
+    height: auto!important;
+}
+
+.edit-lead-form .active > .text-active  {
+    display: block!important;
+}
+
+.editLeadForm .select2-container { text-align: left; }
+.editLeadForm .select2-container .select2-choice{
+    padding-left: 15px;
+}

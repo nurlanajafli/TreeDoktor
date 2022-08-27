@@ -1,0 +1,42 @@
+<script id="profile-tab-file-edit-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="form-group">
+            <label class="col-sm-2 control-label">File input</label>
+            <div class="col-sm-7">
+                <input type="file" class="input-file" data-icon="false" name="file"
+                       style="position: fixed; width: 0px;" id="file">
+                <div class="bootstrap-filestyle" style="display: inline;">
+                    <input type="text"
+                           class="input-file-text form-control inline input-s"
+                           disabled="">
+                    <label for="file" class="btn btn-default action-file-upload"><span>Choose file</span></label>
+                </div>
+            </div>
+        </div>
+        {{#if file_id}}
+            <input type="hidden" name="file_id" value="{{file_id}}">
+        {{/if}}
+        {{#if user_id}}
+            <input type="hidden" name="user_id" value="{{user_id}}">
+        {{/if}}
+        {{#if eq_id}}
+            <input type="hidden" name="eq_id" value="{{eq_id}}">
+        {{/if}}
+        {{#if repair_id}}
+            <input type="hidden" name="repair_id" value="{{repair_id}}">
+        {{/if}}
+        {{#if service_report_id}}
+            <input type="hidden" name="service_report_id" value="{{service_report_id}}">
+        {{/if}}
+        {{#if part_id}}
+            <input type="hidden" name="part_id" value="{{part_id}}">
+        {{/if}}
+        {{#if note_id}}
+            <input type="hidden" name="note_id" value="{{note_id}}">
+        {{/if}}
+        <div class="col-md-12 feedback">
+            <span class="help-block"></span>
+        </div>
+        <div class="clear"></div>
+    {{/this}}
+</script>

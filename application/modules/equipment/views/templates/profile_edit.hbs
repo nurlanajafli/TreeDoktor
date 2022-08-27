@@ -1,0 +1,178 @@
+<script id="profile-edit-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            {{#if eq_id}}
+                <input type="hidden" name="eq_id" value="{{eq_id}}">
+            {{/if}}
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_name">Name *</label>
+                <div class="col-sm-7">
+                    <input required class="form-control" type="text" name="eq_name"
+                           value="{{eq_name}}">
+                    <span class="help-block" id="eq_name-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="group_id">Group *</label>
+                <div class="col-sm-7">
+                    <input id="group_id" name="group_id" class="m-b select-two" data-select-route="groups"
+                           data-placeholder="Choose a group"
+                           data-name="{{group.group_name}}" value="{{group_id}}">
+                    <span class="help-block" id="group_id-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_code">Group prefix *</label>
+                <div class="col-sm-2">
+                    <input required class="form-control" type="text" name="eq_prefix"
+                           value="{{eq_prefix}}">
+                    <span class="help-block" id="eq_prefix-error"></span>
+                </div>
+                <label class="col-sm-2 control-label" for="eq_code" style="white-space: nowrap;">Unit number *</label>
+                <div class="col-sm-3">
+                    <input required class="form-control" type="text" name="eq_code_num"
+                           value="{{eq_code_num}}">
+                    <span class="help-block" id="eq_code_num-error"></span>
+                    <span class="help-block" id="eq_code-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_serial">Serial/VIN *</label>
+                <div class="col-sm-7">
+                    <input required class="form-control" type="text" name="eq_serial"
+                           value="{{eq_serial}}">
+                    <span class="help-block" id="eq_serial-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_license_plate">License Plate</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="eq_license_plate"
+                           value="{{eq_license_plate}}">
+                    <span class="help-block" id="eq_license_plate-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_description">Description</label>
+                <div class="col-sm-7">
+                <textarea name="eq_description" class="form-control" rows="3"
+                          placeholder="Input your description here">{{eq_description}}</textarea>
+                    <span class="help-block" id="eq_description-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Photo</label>
+                <div class="col-sm-7">
+                    <input type="file" class="input-file" data-icon="false" name="file"
+                           style="position: fixed; width: 0px;" id="file">
+                    <div class="bootstrap-filestyle" style="display: inline;">
+                        <input type="text"
+                               class="input-file-text form-control inline input-s"
+                               disabled="">
+                        <label for="file" class="btn btn-default action-file-upload"><span>Choose file</span></label>
+                        <span class="help-block" id="file-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_schedule">Display On Crew Schedule</label>
+                <div class="col-sm-7">
+                    <label class="switch ">
+                        <input type="checkbox" name="eq_schedule" class="action-edit-schedule-checkbox" {{#if eq_schedule}}checked="checked"{{/if}}>
+                        <span></span>
+                    </label>
+                    <span class="help-block" id="eq_schedule-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_schedule_tool">As an Equipment</label>
+                <div class="col-sm-2">
+                    <label class="switch {{#unless eq_schedule}} disabled {{/unless}}">
+                        <input type="checkbox" name="eq_schedule_tool" class="input-tool-checkbox" {{#unless eq_schedule}}disabled="disabled"{{/unless}} {{#if eq_schedule_tool}}checked="checked"{{/if}}>
+                        <span></span>
+                    </label>
+                    <span class="help-block" id="eq_schedule_tool-error"></span>
+                </div>
+                <label class="col-sm-4 control-label" for="eq_schedule_tool" style="text-align: left;">As a Tool</label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_repair">Under repair</label>
+                <div class="col-sm-7">
+                    <label class="switch">
+                        <input type="checkbox" name="eq_repair" {{#if eq_repair}}checked="checked"{{/if}}>
+                        <span></span>
+                    </label>
+                    <span class="help-block" id="eq_repair-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_cost">Cost</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="number" min="0" step="0.01" name="eq_cost"
+                           value="{{eq_cost}}">
+                    <span class="help-block" id="eq_cost-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_purchased_date">Purchased Date</label>
+                <div class="col-sm-7">
+                    <input type="text" class="datepicker form-control text-center" data-empty="true"
+                           name="eq_purchased_date"
+                           value="{{eq_purchased_date}}" readonly=""
+                           style="display: inline-block;">
+                    <span class="help-block" id="eq_purchased_date-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_year">Year</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="number" step="1" min="1900" max="<?php echo date('Y'); ?>" name="eq_year"
+                           value="{{eq_year}}">
+                    <span class="help-block" id="eq_year-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_make">Make</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="eq_make"
+                           value="{{eq_make}}">
+                    <span class="help-block" id="eq_make-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_model">Model</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="eq_model"
+                           value="{{eq_model}}">
+                    <span class="help-block" id="eq_model-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_color">Color</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="eq_color"
+                           value="{{eq_color}}">
+                    <span class="help-block" id="eq_color-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="eq_counter_type">Service Interval Type</label>
+                <div class="col-sm-7">
+                    <select name="eq_counter_type" class="form-control m-b">
+                        {{#each (var "eqCounterTypes")}}
+                            <option value="{{@key}}" {{#eq (cast @key 'int') (cast ../eq_counter_type 'int')}}
+                                    selected="selected" {{/eq}}>
+                                {{this}}
+                            </option>
+                        {{/each}}
+                    </select>
+                    <span class="help-block" id="eq_counter_type-error"></span>
+                </div>
+            </div>
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

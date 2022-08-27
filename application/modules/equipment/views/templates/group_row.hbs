@@ -1,0 +1,25 @@
+<script id="group-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{group_id}}">
+            <td class="text-center">
+                <div style="display:inline-block;width:15px;height:15px;background:{{group_color}};" class="b-a"></div>
+            </td>
+            <td><a href="{{group_url}}">{{group_name}}</a></td>
+            <td>{{group_prefix}}</td>
+            <td>{{group_created_date}}</td>
+            <td>
+                <button data-id="{{group_id}}" title="Edit {{group_name}} Group"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                {{#if (var "isAdmin")}}
+                    <button data-id="{{group_id}}" title="{{group_name}} Group"
+                            class="action-delete btn btn-xs btn-danger">
+                        <i class="fa fa-trash-o icon-white">
+                        </i>
+                    </button>
+                {{/if}}
+            </td>
+        </tr>
+    {{/this}}
+</script>

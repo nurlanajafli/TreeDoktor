@@ -1,0 +1,24 @@
+<script id="service-type-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{service_type_id}}">
+            <td>{{service_type_form_str}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{service_type_name}}">{{service_type_name}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{service_type_description}}">{{service_type_description}}</td>
+            <td>
+                <button data-id="{{service_type_id}}" title="Edit {{service_type_name}} Service Type"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                {{#if (var "isAdmin")}}
+                    <button data-id="{{service_type_id}}" title="{{service_type_name}} Service Type"
+                            class="action-delete btn btn-xs btn-danger">
+                        <i class="fa fa-trash-o icon-white">
+                        </i>
+                    </button>
+                {{/if}}
+            </td>
+        </tr>
+    {{/this}}
+</script>

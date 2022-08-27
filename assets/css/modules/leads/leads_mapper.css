@@ -1,0 +1,28 @@
+.gps-button-container{
+    right: 109px;
+    top: 60px;
+}
+/*.show-offline-container{
+    right: 186px;
+    top: 60px;
+}*/
+
+.gps-icon{
+    font-size: 14px;
+    float: left;
+    margin-top: 2px;
+    margin-right: 5px;
+}
+.gps-button-container,
+.markers-filter-dropdown-btn
+{
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 1px 2px 0px rgb(169 169 169 / 84%);
+    -moz-box-shadow: 0px 1px 2px 0px rgb(169 169 169 / 84%);
+    box-shadow: 0px 1px 2px 0px rgb(169 169 169 / 84%);
+}
+
+.userBlock .showUsers {
+    margin-top: 10px;
+    clear: both;
+}

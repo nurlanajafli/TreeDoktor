@@ -1,0 +1,34 @@
+{
+	"db" : {
+		"host":"{{aws.rds.host}}",
+		"user":"{{aws.rds.user}}",
+		"password":"{{aws.rds.password}}",
+		"database":"{{aws.rds.schema}}",
+		"dateStrings":"true",
+		"charset":"utf8mb4"
+	},
+
+	"sslFiles" : {
+		"key":"/etc/node-ssl/server.key",
+		"cert":"/etc/node-ssl/server.crt",
+		"ca":""
+	},
+
+	"app" : {
+		"ssl":"true",
+		"number":"+{{consumer.office.phone.number}}",
+		"backendDomain":"https://{{service.domain}}/",
+		"accountSid":"{{crm.keys.accountsid}}",
+		"workspaceSid":"{{crm.keys.workspacesid}}",
+		"workflowSid":"{{crm.keys.workflowsid}}",
+		"taskQueueSid":"{{crm.keys.taskqueuesid}}",
+		"onlineActivitySid":"{{crm.keys.onlineactivitysid}}",
+		"offlineActivitySid":"{{crm.keys.offlineactivitysid}}",
+		"appSid":"{{crm.keys.appsid}}",
+		"authToken":"{{crm.keys.authtoken}}",
+		"messagingServiceSid":"{{crm.keys.messagingservicesid}}",
+		"wsport":"8895",
+		"wsExternalPort":"443",
+		"interval":"300000"
+	}
+}

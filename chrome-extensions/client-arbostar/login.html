@@ -1,0 +1,171 @@
+<!DOCTYPE>
+<html style="overflow: hidden;">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title></title>
+
+    <link rel="stylesheet" href="css/my.css" type="text/css"/>
+    <link rel="stylesheet" href="css/gfonts.css" type="text/css"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.css" type="text/css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"
+          type="text/css"/>
+    <link rel="stylesheet" href="css/font.css" type="text/css"/>
+    <link rel="stylesheet" href="css/fuelux.min.css"
+          type="text/css"/>
+    <link rel="stylesheet" href="css/app.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="css/dialer.css">
+    <link type="text/css" rel="stylesheet" href="css/360player.css"/>
+    <link type="text/css" rel="stylesheet" href="css/soundmanager.css"/>
+    <script type="text/javascript" src="js/popup/jquery.js"></script>
+    <script type="text/javascript" src="js/popup/bootstrap.js"></script>
+    <script type="text/javascript" src="js/popup/fuelux.min.js"></script>
+    <script type="text/javascript" src="js/popup/parsley.min.js"></script>
+    <script type="text/javascript" src="js/popup/app.plugin.js"></script>
+    <script type="text/javascript" src="js/popup/login.js?v1.0.1"></script>
+    
+</head>
+<body>
+<div class="arrow_box" style="display: none; top: 5000px;">
+    <a href="#" id="closePopup"
+       style="position: absolute;top: 0;right: 6px;font-weight: bold;display: inline-block;">x</a>
+    <h1 class="logo">Click Allow!</h1>
+</div>
+<section class="vbox flex">
+    <section class="m-t-lg wrapper-md animated fadeInUp bg-info dk">
+        <div class="container aside-xxl fuelux" style="padding-top: 15px;">
+            <img src="img/logo.png" class="pos-abt" style="height: 60px; margin: 0 auto; left: 0; right: 0;">
+            <a class="navbar-brand block" style="line-height: initial; margin-top: 70px; font-size: 14px; height: 30px;">
+                Softphone Authorization
+            </a>
+                <div class="wizard" id="myWizard">
+                    <div class="steps-container">
+                        <ul class="steps">
+                            <li data-step="1" class="active">
+                                <span class="badge badge-info">1</span>Company ID
+                                <span class="chevron"></span>
+                            </li>
+                            <li data-step="2">
+                                <span class="badge">2</span>Credentials
+                                <span class="chevron"></span>
+                            </li>
+                            <li data-step="3">
+                                <span class="badge">3</span>Welcome
+                                <span class="chevron"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="step-content bg-white fuelux" style="min-height: 189px;">
+						<div class="step-pane active" data-step="1">
+                            <div class="form-group">
+    							<label class="control-label">&nbsp;</label>
+    							<label class="control-label">&nbsp;</label>
+    							<label class="control-label">&nbsp;</label>
+    							<input type="text" class="form-control input-lg text-center" name="log_domain" value="" id="log_domain" data-trigger="change" data-required="true" data-type="url" placeholder="Enter Your Company ID">
+                            </div>
+						</div>
+						<div class="step-pane" data-step="2">
+                            <div class="form-group">
+    							<label class="control-label">Login</label>
+    							<input type="text" name="log_email" value="" id="log_email" class="form-control input-lg"
+    								   maxlength="100" data-required="true" data-type="alphanum" placeholder="Your Login">
+                            </div>
+						    <div class="form-group">
+    							<label class="control-label">Password</label>
+    							<input type="password" name="log_password" value="" id="log_password"
+    								   class="form-control input-lg" data-required="true" data-type="alphanum" placeholder="Your Password" maxlength="50">
+                            </div>
+						</div>
+						<div class="step-pane bg-success alert text-center" data-step="3" style="margin-bottom: 0;">
+							<h1 class="animated fadeInLeft">
+                                Welcome
+                            </h1>
+                            <h2 class="animated fadeInRight" style="margin-bottom: 24px;">
+                                <strong id="agentName">Ruslan Gleba</strong>
+                            </h2>
+						</div>
+                    </div>
+                    <div class="actions" style="position: relative; text-align: right; border-left: none;background: none; padding: 5px 10px;">
+                        
+                        <button type="button" class="btn btn-default btn-sm btn-next" data-target="#form-wizard"
+                                data-wizard="next" data-last="Logout">Next
+                        </button>
+                    </div>
+                </div>
+            
+            
+             <!--<div class="panel panel-default">
+                <div class="wizard clearfix" id="form-wizard">
+                  <ul class="steps">
+                    <li data-target="#step1" class="active"><span class="badge badge-info">1</span>Step 1</li>
+                    <li data-target="#step2"><span class="badge">2</span>Step 2</li>
+                    <li data-target="#step3"><span class="badge">3</span>Step 3</li>
+                  </ul>
+                </div>
+                <div class="step-content">
+                  <form>
+                    <div class="step-pane active" id="step1">
+                      <p>Your website:</p>
+                      <input type="text" class="form-control" data-trigger="change" data-required="true" data-type="url" placeholder="website">
+                      <p class="m-t">Your email:</p>
+                      <input type="text" class="form-control" data-trigger="change" data-required="true" data-type="email" placeholder="email address">
+                    </div>
+                    <div class="step-pane" id="step2">
+                      <p>Your email:</p>
+                      <input type="text" class="form-control" data-trigger="change" data-required="true" data-type="email" placeholder="email address">
+                    </div>
+                    <div class="step-pane" id="step3">This is step 3</div>                
+                  </form>
+                  <div class="actions m-t">
+                    <button type="button" class="btn btn-default btn-sm btn-prev" data-target="#form-wizard" data-wizard="previous" disabled="disabled">Prev</button>
+                    <button type="button" class="btn btn-default btn-sm btn-next" data-target="#form-wizard" data-wizard="next" data-last="Finish">Next</button>
+                  </div>
+                </div>
+              </div>-->
+
+            <section class="panel panel-default bg-white m-t-lg login" style="display:none">
+                <header class="panel-heading text-center">
+                    <strong>Sign in</strong>
+                </header>
+                <form id="loginForm" class="panel-body wrapper-lg">
+                    <div class="form-group">
+                        <label class="control-label">Domain</label>
+                        <input type="text" name="log_domain" value="" id="log_domain" class="form-control input-lg"
+                               maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Username</label>
+                        <input type="text" name="log_email" value="" id="log_email" class="form-control input-lg"
+                               maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Password</label>
+                        <input type="password" name="log_password" value="" id="log_password"
+                               class="form-control input-lg" maxlength="50">
+                    </div>
+
+                    <input type="submit" name="submit" value="Login" id="login" class="btn btn-success">
+                    <label class="label bg-danger m-t-sm pull-right" id="errMsg"></label>
+                </form>
+            </section>
+            <section class="panel panel-default bg-white m-t-lg logout" style="display:none">
+                <header class="panel-heading text-center">
+                    <strong></strong>
+                </header>
+                <div class="panel-body wrapper-lg">
+                    <input type="submit" name="submit" value="Logout" style="width: 100%;" id="logout"
+                           class="btn btn-warning">
+                </div>
+            </section>
+        </div>
+    </section>
+    <footer class="footer animated fadeInUp bg-info dker text-center">
+        <p>
+            <small>©&nbsp;ArboStar&nbsp;<span id="currYear"></span></small>
+        </p>
+    </footer>
+</section>
+</body>
+</html>

@@ -1,0 +1,36 @@
+@charset "utf-8";
+/*
+ * CSS Document
+ * Written by Ryan Yonzon
+ * http://ryan.rawswift.com/
+ */
+ 
+html, body {
+	margin:0px; /* FF hack: or we'll have double scrollbar showing on the browser */
+	
+
+}
+
+#main_container {
+	width:100%;
+	background-color:#ffffff; /* DO NOT REMOVE THIS; or you'll have issue w/ the scrollbar, when the mouse pointer is on a white space */
+	overflow-x: hidden;
+	overflow-y: scroll;
+	height:100%;	/* this will make sure that the height will extend at the bottom */
+	position:absolute; /* container div must be absolute, for our fixed bar to work */
+}
+.icon_email:before {
+	content: "\f003";
+}
+.icon_sms:before {
+	content: "\f10b";
+	font-size: 18px;
+	padding-left: 6px;
+}
+/*.dhx_menu_head:before {
+	content: "\f047";
+}*/
+.dhx_menu_icon.icon_email {
+	padding-left: 3px;
+	width: 19px;
+}

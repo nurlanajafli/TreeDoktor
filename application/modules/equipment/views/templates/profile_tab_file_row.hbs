@@ -1,0 +1,33 @@
+<script id="profile-tab-file-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{file_id}}">
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{file_name}}">{{file_name}}</td>
+            <td>
+                {{#if repair}}
+                    Repair: {{repair.repair_id}}
+                {{else if service_report}}
+                    Service: {{service_report.service.service_name}}
+                {{else if part}}
+                    Part: {{part.part_name}}
+                {{else if note}}
+                    Note: #{{note.note_id}}
+{{else}}
+                    Equipment
+                {{/if}}
+            </td>
+            <td>{{file_created_at}}</td>
+            <td><a href="{{user.url}}">{{user.firstname}} {{user.lastname}}</a></td>
+            <td>
+                <a target="_blank" class="btn btn-default btn-xs" href="{{file_url}}">
+                    <i class="fa fa-download"></i>
+                </a>
+                <button data-id="{{file_id}}" data-name=""
+                        class="action-delete btn btn-xs btn-danger">
+                    <i class="fa fa-trash-o icon-white">
+                    </i>
+                </button>
+            </td>
+        </tr>
+    {{/this}}
+</script>

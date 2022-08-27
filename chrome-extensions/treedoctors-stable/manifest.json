@@ -1,0 +1,28 @@
+{
+	"background": {
+		"page": "background.html"
+	},
+	"browser_action": {
+		"default_icon": "img/icon19.png",
+		"default_popup": "popup.html",
+		"default_title": "Browser Phone"
+	},
+   "content_scripts": [{
+		"matches":    ["https://td.onlineoffice.io/*"],
+		"js":         ["content_scripts/jquery.js", "content_scripts/content.js"]
+	}],
+	"content_security_policy": "script-src 'self' 'unsafe-eval' https://td.onlineoffice.io; object-src 'self' https://td.onlineoffice.io",
+	"description": "Twilio Client on Chrome browser",
+	"icons": {
+		"128": "img/icon128.png",
+		"16": "img/icon16.png",
+		"48": "img/icon48.png"
+	},
+	"manifest_version": 2,
+	"name": "Twilio Browser Phone",
+	"options_page": "login.html",
+	"offline_enabled": true,
+	"permissions": [ "notifications" ],
+	"short_name": "Softphone",
+	"version": "1.2.003"
+}

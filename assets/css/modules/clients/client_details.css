@@ -1,0 +1,62 @@
+.client-buttons > a,
+.client-buttons > div > a {
+    margin-top: 10px !important;
+}
+
+.client-files-preloader {
+    text-align: center;
+    height: 120px;
+    line-height: 9;
+    opacity: 0.4;
+}
+th.cft-type {
+    width: 160px;
+}
+th.cft-user {
+    width: 200px;
+}
+th.cft-id {
+    width: 100px;
+}
+th.cft-date {
+    width: 185px;
+}
+th.cft-status {
+    width: 180px;
+}
+
+@media (max-width: 991px) {
+    th.cft-type {
+        width: 100px;
+    }
+    th.cft-user {
+        width: 150px;
+    }
+    th.cft-id {
+        width: 95px;
+    }
+    th.cft-date {
+        width: 160px;
+    }
+    th.cft-status {
+        width: 100px;
+    }
+}
+
+.lead_comment_note {
+    cursor: pointer;
+}
+.badge > .status-count-no-filter + .status-count-with-filter {
+    display: none;
+}
+.badge > .status-count-no-filter.hidden + .status-count-with-filter {
+    display: block;
+}
+.another-lead-address {
+    position: absolute;
+    right: 0;
+    top: -4px;
+}
+.another-lead-address > input {
+    margin-top: 2px;
+}

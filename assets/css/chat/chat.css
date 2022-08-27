@@ -1,0 +1,176 @@
+.chatbox {
+	position: fixed;
+	position:expression("absolute");
+	width: 225px;
+	display:none;
+    z-index: 10000;
+}
+
+.chatboxhead {
+	background-color: #00a0de;
+	padding:7px;
+	color: #ffffff;
+
+	border-right:1px solid #00a0de;
+	border-left:1px solid #00a0de;
+}
+
+.chatboxblink {
+	background-color: #176689;
+	border-right:1px solid #176689;
+	border-left:1px solid #176689;
+}
+
+.chatboxcontent {
+	font-family: arial,sans-serif;
+	font-size: 13px;
+	color: #333333;
+	height:200px;
+	/*width:209px;*/
+	overflow-y:auto;
+	overflow-x:auto;
+	padding:7px;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	border-bottom:1px solid #eeeeee;
+	background-color: #ffffff;
+	line-height: 1.3em;
+}
+
+.chatboxinput {
+	padding: 5px;
+	background-color: #ffffff;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	border-bottom:1px solid #cccccc;
+}
+
+.chatboxtextarea {
+	width: 206px;
+	height:44px;
+	padding:3px 0pt 3px 3px;
+	border: 1px solid #eeeeee;
+	margin: 1px;
+	overflow:hidden;
+}
+
+.chatboxtextareaselected {
+	border: 2px solid #f99d39;
+	outline: 0;
+}
+
+.chatboxmessage {
+	margin-left:1em;
+}
+
+.chatboxinfo {
+	margin-left:-1em;
+	color:#666666;
+
+}
+
+.chatboxmessagefrom {
+	margin-left:-1em;
+	font-weight: bold;
+}
+
+.chatboxmessagecontent {
+}
+
+.chatboxoptions {
+	float: right;
+}
+
+.chatboxoptions a {
+	text-decoration: none;
+	color: white;
+	font-weight:bold;
+	font-family:Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+	width: 20px;
+	display: inline-block;
+	border: 1px solid;
+	text-align: center;
+}
+
+.chatboxtitle {
+	float: left;
+}
+.text-info {
+    color: #4cc0c1!important;
+}
+.text-danger {
+    color: #fb6b5b!important;
+}
+.text-warning {
+	color: #ffc333!important;
+}
+.text-success {
+	color: #8ec165!important;
+}
+.radio-custom > i.text-danger.checked:before, .checkbox-custom > i.text-danger.checked:before {
+    color: #fb6b5b;
+}
+/************ CHAT IMAGE MODAL   ************/
+
+.chat-gallery-tpl.container {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: #000000bf;
+	padding-top: 50px;
+	overflow: auto;
+	z-index: 10000;
+	min-height: 100px;
+	width: 100%;
+	height: 100%;
+}
+.chat-gallery-tpl .attachmentSlides {
+	display: none;
+	text-align: center;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+}
+.chat-gallery-tpl .attachmentSlides img{
+	max-width: 80%;
+}
+/* Next & previous buttons */
+.chat-gallery-tpl .prev,
+.chat-gallery-tpl .next {
+	cursor: pointer;
+	position: absolute;
+	top: calc(50% + 50px);
+	width: auto;
+	padding: 16px;
+	margin-top: -50px;
+	color: white;
+	font-weight: bold;
+	font-size: 20px;
+	border-radius: 0 3px 3px 0;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
+.chat-gallery-tpl .next {
+	right: 0;
+	border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.chat-gallery-tpl .prev:hover,
+.chat-gallery-tpl .next:hover {
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+/*!* The Close Button *!*/
+.chat-gallery-tpl .close {
+	position: absolute;
+	top: 15px;
+	right: 35px;
+	color: #f1f1f1;
+	font-size: 40px;
+	font-weight: bold;
+	transition: 0.3s;
+}

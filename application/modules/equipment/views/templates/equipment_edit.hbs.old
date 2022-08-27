@@ -1,0 +1,35 @@
+<script id="edit-template" type="text/x-handlebars-template">
+    {{#this}}
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="estimate_id">Group Name</label>
+            <div class="col-sm-7">
+                <input class="form-control" type="text" name="group_name" value="{{group_name}}">
+                <span class="help-block" id="group_name-error"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="estimate_id">Group Prefix</label>
+            <div class="col-sm-7">
+                <input class="form-control" type="text" name="group_prefix" value="{{group_prefix}}">
+                <span class="help-block" id="group_prefix-error"></span>
+            </div>
+        </div>
+        <div class="form-group m-t-sm">
+            <label class="col-sm-4 control-label" for="estimate_id">Group Color</label>
+            <div class="col-sm-7">
+                <input class="form-control mycolorpicker" type="text" name="group_color" readonly
+                       value="{{#if group_color}}{{group_color}}{{else}}#ffffff{{/if}}">
+                <span class="help-block" id="group_color-error"></span>
+            </div>
+        </div>
+        {{#if group_id}}
+        <input type="hidden" name="group_id" value="{{group_id}}">
+        {{/if}}
+        <div class="col-md-12 feedback">
+            <span class="help-block"></span>
+        </div>
+        <div class="clear"></div>
+    </div>
+    {{/this}}
+</script>

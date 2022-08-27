@@ -1,0 +1,803 @@
+<?php
+
+
+use Carbon\Carbon;
+use application\modules\clients\models\ClientLetter;
+use application\modules\estimates\models\Estimate;
+class Processing
+{
+    /**
+     * @var CI_Controller $CI
+     */
+    public $CI;
+    public $log = [];
+    public $rData = [];
+    public $uploadFileError = '';
+    public function __construct()
+    {
+        $this->CI =& get_instance();
+        $this->CI->load->helper(['payment_log', 'email']);
+        $this->CI->load->model('mdl_payment_transactions', 'mdl_payment_transactions');
+        $this->CI->load->model('mdl_estimates', 'mdl_estimates');
+        $this->CI->load->model('mdl_services_orm', 'mdl_services_orm');
+        $this->CI->load->model('mdl_clients', 'mdl_clients');
+        $this->CI->load->model('mdl_invoices', 'mdl_invoices');
+        $this->CI->load->model('mdl_client_payments', 'mdl_client_payments');
+        $this->CI->load->model('mdl_invoice_status', 'mdl_invoice_status');
+        $this->CI->load->model('mdl_est_status', 'mdl_est_status');
+
+        $this->CI->load->library('Common/InvoiceActions');
+        $this->CI->load->library('Common/EstimateActions');
+    }
+
+    /**
+     * @param $method
+     * @param $data
+     * @param $paymentData
+     * @return array
+     * @throws Exception
+     */
+    public function pay($method, $data, $paymentData = [])
+    {
+        try {
+            if (is_array($data['contact'])) {
+                $data['contact'] = (object)$data['contact'];
+            }
+
+            $this->rData = [
+                'client_id' => $data['client']->client_id,
+                'estimate_id' => $data['estimate']->estimate_id,
+                'estimate_no' => $data['estimate']->estimate_no,
+                'invoice_no' => !empty($data['invoice']) ? $data['invoice']->invoice_no : null,
+                'workorder_no' => !empty($data['workorder']) ? $data['workorder']->workorder_no : null,
+                'lead_id' => $data['estimate']->lead_id,
+                'amount' => $data['amount'],
+                'brand_id' => get_brand_id(element('estimate', $data, []), element('client', $data, []))
+            ];
+
+            if (isset($data['contact']->cc_email) && (bool)filter_var($data['contact']->cc_email, FILTER_VALIDATE_EMAIL)) {
+                $this->rData['client_email'] = $data['contact']->cc_email;
+            }
+
+            $this->rData['client_name'] = isset($data['contact']->cc_name) && $data['contact']->cc_name !== ""
+                ? $data['contact']->cc_name
+                : $data['client']->client_name;
+
+            $transId = null;
+            $amount = $data['amount'];
+            $paymentDate = Carbon::now();
+            switch ($method) {
+                case config_item('default_cc'):
+                    $ccRes = $this->cc($data, $paymentData);
+                    $paymentFile = $ccRes['pdf'] ?: null;
+                    $transId = $ccRes['transaction']->payment_transaction_id;
+                    $paymentDate = Carbon::createFromFormat('Y-m-d H:i:s',
+                        $ccRes['transaction']->payment_transaction_date);
+                    $amount = $ccRes['transaction']->payment_transaction_amount;
+                    break;
+                default:
+                    $paymentFile = $data['file'] ?: null;
+            }
+
+            $clientPayment['estimate_id'] = $data['estimate']->estimate_id;
+            $clientPayment['payment_method_int'] = $method;
+            $clientPayment['payment_trans_id'] = $transId;
+            $clientPayment['payment_type'] = isset($data['type']) ? $data['type'] : 'deposit';
+            $clientPayment['payment_date'] = $paymentDate->timestamp;
+
+            $excludedAmount = 0;
+            if(isset($data['fee'])) {
+                $excludedAmount = config_item('cc_extra_fee_service_id') ? 0 : $data['fee'];
+            }
+
+            $clientPayment['payment_amount'] = isset($data['fee']) ? $amount - $excludedAmount : $amount;
+            $clientPayment['payment_fee'] = isset($data['fee']) ? $data['fee'] : 0;
+            $clientPayment['payment_fee_percent'] = isset($data['fee_percent']) ? $data['fee_percent'] : 0;
+            $clientPayment['payment_tips'] = isset($data['tips']) ? $data['tips'] : 0;
+            $clientPayment['payment_file'] = $paymentFile;
+            $clientPayment['payment_author'] = isset($data['user_id']) ? $data['user_id'] : 0;
+            $paymentID = $this->CI->mdl_clients->insert_payment($clientPayment);
+
+            if($clientPayment['payment_fee'] > 0)
+                $this->setFee($clientPayment['estimate_id']);
+
+            $total = $this->CI->mdl_estimates->update_estimate_balance($data['estimate']->estimate_id);//update estimate balance
+            if(isset($data['workorder'], $data['workorder']->workorder_no) && $data['workorder']->workorder_no) {
+                $total = $this->CI->mdl_estimates_orm->getCompletedOnly($data['estimate']->estimate_id);
+            }
+
+            if ($method == config_item('default_cc')) {
+                $this->sendTransactionEmail($this->rData, $ccRes['transaction']);
+            }
+
+            if ($data['invoice']) {
+
+                $updateInvoceData['overpaid'] = $total < 0 ? 1 : null;
+
+                if ($method == config_item('default_cc') && isset($data['extra']['is_client'])) {
+                    $updateInvoceData['paid_by_cc'] = $data['invoice']->paid_by_cc + 1;
+                }
+
+                $this->CI->mdl_invoices->update_invoice(
+                    $updateInvoceData,
+                    ["id" => $data['invoice']->id]
+                );
+
+                if ($total <= 0) {
+                    $newStatus = $this->CI->mdl_invoice_status->get_by(['completed' => 1]);
+                    Modules::run('invoices/invoices/change_invoice_status', [
+                        'invoice_id' => $data['invoice']->id,
+                        'pre_invoice_status' => $data['invoice']->in_status,
+                        'new_invoice_status' => $newStatus->invoice_status_id,
+                        'payment_mode' => $this->methodToText($method),
+                        'overpaid' => $total < 0 ? 1 : null
+                    ]);
+                    $this->rData['client_address'] = $data['client']->client_address;
+                    $this->rData['invoice_id'] = !empty($data['invoice']) ? $data['invoice']->id : null;
+                    $letter = ClientLetter::where('system_label', 'invoice_paid_thanks')->first();
+                    $thanks = [
+                        'client_id' => $this->rData['client_id'],
+                        'estimate_id' => $this->rData['estimate_id'],
+                        'workorder_id' => $data['invoice']->workorder_id,
+                        'invoice_id' => $this->rData['invoice_id'],
+                        'email_template_id' => !empty($letter) ? $letter->email_template_id : ''
+                    ];
+//                    $this->sendEmailThanks();
+                }
+            } else {
+                if ($method == config_item('default_cc') && isset($data['extra']['is_client'])) {
+                    $this->CI->mdl_estimates->update_estimates(
+                        ['paid_by_cc' => $data['estimate']->paid_by_cc + 1],
+                        ["estimate_id" => $data['estimate']->estimate_id]
+                    );
+                }
+
+                $confirmed = $this->CI->mdl_est_status->get_by(['est_status_confirmed' => 1]);
+                if ($data['estimate']->status_id != $confirmed->est_status_id) {
+                    $this->CI->estimateactions->setEstimateId($data['estimate']->estimate_id);
+                    if(isset($data['extra']) && isset($data['extra']['is_client']) && !empty($data['extra']['is_client']))
+                        $this->CI->estimateactions->setIsConfirmedWeb(true);
+                    $this->CI->estimateactions->confirm('deposit', NULL, $data['wo_office_notes'] ?? '');
+
+                    $this->CI->mdl_estimates->update_estimates(
+                        ['estimate_crew_notes' => $data['estimate_crew_notes'] ?? $data['estimate']->estimate_crew_notes ?? ''],
+                        ["estimate_id" => $data['estimate']->estimate_id]
+                    );
+
+                    if($this->CI->estimateactions->getIsConfirmedWeb()) {
+                        $file = $this->CI->estimateactions->tmpPDF();
+                        $this->sendEstimateEmail($data, $this->rData, $file);
+                        unlink($file);
+                    }
+                }
+                make_notes($data['client']->client_id,
+                    "Make payment by ".'"'.$this->methodToText($method).'"'." for " . $data['estimate']->estimate_no
+                    . ".<br>Payment Amount: " . money($amount), 'system', $data['estimate']->lead_id);
+            }
+            pushJob('quickbooks/payment/syncpaymentinqb', serialize(['id' => $paymentID, 'qbId' => '']));
+        } finally {
+            $this->log = [];
+            $this->rData = [];
+        }
+        return [
+            'payment_amount' => $amount,
+            'payment_file' => base_url($this->getFilePath($data['client']->client_id,
+                    $data['estimate']->estimate_no) . $paymentFile),
+            'total' => $total,
+            'thanks' => isset($thanks) ? $thanks : []
+        ];
+    }
+
+    /**
+     * @param $data
+     * @param $paymentData
+     * @return array
+     * @throws Exception
+     */
+    private function cc($data, $paymentData)
+    {
+        $this->CI->load->driver('payment');
+
+        $logData = [
+            'client_id' => $data['client']->client_id,
+            'contact' => $data['contact']->cc_id ?? null,
+            'estimate_id' => $data['estimate']->estimate_id,
+            'invoice_id' => !empty($data['invoice']) ? $data['invoice']->id : null,
+            'type' => $data['type'],
+            'payment_driver' => $data['payment_driver'],
+            'amount' => $data['amount']
+        ];
+        toLog($this->log, $logData);
+
+        $orderNo = (!empty($data['invoice']) ? $data['invoice']->invoice_no : $data['estimate']->estimate_no) . "_" . random_int(100,9999);
+        if ($data['payment_driver'] && $this->CI->payment->validateAdapter($data['payment_driver'])) {
+            $this->CI->payment->setAdapter($data['payment_driver']);
+        }
+        toLog($this->log, $paymentData + ['driver' => $this->CI->payment->getAdapter(), 'order' => $orderNo]);
+
+        $trnData = [
+            'payment_transaction_status' => Payment::TRANSACTION_STATUS_NOT_PROCESSED,
+            'client_id' => $data['client']->client_id,
+            'estimate_id' => $data['estimate']->estimate_id,
+            'invoice_id' => !empty($data['invoice']) ? $data['invoice']->id : null,
+            'payment_driver' => $this->CI->payment->getAdapter(),
+            'payment_transaction_amount' => $data['amount'],
+            'payment_transaction_order_no' => $orderNo,
+            'payment_transaction_log' => json_encode($this->log, JSON_PRETTY_PRINT)
+        ];
+        if (!$trnId = $this->CI->mdl_payment_transactions->insert($trnData)) {
+            throw new Exception("Failed save payment data to Database");
+        }
+
+        try {
+            $trnResult = $this->CI->payment->pay($paymentData, $data['amount'], $orderNo);
+        } catch (PaymentException $e) {
+            toLog($this->log, $e->__toArray());
+            $trnResp = $e->getResponse();
+            if (preg_match('/decline/iu', $e->getMessage())) {
+                $status = Payment::TRANSACTION_STATUS_DECLINED;
+            } else {
+                $status = $e->getCode();
+            }
+            $updData = [
+                'payment_transaction_status' => $status,
+                'payment_transaction_message' => $e->getMessage(),
+                'payment_transaction_date' => Carbon::now()->toDateTimeString(),
+                'payment_transaction_log' => json_encode($this->log, JSON_PRETTY_PRINT),
+                'payment_transaction_remote_id' => isset($trnResp['id']) ? $trnResp['id'] : null,
+                'payment_transaction_amount' => isset($trnResp['amount']) ? $trnResp['amount'] : $data['amount'],
+                'payment_transaction_card' => isset($trnResp['card']) ? $this->CI->payment->cardType($trnResp['card']['card_type']) : null,
+                'payment_transaction_card_num' => isset($trnResp['card']) && isset($trnResp['card']['last_four']) ? $trnResp['card']['last_four'] : null,
+            ];
+
+            if (!$this->CI->mdl_payment_transactions->update($trnId, $updData)) {
+                throw new Exception("Failed save payment data to Database");
+            }
+            $transaction = $this->CI->mdl_payment_transactions->fetch($trnId);
+            $this->sendTransactionEmail($this->rData, $transaction);
+            throw new Exception("Payment processing failed: " . $e->__toString());
+        }
+        toLog($this->log, $trnResult['response']);
+        $trnResult['transaction']['payment_transaction_log'] = json_encode($this->log, JSON_PRETTY_PRINT);
+        if (!$this->CI->mdl_payment_transactions->update($trnId, $trnResult['transaction'])) {
+            throw new Exception("Failed save payment data to Database");
+        }
+        $transaction = $this->CI->mdl_payment_transactions->fetch($trnId);
+        if ($transaction->payment_transaction_approved == 1) {
+            $pdfRes = $this->genTransactionPdf($this->rData, $transaction);
+        }
+
+        if (in_array($transaction->payment_transaction_status, [
+            Payment::TRANSACTION_STATUS_ERROR,
+            Payment::TRANSACTION_STATUS_DECLINED,
+            Payment::TRANSACTION_STATUS_CANCELED,
+            Payment::TRANSACTION_STATUS_NOT_PROCESSED,
+            Payment::TRANSACTION_STATUS_REVIEW
+        ])) {
+            $this->sendTransactionEmail($this->rData, $transaction);
+            throw new Exception("Payment processing failed: " . $transaction->payment_transaction_message);
+        }
+        return ['transaction' => $transaction, 'pdf' => isset($pdfRes) ? $pdfRes : false];
+    }
+
+    public function delete($data)
+    {
+        $this->CI->load->model('mdl_client_payments');
+        $this->CI->load->model('mdl_estimates');
+
+        if ($data['payment_data']->payment_file) {
+            $filePath = $this->getFilePath($data['estimate_data']->client_id,
+                    $data['estimate_data']->estimate_no) . $data['payment_data']->payment_file;
+            bucket_unlink($filePath);
+        }
+        $this->CI->mdl_client_payments->delete($data['payment_data']->payment_id);
+        make_notes($data['estimate_data']->client_id,
+            "Delete payment by " . $this->methodToText($data['payment_data']->payment_method_int) . " for " . $data['estimate_data']->estimate_no
+            . ".<br>Payment Amount: " . money($data['payment_data']->payment_amount), 'system',
+            $data['estimate_data']->lead_id);
+        $this->CI->mdl_estimates->update_estimate_balance($data['payment_data']->estimate_id);
+        pushJob('quickbooks/payment/syncpaymentinqb',
+            serialize(['id' => $data['payment_data']->payment_id, 'qbId' => $data['payment_data']->payment_qb_id]));
+        return true;
+    }
+
+    public function edit($data, $payload)
+    {
+        $this->CI->load->model('mdl_client_payments');
+        $this->CI->load->model('mdl_estimates');
+        $this->CI->load->model('mdl_invoices');
+
+        $newData = [];
+        $note = [];
+        if (isset($payload['estimate_id']) && $payload['estimate_id'] != $data['payment_data']->estimate_id) {
+            if($newEstimate = $this->CI->mdl_estimates->find_by_id($payload['estimate_id'])) {
+                $newData['estimate_id'] = $newEstimate->estimate_id;
+                $note[] = 'Estimate changed from <strong>' . $data['estimate_data']->estimate_no . '</strong> to <strong>' . $newEstimate->estimate_no . '</strong>';
+            }
+        }
+        if ($data['payment_data']->payment_method_int != config_item('default_cc')) {
+            if (isset($payload['payment_type']) && $payload['payment_type'] != $data['payment_data']->payment_type) {
+                $newData['payment_type'] = $payload['payment_type'];
+                $note[] = 'Payment type changed from <strong>' . $data['payment_data']->payment_type . '</strong> to <strong>' . $payload['payment_type'] . '</strong>';
+            }
+
+            if (isset($payload['payment_method']) && $payload['payment_method'] != $data['payment_data']->payment_method_int) {
+                $newData['payment_method_int'] = $payload['payment_method'];
+                $note[] = 'Payment method changed from <strong>' . $this->methodToText($data['payment_data']->payment_method_int) . '</strong> to <strong>' . $this->methodToText($payload['payment_method']) . '</strong>';
+            }
+
+            if (isset($data['amount']) && $data['amount'] != $data['payment_data']->payment_amount) {
+                $newData['payment_amount'] = $data['amount'];
+                $note[] = 'Amount changed from <strong>' . money($data['payment_data']->payment_amount) . '</strong> to <strong>' . money($data['amount']) . '</strong>';
+            }
+
+            if (isset($payload['payment_date'])) {
+                $paymentDate = Carbon::createFromFormat(getDateFormat(), $payload['payment_date']);
+                $oldDate = Carbon::createFromTimestamp($data['payment_data']->payment_date);
+                if ($paymentDate->startOfDay()->notEqualTo($oldDate->startOfDay())) {
+                    $newData['payment_date'] = $paymentDate->timestamp;
+                    $note[] = 'Payment date changed from <strong>' . $oldDate->format('Y-m-d') . '</strong> to <strong>' . $paymentDate->format('Y-m-d') . '</strong>';
+                }
+            }
+            if ($data['file']) {
+                if ($data['payment_data']->payment_file) {
+                    $filePath = $this->getFilePath($data['estimate_data']->client_id,
+                            $data['estimate_data']->estimate_no) . $data['payment_data']->payment_file;
+                    bucket_unlink($filePath);
+                }
+                $newData['payment_file'] = $data['file'];
+                $note[] = 'Payment file changed. Old file is deleted';
+            }
+        }
+        if(empty($newData))
+            return true;
+        $this->CI->mdl_client_payments->update($data['payment_data']->payment_id, $newData);
+        make_notes($data['estimate_data']->client_id,
+            "Edit payment <strong>" . $data['payment_data']->payment_id . "</strong> by " . $this->methodToText($data['payment_data']->payment_method_int) . " for " . $data['estimate_data']->estimate_no
+            . ".<br>" . implode('<br />', $note), 'system', $data['estimate_data']->lead_id);
+        $this->CI->mdl_estimates->update_estimate_balance($data['payment_data']->estimate_id);
+        $this->CI->mdl_invoices->update_all_invoice_interes($data['payment_data']->estimate_id);
+        if(isset($newData['estimate_id'])){
+            $this->CI->mdl_estimates->update_estimate_balance($newData['estimate_id']);
+            $this->CI->mdl_invoices->update_all_invoice_interes($newData['estimate_id']);
+        }
+        pushJob('quickbooks/payment/syncpaymentinqb',
+            serialize(['id' => $data['payment_data']->payment_id, 'qbId' => '']));
+        return true;
+    }
+
+    public function refund($data, $payload)
+    {
+        $this->CI->load->model('mdl_client_payments');
+        $this->CI->load->model('mdl_payment_transactions');
+        $this->CI->load->model('mdl_estimates');
+
+        if (!$data['payment_data']->payment_trans_id) {
+            throw new Exception("Not found transaction ID");
+        }
+        if (!$transaction = $this->CI->mdl_payment_transactions->fetch($data['payment_data']->payment_trans_id)) {
+            throw new Exception("Not found Transaction");
+        }
+        $this->CI->load->driver('payment');
+        if (!$transaction->payment_driver || !$this->CI->payment->validateAdapter($transaction->payment_driver)) {
+            throw new Exception("Not valid payment driver in this transaction");
+        }
+
+        $this->CI->payment->setAdapter($transaction->payment_driver);
+
+        $logData = [
+            'payment_id' => $data['payment_data']->payment_id,
+            'payment_driver' => $transaction->payment_driver,
+            'amount' => $data['amount'],
+            'fee' => $data['fee'],
+        ];
+        toLog($this->log, $logData);
+
+        $amount = $data['amount'];
+        if ($data['fee']) {
+            $amount += $data['fee'];
+        }
+
+        $trnData = [
+            'payment_transaction_status' => Payment::TRANSACTION_STATUS_NOT_PROCESSED,
+            'client_id' => $data['estimate_data']->client_id,
+            'estimate_id' => $data['estimate_data']->estimate_id,
+            'invoice_id' => !empty($data['invoice_data']) ? $data['invoice_data']->id : null,
+            'payment_driver' => $this->CI->payment->getAdapter(),
+            'payment_transaction_amount' => -1 * $amount,
+            'payment_transaction_log' => json_encode($this->log, JSON_PRETTY_PRINT),
+            'payment_transaction_ref_id' => $transaction->payment_transaction_id,
+            'payment_transaction_type' => 'refund',
+        ];
+        if (!$trnId = $this->CI->mdl_payment_transactions->insert($trnData)) {
+            throw new Exception("Failed save payment data to Database");
+        }
+
+        try {
+            $trnResult = $this->CI->payment->refund($transaction->payment_transaction_remote_id, abs($amount));
+        } catch (PaymentException $e) {
+            toLog($this->log, $e->__toArray());
+            $trnResp = $e->getResponse();
+            if (preg_match('/decline/iu', $e->getMessage())) {
+                $status = Payment::TRANSACTION_STATUS_DECLINED;
+            } else {
+                $status = $e->getCode();
+            }
+            $updData = [
+                'payment_transaction_status' => $status,
+                'payment_transaction_message' => $e->getMessage(),
+                'payment_transaction_date' => Carbon::now()->toDateTimeString(),
+                'payment_transaction_log' => json_encode($this->log, JSON_PRETTY_PRINT),
+                'payment_transaction_remote_id' => isset($trnResp['id']) ? $trnResp['id'] : null,
+                'payment_transaction_amount' => isset($trnResp['amount']) ? -1 * abs($trnResp['amount']) : -1 * abs($amount),
+            ];
+
+            if (!$this->CI->mdl_payment_transactions->update($trnId, $updData)) {
+                throw new Exception("Failed save payment data to Database");
+            }
+            throw new Exception("Payment processing failed: ".$e->__toString());
+        }
+        toLog($this->log, $trnResult);
+        $trnResult['transaction']['payment_transaction_log'] = json_encode($this->log, JSON_PRETTY_PRINT);
+        if (!$this->CI->mdl_payment_transactions->update($trnId, $trnResult['transaction'])) {
+            throw new Exception("Failed save payment data to Database");
+        }
+        $client_update = [
+            'payment_amount' => (float)$data['payment_data']->payment_amount - abs($data['amount'])
+        ];
+        if ($data['fee']) {
+            $client_update['payment_fee'] = (float)$data['payment_data']->payment_fee - abs($data['fee']);
+        }
+
+        $this->CI->mdl_client_payments->update($data['payment_data']->payment_id, $client_update);
+        make_notes($data['estimate_data']->client_id,
+            "Refund " . money($amount) . " payment <strong>" . $data['payment_data']->payment_id . "</strong> by " . $this->methodToText($data['payment_data']->payment_method_int) . " for " . $data['estimate_data']->estimate_no
+            . ".<br> New payment amount is " . money((float)$data['payment_data']->payment_amount - abs($data['amount'])),
+            'system', $data['estimate_data']->lead_id);
+        $this->CI->mdl_estimates->update_estimate_balance($data['payment_data']->estimate_id);
+        pushJob('quickbooks/payment/syncpaymentinqb',
+            serialize(['id' => $data['payment_data']->payment_id, 'qbId' => $data['payment_data']->payment_qb_id]));
+        $this->setFee($data['estimate_data']->estimate_id);
+        return true;
+    }
+
+    private function genTransactionPdf($data, $transaction)
+    {
+        $this->CI->load->library('mpdf');
+//        $path = PAYMENT_FILES_PATH . $data['client_id'] . '/' . $data['estimate_no'] . '/';
+//        $file_no = 1;
+//        $files = bucketScanDir($path);
+//        if (count($files) && $files) {
+//            sort($files, SORT_NATURAL);
+//            preg_match('/payment_([0-9]{1,})/is', $files[count($files) - 1], $num);
+//            $file_no = isset($num[1]) ? ($num[1] + 1) : 1;
+//        }
+//        $uploadFilename = 'payment_' . $file_no . '.pdf';
+
+        if ($data['invoice_no']) {
+            $trans_details = "We have received your payment for invoice " . $data['invoice_no'] . "! Please keep transaction details for your records:<br><br>";
+        } else {
+            $trans_details = "We have received your payment for estimate " . $data['estimate_no'] . "! Please keep transaction details for your records:<br><br>";
+        }
+        $trans_details .= "Transaction ID: " . $transaction->payment_transaction_id . "<br>";
+        $trans_details .= "Transaction Message: " . $transaction->payment_transaction_message . "<br>";
+        $trans_details .= "Transaction Order No.: " . $transaction->payment_transaction_order_no . "<br>";
+        $trans_details .= "Amount Paid: $" . $transaction->payment_transaction_amount . "<br>";
+        $trans_details .= "Transaction Date: " . $transaction->payment_transaction_date . "<br><br>";
+
+        $this->CI->mpdf->WriteHTML($trans_details);
+        //$file = $path . $uploadFilename;
+        $tmpname = sys_get_temp_dir() . '/' . uniqid('', true) . '.pdf';
+        $this->CI->mpdf->Output($tmpname, 'F');
+        $this->CI->load->unload('mpdf');
+        $uploadFilename = $this->uploadFile($data, $tmpname);
+        //bucket_move($tmpname, $file, ['ContentType' => 'application/pdf']);
+        //@unlink($tmpname);
+        //make_notes($data['client_id'], 'Payment File for ' . $data['estimate_no'] . ' <a href="' . base_url($file) . '">' . $uploadFilename . '</a>', 'attachment', $data['lead_id']);
+        return $uploadFilename;
+    }
+
+
+    private function sendTransactionEmail($data, $transaction)
+    {
+        $this->CI->load->library('email');
+
+        $brand_id = $data['brand_id'] ?? false;
+        if(!$brand_id) {
+            $brand_id = get_brand_id(element('estimate', $data, []), element('client', $data, []));
+        }
+
+        if (!isset($data['client_email'])) {
+            return false;
+        }
+        $icons = [
+            'visa' => ['img' => 'visa.png', 'title' => 'VISA'],
+            'mastercard' => ['img' => 'mc.png', 'title' => 'MasterCard'],
+            'amex' => ['img' => 'amex.png', 'title' => 'AMEX'],
+            'discover' => ['img' => 'discover.png', 'title' => 'Discover'],
+        ];
+        $letterData['client_id'] = $data["client_id"];
+        $letterData['message'] = $transaction->payment_transaction_message;
+        if (isset($transaction)) {
+            $letterData['id'] = $transaction->payment_transaction_id;
+            $letterData['amount'] = $transaction->payment_transaction_amount;
+            $letterData['date'] = $transaction->payment_transaction_date;
+            $letterData['payment'] = true;
+            $letterData['card'] = $transaction->payment_transaction_card_num;
+            $letterData['auth_code'] = $transaction->payment_transaction_auth_code;
+            $letterData['card_icon'] =
+                isset($icons[$transaction->payment_transaction_card])
+                    ? $icons[$transaction->payment_transaction_card]
+                    : ['img' => 'default.png', 'title' => 'CreditCard'];
+        } else {
+            $letterData['id'] = '';
+            $letterData['amount'] = $data["amount"];
+            $letterData['date'] = date('Y-m-d H:i:s');
+            $letterData['payment'] = false;
+        }
+
+
+        $toDomain = substr(strrchr($data["client_email"], "@"), 1);
+        if (array_search($toDomain, $this->CI->config->item('smtp_domains')) !== false) {
+            $config = $this->CI->config->item('smtp_mail');
+        }
+        $from_email = brand_email($brand_id);
+        $config['mailtype'] = 'html';
+
+        $subject = 'Credit Card payment for ';
+
+        if ($data['invoice_no']) {
+            $invoiceObj = $this->CI->mdl_invoices->get_invoice(['estimates.estimate_id' => $data['estimate_id']]);
+            $letterData['invoice'] = $data['invoice_no'];
+
+            $data['total'] = $invoiceObj->total_with_hst;
+            $data['due'] = round($invoiceObj->due/* - $wasPay*/, 2);
+            $letterData['total'] = $data['total'];
+            $letterData['due'] = $data['due'];
+            $subject .= 'Invoice ' . $data['invoice_no'];
+        } elseif(isset($data['workorder_no']) && $data['workorder_no']) {
+            $estData = $this->CI->mdl_estimates->estimate_completed_sum_and_hst($data['estimate_id']);
+            if ($estData) {
+                $letterData['total'] = $estData['total'] + $estData['hst'];
+                $paymentsSum = isset($estData['payments']) ? $estData['payments'] : 0;
+                $letterData['due'] = $letterData['total'] - $paymentsSum;// - $wasPay;
+            }
+            $letterData['estimate'] = $data['estimate_no'];
+            $letterData['workorder'] = $data['workorder_no'];
+            $subject .= 'Partial Invoice ' . str_replace('-E', '-I', $data['estimate_no']);
+        } else {
+            $estData = $this->CI->mdl_estimates->estimate_sum_and_hst($data['estimate_id']);
+            if ($estData) {
+                $letterData['total'] = $estData['total'] + $estData['hst'];
+                $paymentsSum = isset($estData['payments']) ? $estData['payments'] : 0;
+                $letterData['due'] = $letterData['total'] - $paymentsSum;// - $wasPay;
+            }
+            $letterData['estimate'] = $data['estimate_no'];
+            $subject .= 'Estimate ' . $data['estimate_no'];
+        }
+
+        switch ($transaction->payment_transaction_status) {
+            case Payment::TRANSACTION_STATUS_SUCCESS:
+            case Payment::TRANSACTION_STATUS_PENDING:
+                $subject .= ' is Approved';
+                $letterData['payment'] = true;
+                break;
+            case Payment::TRANSACTION_STATUS_DECLINED:
+                $subject .= ' is Declined';
+                $letterData['payment'] = false;
+                break;
+            case Payment::TRANSACTION_STATUS_ERROR:
+            default:
+                $subject .= ' is Error';
+                $letterData['payment'] = false;
+                break;
+        }
+
+        $text = $this->CI->load->view('payments/payment_check', $letterData, true);
+
+        /*
+         !isset($data['subject']) || !isset($data['message']) || !isset($data['from']) || !isset($data['to']) ||
+            !filter_var($data['from'], FILTER_VALIDATE_EMAIL) || !filter_var($data['to'], FILTER_VALIDATE_EMAIL)
+         */
+
+        pushJob('common/sendemail', [
+            'subject' => $subject,
+            'message' => $text,
+            'from' => $from_email,
+            'from_name' => brand_name($brand_id),
+            'to' => $data["client_email"],
+            'client_id' => $data['client_id'],
+            'lead_id' => $data['lead_id']
+        ]);
+
+        return true;
+    }
+
+    private function sendEstimateEmail($data, $rData, $file)
+    {
+        if (!isset($rData['client_email'])) {
+            return false;
+        }
+
+        $this->CI->load->library('email');
+        $this->CI->email->clear(true);
+
+        $config['mailtype'] = 'html';
+        $config['protocol'] = 'sendmail';
+        $brand_id = get_brand_id(element('estimate', $data, []), element('client', $data, []));
+
+        $this->CI->email->initialize($config);
+
+        $this->CI->email->to($rData['client_email']);
+        $this->CI->email->from(brand_email($brand_id),
+            brand_name($brand_id));
+        $this->CI->email->subject("Dear " . $rData['client_name']);
+
+        $letter = ClientLetter::whereSystemLabel('confirmed_estimate')->first();
+        $estimate = Estimate::with(['client.primary_contact', 'user', 'lead', 'invoice'])->find($data['estimate']->estimate_id);
+        $client = $estimate->client;
+        $letter = ClientLetter::compileLetter($letter, $brand_id, [
+            'client'    =>  $client,
+            'estimate'  =>  $estimate
+        ]);
+
+        $this->CI->email->attach($file);
+        $this->CI->email->message($letter->email_template_text);
+        $this->CI->email->send();
+    }
+
+    public function methodToText($method)
+    {
+        $paymentMethods = config_item('payment_methods');
+        return $paymentMethods[$method] ?? 'Undefined';
+//        switch ($method) {
+//            case config_item('default_cc'):
+//                return 'Credit Card';
+//            default:
+//                return $method;
+//        }
+
+    }
+
+    public function uploadFile($data, $tmpname = false)
+    {
+        $this->uploadFileError = '';
+        $mimesToExt = [
+            'application/octet-stream' => 'pdf',
+            'image/jpeg' => 'jpg',
+            'image/jpg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+        ];
+        $path = $this->getFilePath($data['client_id'], $data['estimate_no']);
+        $file_no = 1;
+        $files = bucketScanDir($path);
+        if (!empty($files)) {
+            sort($files, SORT_NATURAL);
+            preg_match('/payment_([0-9]{1,})/is', $files[count($files) - 1], $num);//countOk
+            $file_no = isset($num[1]) ? ($num[1] + 1) : 1;
+        }
+        $uploadFilename = 'payment_' . $file_no;
+
+        if ($tmpname) {
+            $ext = pathinfo($tmpname, PATHINFO_EXTENSION);
+            $uploadFilename = $uploadFilename . '.' . $ext;
+            bucket_move($tmpname, $path . $uploadFilename, ['ContentType' => 'application/pdf']);
+            @unlink($tmpname);
+        } elseif (isset($_FILES) && isset($_FILES['payment_file']) && isset($_FILES['payment_file']['error']) && $_FILES['payment_file']['error'] === 0) {
+            $ext = pathinfo($_FILES['payment_file']['name'], PATHINFO_EXTENSION);
+            if(!$ext) {
+                $imgSize = @getimagesize($_FILES['payment_file']['tmp_name']);
+                $type = isset($imgSize['mime']) ? $imgSize['mime'] : $_FILES['payment_file']['type'];
+                $ext = $mimesToExt[$type] ?? $ext;
+                $_FILES['payment_file']['name'] = $ext ? $_FILES['payment_file']['name'] . '.' . $ext : $_FILES['payment_file']['name'];
+            }
+            $uploadFilename = $uploadFilename . '.' . $ext;
+            $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf';
+            $config['overwrite'] = true;
+            $this->CI->load->library('upload');
+            $config['upload_path'] = $path;
+            $config['file_name'] = $uploadFilename;
+            $this->CI->upload->initialize($config);
+            if (!$this->CI->upload->do_upload('payment_file')) {
+                $this->uploadFileError = $this->CI->upload->display_errors();
+                return false;
+            }
+        } else {
+            return false;
+        }
+        $note = 'Add Payment File for ' . $data['estimate_no'] . ': <a href="' . base_url($path . $uploadFilename) . '">' . $uploadFilename . '</a>';
+        make_notes($data['client_id'], $note, 'attachment', $data['lead_id']);
+
+        return $uploadFilename;
+    }
+
+    private function getFilePath($client_id, $estimate_no)
+    {
+        return PAYMENT_FILES_PATH . $client_id . '/' . $estimate_no . '/';
+    }
+
+    public function setFee($estimateId){
+        // temporarily maximum crutch option
+        if(!empty($estimateId)){
+            $serviceId = config_item('cc_extra_fee_service_id');
+            if(!empty($serviceId) && $serviceId > 0){
+                $fee = $this->CI->mdl_client_payments->get_extra_fee_sum($estimateId)->fee;
+                $service = $this->CI->mdl_estimates->find_estimate_services($estimateId, ['estimates_services.service_id' => $serviceId]);
+                if((float)$fee > 0){
+                    $estimateWithDiscount = $this->CI->mdl_clients->get_discount(['discounts.estimate_id' => $estimateId]);
+                    if(!empty($estimateWithDiscount) && is_array($estimateWithDiscount) && $estimateWithDiscount['discount_percents']){
+                        $fee *= 100 / (100 - $estimateWithDiscount['discount_amount']);
+                    }
+                    if(!empty($service) && !empty($service[0]) && !empty($service[0]['id'])){
+                        $estimateServiceId = $service[0]['id'];
+                        $this->CI->mdl_estimates->update_estimate_service(['id' => $estimateServiceId], ['service_price' => $fee]);
+                    } else {
+                        $service = [
+                            'service_id' => $serviceId,
+                            'estimate_id' => $estimateId,
+                            'service_price' => $fee,
+                            'non_taxable' => 1,
+                            'service_status' => 2
+                        ];
+                        $this->CI->mdl_services_orm->insert($service);
+                    }
+                    $invoice = $this->CI->mdl_invoices->find_all(['estimate_id' => $estimateId]);
+                    if(!empty($invoice)) {
+                        $invoiceQbId = $invoice[0]->invoice_qb_id;
+                        pushJob('quickbooks/invoice/syncinvoiceinqb', serialize(['id' => $invoice[0]->id, 'qbId' => !empty($invoiceQbId) ? $invoiceQbId : '']));
+                    }
+                }else{
+                    if(!empty($service) && !empty($service[0]) && !empty($service[0]['id'])) {
+                        $estimateServiceId = $service[0]['id'];
+                        $this->CI->mdl_estimates->delete_estimate_service(['id' => $estimateServiceId]);
+                        $invoice = $this->CI->mdl_invoices->find_all(['estimate_id' => $estimateId]);
+                        if(!empty($invoice)) {
+                            $invoiceQbId = $invoice[0]->invoice_qb_id;
+                            pushJob('quickbooks/invoice/syncinvoiceinqb', serialize(['id' => $invoice[0]->id, 'qbId' => !empty($invoiceQbId) ? $invoiceQbId : '']));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public function sendEmailThanks(){
+        if (!isset($this->rData['client_email'])) {
+            return false;
+        }
+
+        $this->CI->load->library('email');
+        $this->CI->email->clear(true);
+
+        $config['mailtype'] = 'html';
+        $config['protocol'] = 'sendmail';
+        $brand_id = $this->rData['brand_id'];
+
+        $this->CI->email->initialize($config);
+
+        $this->CI->email->to($this->rData['client_email']);
+        $this->CI->email->from(brand_email($brand_id),
+            brand_name($brand_id));
+
+        $letter = ClientLetter::where('system_label', 'invoice_paid_thanks')->first();
+        $estimate = Estimate::with(['client.primary_contact', 'user', 'lead', 'invoice'])->find($this->rData['estimate_id']);
+        $client = $estimate->client;
+        $letter = ClientLetter::compileLetter($letter, $brand_id, [
+            'client'    =>  $client,
+            'estimate'  =>  $estimate
+        ]);
+
+        if(!empty($letter)) {
+            $this->CI->email->subject($letter->email_template_title);
+            if(!empty($this->rData['invoice_id'])) {
+                $this->CI->invoiceactions->setInvoiceId($this->rData['invoice_id']);
+                $file = $this->CI->invoiceactions->tmpPDF();
+                $this->CI->invoiceactions->clear();
+
+                $this->CI->email->attach($file);
+            }
+            $this->CI->email->message($letter->email_template_text);
+            $this->CI->email->send();
+        }
+    }
+}

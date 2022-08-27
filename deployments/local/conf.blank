@@ -1,0 +1,106 @@
+service.id=one
+service.domain=localhost
+service.region=us-east-2
+service.timezone=America/Toronto
+
+aws.s3.name=one.arbostar
+aws.s3.address=one.arbostar.s3-us-east-2.amazonaws.com
+aws.rds.schema=exampledb
+aws.rds.user=exampleuser
+aws.rds.password=examplepass
+aws.rds.host=db
+
+aws.access.key=AKIAV7WCIUMYOMNT3YQV
+aws.access.secret=kpUwECkisTApxC2y6AYOzk6R4n2GUsq1Jyo1K80i
+
+service.nginx.s3.proxy.host=one.arbostar.s3-us-east-2.amazonaws.com
+service.nginx.s3.proxy.pass=http://one.arbostar.s3-us-east-2.amazonaws.com
+
+consumer.name.short=Local App
+consumer.name.long=Arbostar Local Environment
+
+consumer.pdf.logo.style=max-width:450px; float:right; max-height: 120px; margin-bottom:20px;
+consumer.pdf.smlogo.style=max-width:250px; float:right; max-height: 375px;
+consumer.pdf.footer=$config['office_address'] . ', ' . $config['office_city'] . ', ' . $config['office_state'] . ' ' . $config['office_zip'] . ' <span class="green">PHONE: </span>' . $config['office_phone_mask'] . ( $config['office_fax'] == '' ? '' : ' <span class="green">FAX: </span> ' . $config['office_fax'] ) . '<br> <span class="green">WEB: </span> ' . $config['company_site_name_upper'] . ' <span class="green">EMAIL: </span> ' . $config['account_email_address']
+consumer.email.admin.address=novitsky.an@gmail.com
+consumer.email.admin.from=Arbostar Pilot Service
+consumer.email.billing.address=novitsky.an@gmail.com
+consumer.office.street=1267 Sagewood Cres.
+consumer.office.region=Halton
+consumer.office.city=Oakville
+consumer.office.state=ON
+consumer.office.zip=L6M 4A6
+consumer.office.map=1267+Sagewood+Cres+Oakville+ON+L6M4A6
+consumer.office.description=Service 1
+consumer.office.country=Canada
+consumer.office.phone.number=16476259093
+consumer.office.phone.mask=(647) 625-9093
+consumer.office.fax.number=
+consumer.site.shortname=arbostar.com
+consumer.site.formatted=ArboStar.com
+consumer.site.address=www.arbostar.com
+consumer.resources.promo.name=facebook
+consumer.resources.promo.url=https://www.facebook.com/arbostar
+consumer.resources.social.instagram=https://www.instagram.com/arbostar/
+consumer.resources.social.facebook=https://www.facebook.com/arbostar
+
+crm.gps=FALSE
+crm.processing=TRUE
+crm.tax.name=HST
+crm.tax.rate=1
+crm.tax.percent=13
+crm.tax.description=
+crm.tax.display.estimate=TRUE
+crm.payment.default=authorize
+crm.payment.currency=CAD
+crm.payment.limit=2000
+# brands is a php array like 'key1'=>'value','key2'=>'value'
+crm.payment.brands=
+crm.invoice.term.general=30
+crm.invoice.term.corporate=30
+crm.invoice.term.municipal=30
+
+crm.geo.map.lat=43.450735
+crm.geo.map.lon=-79.7513549
+crm.geo.office.lat=43.450735
+crm.geo.office.lon=-79.7513549
+crm.geo.key=
+
+crm.gmaps.key=AIzaSyC1JOkoalAA-ppWUrAinFzmh--uDqiypIY
+crm.distance.unit=km
+
+crm.smtp.user=
+
+crm.autorestrict=ca
+
+crm.mailgun.event=arbostar.com/events
+crm.mailgun.msg=arbostar.com/messages
+
+# uncomment for USA tax lookup
+# crm.autotax.url=https://ws.serviceobjects.com/ft/web.svc/JSON/GetTaxInfoByCityCountyState\?
+# crm.autotax.key=WS19-MLX1-HGW1
+
+crm.qb.mode=development
+crm.qb.url=https://sandbox-quickbooks.api.intuit.com
+
+crm.messenger=TRUE
+crm.phone=FALSE
+
+crm.overrides.hard_from_number=
+
+crm.keys.api_key=b2827b53-c3a4-4bc9-b0d9-f6e8e5a588cb
+
+crm.keys.onlineactivitysid=WAd69379e3074947734f771826b916b066
+crm.keys.busyactivitysid=WA968a3bdf04d6b68531aa8c7038b24193
+crm.keys.reservedactivitysid=WA3ce5ad5da71384e3f452ccc8b02eefc7
+crm.keys.wrapupactivitysid=WA3ed6cf01595d83adc617d0e1977c5242
+crm.keys.offlineactivitysid=WAca12bfdad956c08315e3f5d1ea7f692f
+crm.keys.accountsid=ACba9a5eeb8b45a12e3973bd16e6ae83f2
+crm.keys.authtoken=59cd6e4b9e26182c4fc30956b950bc5f
+crm.keys.workspacesid=WS319bdc8f490f429cf635df5df9a5bd74
+crm.keys.taskqueuesid=WQ3ca4ca3a7989ada419c13583f0976d66
+crm.keys.appsid=APe44e5b40bfddca90743d491896ac8425
+crm.keys.workflowsid=WW22aa417939b1fe29c3ecb31d190b0722
+crm.keys.messagingservicesid=MG897402c8fabed09d6f0de64e561f5607
+
+crm.leads.referenced_by='no_info_provided'=>'No Info Provided','google_search'=>'Google Search','yellow_pages'=>'Yellow Pages','facebook'=>'Facebook','bing'=>'Bing','homestars'=>'Homestars','houzz'=>'Houzz','kijiji'=>'Kijiji','craigslist'=>'Craigslist','the_guardian'=>'The Guardian, Toronto.com','print'=>'Print, Flyers, etc','tree_fellers'=>'Tree Fellers','office_sign'=>'Office Sign','calling_previous_clients'=>'Calling Previous Clients','arborist_reporter'=>'Arborist Reporter','existing_client'=>'Existing Client','vehicle_sign'=>'Vehicle Sign','friend_or_neighbor'=>'Friend Or Neighbor','client'=>'Client','user'=>'Employee','other'=>'Other'

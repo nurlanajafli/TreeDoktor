@@ -1,0 +1,65 @@
+{
+    "name": "arbostar/arbostar",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/IS123/beanstream-php"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/IS123/sdk-php.git"
+        }
+    ],
+    "require": {
+        "php": "^7.2.5",
+        "ext-intl": "*",
+        "ext-json": "*",
+        "textalk/websocket": "^1.2",
+        "twilio/sdk": "^5.4",
+        "guzzlehttp/guzzle": "^6.2",
+        "wisembly/elephant.io": "^3.3",
+        "mailgun/mailgun-php": "^2.3",
+        "php-http/guzzle6-adapter": "^1.1",
+        "php-http/message": "^1.5",
+        "giggsey/libphonenumber-for-php": "^8.8",
+        "fzaninotto/faker": "^1.8",
+        "aws/aws-sdk-php": "^3.130",
+        "vlucas/phpdotenv": "^4.1",
+        "quickbooks/v3-php-sdk": "5.3.5",
+        "yidas/codeigniter-queue-worker": "^1.0",
+        "authorizenet/authorizenet": "^2.0.0.1",
+        "nesbot/carbon": "^2.35.0",
+        "mpdf/mpdf": "^8.0",
+        "laravel/framework": "~7.0",
+        "beanstream/beanstream": "dev-master",
+      "league/flysystem-aws-s3-v3": "^1.0",
+      "appstract/laravel-opcache": "^4.0",
+        "predis/predis": "^1.1",
+        "laravel-notification-channels/fcm": "~2.0",
+        "phpmailer/phpmailer": "^6.6"
+    },
+    "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.7",
+        "phpunit/phpunit": "9",
+        "barryvdh/laravel-debugbar": "^3.3",
+        "cweagans/composer-patches": "^1.6",
+        "migrify/vendor-patches": "^0.3.19"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php index.php mixture composer:dump-autoload --ansi",
+            "@php index.php mixture package:discover --ansi"
+        ]
+    },
+    "extra": {
+        "patches": {
+            "laravel/framework": [
+                "patches\\laravel-framework-src-illuminate-foundation-helpers-php.patch"
+            ],
+            "migrify/vendor-patches": [
+                "patches\\migrify-vendor-patches-src-differ-patchdiffer-php.patch",
+                "patches\\migrify-vendor-patches-src-filesystem-pathresolver-php.patch"
+            ]
+        }
+    }
+}

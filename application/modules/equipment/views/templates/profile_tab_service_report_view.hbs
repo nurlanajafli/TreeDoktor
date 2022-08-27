@@ -1,0 +1,78 @@
+<script id="profile-tab-service-report-view-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="service_type_id">Type</label>
+            <div class="col-sm-7">
+                <input id="service_type_id" name="service_type_id" class="m-b" value="{{service_type_id}}"
+                       data-name="{{#if service_type}} {{service_type.service_type_name}} {{/if}}">
+                <span class="help-block" id="service_number-error"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="service_name">Name</label>
+            <div class="col-sm-7">
+                <input class="form-control" type="text" name="service_name" value="{{service_name}}">
+                <span class="help-block" id="service_name-error"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="service_description">Description</label>
+            <div class="col-sm-7">
+                <textarea name="service_description" class="form-control" rows="3"
+                          placeholder="Input your description here">{{service_description}}</textarea>
+                <span class="help-block" id="service_description-error"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="service_date_period_type">Date Period By</label>
+            <div class="col-sm-7">
+                <select name="service_date_period_type" class="form-control m-b">
+                    {{#each (var "serviceDatePeriodTypes")}}
+                        <option value="{{@key}}" {{#eq (cast @key 'int') (cast ../service_date_period_type 'int')}}
+                                selected="selected" {{/eq}}>
+                            {{this}}
+                        </option>
+                    {{/each}}
+                </select>
+                <span class="help-block" id="service_date_period_type-error"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="service_date_period">Date Period</label>
+            <div class="col-sm-7">
+                <input class="form-control" type="text" name="service_date_period" value="{{service_date_period}}">
+                <span class="help-block" id="service_date_period-error"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="service_counter_period">Counter Period</label>
+            <div class="col-sm-7">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="service_counter_period"
+                           value="{{service_counter_period}}">
+                    <span class="input-group-addon">{{equipment.eq_counter_type_str}}</span>
+                </div>
+                <span class="help-block" id="service_counter_period-error"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="service_start_at">Start From</label>
+            <div class="col-sm-7">
+                <input type="text" class="datepicker form-control text-center" name="service_start_date"
+                       value="{{service_start_date}}" readonly=""
+                       style="margin-left: 5px;width: 100px;display: inline-block;height: 20px;">
+                <span class="help-block" id="service_start_date-error"></span>
+            </div>
+        </div>
+        {{#if service_id}}
+            <input type="hidden" name="service_id" value="{{service_id}}">
+        {{/if}}
+        {{#if eq_id}}
+            <input type="hidden" name="eq_id" value="{{eq_id}}">
+        {{/if}}
+        <div class="col-md-12 feedback">
+            <span class="help-block"></span>
+        </div>
+        <div class="clear"></div>
+    {{/this}}
+</script>

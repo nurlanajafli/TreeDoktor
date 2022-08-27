@@ -1,0 +1,32 @@
+<script id="profile-tab-counter-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{counter_id}}">
+            <td>{{counter_id}}</td>
+            <td>{{counter_value}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{counter_note}}">{{counter_note}}</td>
+            <td>{{counter_date}}</td>
+            <td>
+                {{#if repair}}
+                    Repair: {{repair.repair_id}}
+                {{else if service_report}}
+                    Service: {{service_report.service.service_name}}
+{{else}}
+                    Equipment
+                {{/if}}
+            </td>
+            <td><a href="{{user.url}}">{{user.firstname}} {{user.lastname}}</a></td>
+            <td>
+                <button data-id="{{counter_id}}" title="Edit {{var "DISTANCE_MEASUREMENT"}}/hrs #{{counter_id}}"
+                        class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button data-id="{{counter_id}}" title="{{var "DISTANCE_MEASUREMENT"}}/hrs #{{counter_id}}"
+                        class="action-delete btn btn-xs btn-danger">
+                    <i class="fa fa-trash-o icon-white">
+                    </i>
+                </button>
+            </td>
+        </tr>
+    {{/this}}
+</script>

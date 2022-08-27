@@ -1,0 +1,175 @@
+<script id="service-complete-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            {{#if service_id}}
+                <input type="hidden" name="service_id" value="{{service_id}}">
+            {{/if}}
+            <div class="font-bold">Parts</div>
+            <div class="form-group multi-items">
+                <div class="col-sm-12 parts" data-cnt="1">
+                    <div class="row part-header">
+                        <div class="field-col col-md-1">
+                        </div>
+                        <div class="field-col col-md-2">
+                            <label class="control-label">Name *</label>
+                        </div>
+                        <div class="field-col col-md-1">
+                            <label class="control-label">Part No. *</label>
+                        </div>
+                        <div class="field-col col-md-1">
+                            <label class="control-label">Seller</label>
+                        </div>
+                        <div class="field-col col-md-1">
+                            <label class="control-label">Purchase Date</label>
+                        </div>
+                        <div class="field-col col-md-1">
+                            <label class="control-label">File</label>
+                        </div>
+                        <div class="field-col col-md-2">
+                            <label class="control-label">Description</label>
+                        </div>
+                        <div class="field-col col-md-1">
+                            <label class="control-label">TAX</label>
+                        </div>
+                        <div class="field-col col-md-2">
+                            <label class="control-label">Cost *</label>
+                        </div>
+                    </div>
+                    <div class="row part-footer">
+                        <div class="field-col col-md-1 text-center" style="padding-top:8px">
+                            <a href="javascript:void(0);" class="action-add-part-row" type="button"><i
+                                    class="fa fa-plus text-success"></i></a>
+                        </div>
+                        <label class="control-label col-md-9 text-right">
+                            Total Tax
+                        </label>
+                        <div class="field-col col-md-2 text-right">
+                            <div class="input-group">
+                                <span class="input-group-addon">{{get_currency}}</span>
+                                <input type="number" step="0.01" class="form-control part-total-tax" placeholder="Tax"
+                                       value="0"
+                                       disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row part-footer2">
+                        <label class="control-label col-md-10 text-right">
+                            Total Parts Cost
+                        </label>
+                        <div class="field-col col-md-2 text-right">
+                            <div class="input-group">
+                                <span class="input-group-addon">{{get_currency}}</span>
+                                <input type="number" step="0.01" class="form-control part-total" placeholder="Cost"
+                                       value="0"
+                                       disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="font-bold">Labour</div>
+            <div class="form-group multi-items">
+                <div class="col-sm-12 employees" data-cnt="1">
+                    <div class="row employee-header">
+                        <div class="field-col col-md-1">
+                        </div>
+                        <div class="field-col col-md-3">
+                            <label class="control-label">Employee</label>
+                        </div>
+                        <div class="field-col col-md-2">
+                            <label class="control-label">Date</label>
+                        </div>
+                        <div class="field-col col-md-2">
+                            <label class="control-label">Hours *</label>
+                        </div>
+                        <div class="field-col col-md-2">
+                            <label class="control-label">Hourly Rate *</label>
+                        </div>
+                        <div class="field-col col-md-2">
+                            <label class="control-label">Cost</label>
+                        </div>
+                    </div>
+                    <div class="row employee-footer">
+                        <div class="field-col col-md-1 text-center" style="padding-top:8px">
+                            <a href="javascript:void(0);" class="action-add-employee-row" type="button"><i
+                                    class="fa fa-plus text-success"></i></a>
+                        </div>
+                        <label class="control-label col-md-9 text-right">
+                            Total Labour Cost
+                        </label>
+                        <div class="field-col col-md-2 text-right">
+                            <div class="input-group">
+                                <span class="input-group-addon">{{get_currency}}</span>
+                                <input type="number" step="0.01" class="form-control employee-total" placeholder="Cost"
+                                       value="0"
+                                       disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="font-bold">Files</div>
+            <div class="form-group multi-items">
+                <div class="col-sm-12 files" data-cnt="1">
+                    <div class="row file-footer">
+                        <div class="field-col col-md-1 text-center" style="padding-top:8px">
+                            <a href="javascript:void(0);" class="action-add-file-row" type="button"><i
+                                    class="fa fa-plus text-success"></i></a>
+                        </div>
+                        <div class="field-col col-md-11 text-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <label class="col-md-2 control-label text-right" for="service_report_end_date">Complete
+                            Date</label>
+                        <div class="col-md-2">
+                            <input name="service_report_end_date" type="text"
+                                   class="datepicker form-control text-center"
+                                   value="" readonly=""
+                                   style="border-radius: 2px">
+                        </div>
+                        <label class="col-md-2 control-label text-right  p-left-0 p-right-0" for="counter">
+                            {{var "DISTANCE_MEASUREMENT"}}/hrs on the day of service
+                        </label>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <input type="number" name="counter" step="1" class="form-control" placeholder="Counter">
+                                <span class="input-group-addon">{{equipment.eq_counter_type_str}}</span>
+                            </div>
+                        </div>
+                        <label class="col-md-2 control-label text-right">
+                            Total Service Cost
+                        </label>
+                        <div class="field-col col-md-2 text-right">
+                            <div class="input-group">
+                                <span class="input-group-addon">{{get_currency}}</span>
+                                <input type="number" step="0.01" class="form-control total-price" placeholder="Cost"
+                                       value="0"
+                                       disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-2 control-label text-right" for="service_report_note">Note</label>
+                        <div class="col-md-6">
+                        <textarea name="service_report_note" class="form-control" rows="2"
+                                  placeholder="Input your note here"></textarea>
+                            <span class="help-block" id="service_report_note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

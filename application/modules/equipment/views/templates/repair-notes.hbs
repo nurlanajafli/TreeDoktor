@@ -1,0 +1,46 @@
+<script id="repair-notes-template" type="text/x-handlebars-template">
+    {{#this}}
+        <section id="repair_notes" diez-app="EquipmentRepairNotesApp"
+                     diez-src="equipment/components/profile-notes.js"
+                     data-equipment-id="{{eq_id}}" data-where="{{where}}">
+                <section class="scrollable modal-content">
+                    <div class="wrapper">
+                        <section class="comment-list block">
+                            <!-- comment form -->
+                            <article class="comment-item media comment-form">
+                                <a class="pull-left thumb-sm avatar"><img src="<?php echo request()->user()->picture; ?>"
+                                                                          class="img-circle"></a>
+                                <form>
+                                    <section class="media-body panel panel-default">
+
+                                <textarea name="note_description" class="form-control no-border" rows="3"
+                                          placeholder="Input your note here"></textarea>
+                                        <span class="help-block" id="note_description-error"></span>
+                                        <input type="hidden" name="eq_id" value="{{eq_id}}">
+                                        <input type="hidden" name="repair_id" value="{{repair_id}}">
+                                        <footer class="panel-footer bg-light lter">
+                                            <button class="btn btn-default pull-right btn-sm action-reply-cancel m-l-xs"
+                                                    style="display: inline-block;">Cancel
+                                            </button>
+                                            <button type="submit" class="btn btn-info pull-right btn-sm">Submit</button>
+                                            <ul class="nav nav-pills nav-sm m-b-none">
+                                                <li>
+                                                    <a href="#" class="btn-file">
+                                                        <i class="fa fa-paperclip text-muted"></i>
+                                                        <input type="file" name="file" class="action-upload">
+                                                    </a>
+                                                    <span class="help-inline"></span>
+                                                </li>
+                                            </ul>
+                                            <ul class="upload-list nav nav-pills nav-sm m-b-none"></ul>
+                                        </footer>
+                                    </section>
+                                </form>
+                            </article>
+                        </section>
+                    </div>
+                </section>
+            </section>
+    {{/this}}
+
+</script>

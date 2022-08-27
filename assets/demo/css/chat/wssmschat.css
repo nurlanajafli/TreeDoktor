@@ -1,0 +1,402 @@
+@import "https://fonts.googleapis.com/css?family=Open+Sans:400,600,700";
+* {
+    box-sizing: border-box;
+}
+.messenger-dialog {
+  width:95%;
+  margin: 3% auto;
+  height: 70%;
+}
+@media (min-width: 1530px) {
+  .messenger-dialog {
+    width: 80%;
+  }
+}
+.smssection, .flex {
+	display: block;
+}
+.modal-content.smsmodal {
+	height: 100%;
+	overflow: hidden;
+}
+.sms-search {
+	border-radius: 10px;
+    padding-left: 28px;
+}
+#sms_search_form {
+  /*display: none;*/
+  position: relative;
+}
+.load_more_chats {
+  display: block!important;
+}
+.load_more_messages:hover {
+  background: #eee;
+}
+.sms-preloader {
+  display: table;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 0 40px 40px 0;
+}
+.smschat > .messages-wrapper > .sms-preloader {
+  padding: 0;
+  height: 98%;
+  bottom: 0;
+}
+.sms-preloader-cell {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.sms-avatar {
+	background-color: #9DA3AE;
+	padding: 8px 0px;
+	border-radius: 30px;
+	color: #fff;
+	font-weight: bold;
+	width: 36px;
+	height: 36px;
+	font-size: 15px;
+	text-transform: uppercase;
+  text-align: center;
+}
+.sms-avatar.employee {
+  background-color: #2095FE; 
+}
+.sms-avatar.supportchat {
+  background-color: #8dc500;
+}
+.sms-demo {
+	margin-left: 7px;
+  width: 90%;
+}
+.sms-demo-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 0;
+}
+.sms-search-icon {
+	position: absolute;
+  top: 11px;
+  left: 10px;
+  z-index: 10;
+}
+.modal-content.smsmodal .modal-body {
+	height: 100%;
+}
+.modal-content.smsmodal .modal-body .smssection {
+	height: 100%;
+}
+.smsnav {
+	list-style: none;
+	padding: 0;
+	margin-bottom: 0;
+    -webkit-overflow-scrolling: touch;
+	overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 91px;
+  display: none;
+}
+.smsnav.active {
+  display: block;
+}
+.smsnav > li a {
+	padding: 10px 20px;
+	display: flex;
+  position: relative;
+}
+.smsnav li.active {
+	background-color: #eee;
+}
+.smsnav > li > a {
+	text-decoration: none!important;
+}
+.smsnav > li:hover {
+	background-color: #eee;
+}
+.smsnav .message-preview {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.sms-history {
+	display: none;
+    height: 100%;
+}
+.sms {
+    height: 100%;
+}
+.pos-fix {
+	position: fixed;
+}
+.smschat {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 100%;
+    /*overflow: auto;
+    overflow-x: hidden;*/
+ }
+
+.smschat .messages-wrapper {
+	overflow-y: hidden;
+	border: none;
+	height: auto;
+}
+
+/*.smschat .left {
+  position: absolute;
+  top: 0;
+  left: 35px;
+  font-size: 18px
+}
+
+.smschat .left:after {
+    border: 3px solid #2095FE;
+    border-right: 3px solid transparent;
+    border-top: 3px solid transparent;
+    content: " ";
+    height: 14px;
+    left: -20px;
+    position: absolute;
+    top: 20px;
+    -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+    width: 14px;
+}*/
+.smschat .right {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  font-size: 18px
+}
+.smschat header {
+  color: #2095FE;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-bottom: 1px solid #bbb;
+  box-shadow: 0 1px 2px rgba(1,1,1,0.2);
+  height: 60px;
+  text-align: center;
+  font-size: 20px;
+  line-height: 58px;
+  white-space: nowrap;
+  
+}
+.smschat header h2 {
+  font-weight: bold;
+  color: #111111;
+  font-size: 20px;
+}
+.smschat .messages-wrapper {
+	padding: 10px 20px 10px 0;
+	position: absolute;
+	border-top: 0 none;
+    -webkit-overflow-scrolling: touch;
+	overflow-y: auto;
+	overflow-x: hidden;
+	left: 0;
+	right: 0;
+	top: 48px;
+	bottom: 55px;
+}
+.smschat .message-row {
+  display: table;
+  width: 100%;
+  padding: 10px 5px;
+}
+.smschat .message-block {
+  display: block;
+  width: 100%;
+}
+.smschat .message-time.to,
+.smschat .message-time.from  {
+  color: #626262;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 10px 10px 10px;
+  white-space: nowrap;
+}
+.smschat .message-time .badge {
+  right: 5px;
+}
+.smschat .message-time.to {
+	text-align: left;
+}
+.smschat .message-time.from {
+	text-align: right;
+}
+.smschat .message {
+    border-radius: 15px;
+    margin: 0 15px 10px;
+    padding: 10px 20px;
+    position: relative;
+    display: inline-block;
+    /*max-width: 300px;*/
+    word-wrap: break-word;
+    white-space: pre-line;
+    line-height: 17px;
+}
+.smschat .message.to {
+    background-color: #2095FE;
+    color: #fff;
+    margin-left: 20px;
+    float: right;
+}
+.send-chat-block {
+  min-height: 34px;
+}
+.smschat .message.from {
+    background-color: #E5E4E9;
+    color: #363636;
+    margin-right: 20px;
+}
+.message.from.support {
+    background-color: #8dc500;
+    color: #fff;
+}
+.smschat .message.from.support:before {
+    border-color: #8dc500;
+}
+.smschat .message.to + .message.to,
+.smschat .message.from + .message.from {
+  margin-top: -7px;
+}
+.smschat .message:before {
+    border-color: #2095FE;
+    border-radius: 50% 50% 50% 50%;
+    border-style: solid;
+    border-width: 0 20px;
+    bottom: 0;
+    clip: rect(27px, 35px, 42px, 0px);
+    content: " ";
+    height: 40px;
+    position: absolute;
+    right: -50px;
+    width: 31px;
+    z-index: 1;
+    -webkit-box-sizing: unset;
+    -moz-box-sizing: unset;
+    box-sizing: unset;
+}
+.smschat .message.from:before {
+    border-color: #E5E4E9;
+    left: -50px;
+    transform: rotateY(180deg);
+}
+.smschat .message-field-sms {
+    resize: none;
+    border-radius: 25px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+.smschat .btn-send-sms {
+    background-color: #2095FE;
+    border: none;
+    padding: 7px 11px;
+    bottom: 0;
+}
+.smschat .smschat-footer {
+  display: flex;
+  box-shadow: 0 -2px 1px rgba(1,1,1,0.2);
+}
+.smschat .chat-date  {
+    text-align: center;
+    color: #626262;
+    margin: 0 15px 10px;
+}
+.smschat .chat-footer {
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 2;
+}
+.smschat .chat-header {
+  top: 0;
+  right: 0;
+  left: 0;
+}
+.smschat .smschat-close {
+  top: 20px;
+  right: 15px;
+  padding: 0;
+  line-height: 1px;
+}
+.smschat .smschat-minimize {
+  top: 21px;
+  right: 45px;
+  padding: 0;
+  line-height: 1px;
+}
+.smsmodal .unreaded {
+  background: #2095FE;
+  height: 10px;
+  width: 10px;
+  border-radius: 15px;
+  top: 23px;
+  left: 5px;
+}
+.messenger-counter {
+  position: absolute!important;
+  top: 10px!important;
+  right: 10px;
+}
+.smschat .createCall {
+  border-bottom: 1px dotted;
+}
+#chat_box_search {
+  display: table;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 91px;
+}
+.search-no-data {
+  vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+  font-weight: bold;
+}
+ul.nav.nav-tabs.pull-left.mode-nav li a {
+  padding: 3px 5px;
+}
+.smschat .select2-container-multi .select2-choices .select2-search-field {
+  width: auto;
+}
+.smschat .select2-container-multi .select2-choices .select2-search-field input {
+  height: 32px;
+  border-radius: 10px;
+  width: 100%!important;
+}
+.smschat .select2-container-multi .select2-choices {
+  min-height: 26px;
+  border-radius: 10px;
+  padding-left: 25px;
+}
+.smschat .select2-container {
+  height: 29px!important;
+}
+#chat_box_new_message .chat-header {
+  padding: 10px 10px 17px 10px!important;
+}
+.smschat a.select2-search-choice-close {
+    height: 12px!important;
+}
+.smschat .select2-container-multi .select2-choices .select2-search-choice {
+  margin: 6px 0 3px 5px;
+}
+.search-recipients .select2-results .select2-result-label {
+  white-space: pre-line;
+}
+.change-notifications {
+  width: 23px;
+  display: inline-block;
+}

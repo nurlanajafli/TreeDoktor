@@ -1,0 +1,63 @@
+.js-expand-more{
+    cursor: pointer;
+}
+.client-tags-dropdown-container .select2-choices{
+    border: none!important;
+    border-bottom: 1px solid #d9d9d9!important;
+    background: #ccc0!important;
+}
+.client-tags-dropdown-container .select2-choices:after{
+    display: none!important
+}
+
+.client-tags-dropdown-container .select2-search-choice{
+    color: #fff !important;
+    background: #81ba53!important;
+    border-color: #79b549!important;
+}
+
+.client-tags-dropdown-container .select2-search-choice .select2-search-choice-close:after{
+    color: #fff !important;
+}
+.client-tags-dropdown-container.select2-container{
+    height: auto!important;
+}
+.client-tags-dropdown-container.select2-container-active .select2-choices{
+    box-shadow: none!important;
+    background: #f9f9f9!important;
+}
+
+.client-tags-dropdown-container .select2-input{
+    min-width: 100px!important;
+}
+.client-tags-dropdown-container .select2-search-field{
+    max-width: 10px!important; position: relative
+}
+
+.client-tags-dropdown-container .select2-search-field:after{
+    color: #989898;
+    content: "Write Tag ...";
+    text-decoration: underline;
+    left: 10px;
+    top: 5px;
+    position: absolute;
+}
+.client-tags-dropdown-container.select2-dropdown-open .select2-search-field:after,
+.client-tags-dropdown-container.select2-container-active .select2-search-field:after,
+.client-tags-dropdown-container .select2-search-field:active:after,
+.client-tags-dropdown-container .select2-choices:focus .select2-search-field:after,
+.client-tags-dropdown-container .select2-choices:active .select2-search-field:after{
+    content: "" !important;
+}
+.client-tags-dropdown{
+    min-width: 150px;
+    border: none!important;
+}
+.client-tags-dropdown .select2-results .select2-highlighted{
+    background-color: #f1f1f1!important;
+    color: #6d6d6d!important;
+}
+.client-tags-dropdown .select2-results{
+    margin: 0!important;
+    padding: 10px;
+}

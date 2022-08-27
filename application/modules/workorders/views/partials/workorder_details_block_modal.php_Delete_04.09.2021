@@ -1,0 +1,158 @@
+<style type="text/css">
+    .popover .panel-default{margin-right: 0px!important;}
+</style>
+<section class="panel panel-default p-n" style="margin-bottom: 10px;">
+
+    <!-- Workorder Details Header -->
+    <header class="panel-heading">Workorder Details</header>
+
+    <!-- Data Display -->
+    <div class="panel-body">
+    <?php echo form_open('workorders/update_workorder', 'id="updateWorkorder"'); ?>
+        <table class="table b-t bg-white m-n">
+            <thead>
+            <tr>
+                <th style="width:40%">Term</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            
+            <?php if ($payments_data && !empty($payments_data)) { ?>
+                <?php foreach ($payments_data as $row) : ?>
+                    <tr>
+                        <td class="text-nowrap">Deposit amount:</td>
+                        <td><?php echo money($row['payment_amount']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php
+            } else {
+                ?>
+                <tr>
+                    <td class="text-nowrap">Deposit amount:</td>
+                    <td><?php echo money(0); ?></td>
+                </tr>
+                <?php
+            }
+            ?>
+            <?php /*
+            <tr>
+                <td style="padding-top: 10px;">Upload File</td>
+                <td style="padding-top: 12px;">
+                        <span class="btn btn-primary btn-file">Choose File
+                            <input type="file" name="file" id="fileToUpload" class="btn-upload">
+                        </span>
+                    <img id="preloader" src="/assets/img/ajax-loader.gif" style="display:none;">
+                </td>
+            </tr>
+            */ ?>
+            </tbody>
+        </table>
+        <?php if(isset($files)): ?>
+        <div class="scrollable"  style="height:120px">
+            <table class="table b-t bg-white m-n">
+                <thead>
+                <tr>
+                    <th>Files:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if (isset($files) && !empty($files)) : ?>
+                    <?php foreach ($files as $file) : ?>
+                        <tr>
+                            
+                            <td>
+                                <?php $filepath = 'uploads/payment_files/' . $workorder_data->client_id . '/' . $estimate_data->estimate_no . '/' . $file; ?>
+                                <a href="#" role="button" data-estimate_id="<?php echo $workorder_data->estimate_id; ?>" data-path="<?php echo $filepath; ?>" class="btn btn-xs btn-mini btn-danger pull-left m-r-sm deleteEstimatePhotoClass">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                                <a target="_blank" href="<?php echo base_url($filepath); ?>">
+                                    <?php echo $file; ?>
+                                </a>
+                                <label class="checkbox pull-right m-l-md m-t-none m-b-none">
+                                    <input type="checkbox" <?php if(array_search($filepath, $pdfFiles) !== FALSE) : ?>checked="checked" <?php endif; ?>data-file-name="<?php echo $filepath; ?>">
+                                    Print in PDF
+                                </label>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php endif; ?>
+
+        <?php  $hidden = array(
+                'client_id' => $client_data->client_id,
+                'estimate_id' => $estimate_data->estimate_id,
+                'workorder_id' => $workorder_data->id,
+                'workorder_no' => $workorder_data->workorder_no); //'estimator_name'    => $lead->lead_estimator
+            echo form_hidden($hidden); ?>
+        <div class="p-top-5">
+            <label class="m-n text-nowrap">Confirmed How :</label>
+            <?php $options = array(
+            'name' => 'wo_confirm_how',
+            'id' => 'wo_confirm_how',
+            'rows' => '2',
+            'class' => 'form-control',
+            'Placeholder' => 'Over the phone, in person, by email etc.',
+            'value' => $workorder_data->wo_confirm_how);
+
+            echo form_textarea($options); ?>
+            
+        </div>
+
+
+        <div class="p-top-5">
+            <label class="m-n text-nowrap">Extra note for crew:</label>
+            <?php $options = array(
+                'name' => 'wo_extra_not_crew',
+                'id' => 'wo_extra_not_crew',
+                'rows' => '2',
+                'class' => 'form-control',
+                'Placeholder' => 'Extra note for crew',
+                'value' => $workorder_data->wo_extra_not_crew);
+
+            echo form_textarea($options); ?>
+        </div>
+        <div class="p-top-5">
+            
+            <label class="m-n text-nowrap">Notes to the crew:</label>
+            <?php $options = array(
+            'name' => 'estimate_item_note_crew',
+            'id' => 'estimate_item_note_crew',
+            'rows' => '2',
+            'class' => 'form-control',
+            //'required'      =>   'required',
+            //'pattern'       =>   '[0-9]',
+            'Placeholder' => 'Write some notes to the crew',
+            'value' => $estimate_data->estimate_item_note_crew);
+
+            echo form_textarea($options); ?>
+            
+            <!-- /Estmate items -->
+        </div>
+        <?php /*
+        <div class="m-n">
+            <?php echo anchor('client/' . $estimate_data->client_id, 'Cancel', 'class="btn btn-info pull-right m-top-10"');
+
+            $data = array(
+                'name' => 'submit',
+                'value' => 'Update',
+                'class' => 'btn btn-success pull-right',
+                'style' => 'margin:10px');
+            echo form_submit($data);?>
+            
+            <div class="clearfix"></div>
+        </div>
+        */ ?>
+    <?php echo form_close(); ?>
+    </div>
+</section>
+
+<script>
+
+</script>
+<style type="text/css">
+    .text-nowrap{ white-space: nowrap; overflow: hidden;}
+</style>

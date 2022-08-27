@@ -1,0 +1,28 @@
+<script id="repair-status-edit-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="repair_status_name">Name</label>
+                <div class="col-sm-7">
+                    <input class="form-control" type="text" name="repair_status_name" value="{{repair_status_name}}">
+                    <span class="help-block" id="repair_status_name-error"></span>
+                </div>
+            </div>
+            <div class="form-group m-t-sm">
+                <label class="col-sm-4 control-label" for="estimate_id">Color</label>
+                <div class="col-sm-7">
+                    <input class="form-control mycolorpicker" type="text" name="repair_status_color" readonly
+                           value="{{#if repair_status_color}}{{repair_status_color}}{{else}}#ffffff{{/if}}">
+                    <span class="help-block" id="repair_status_color-error"></span>
+                </div>
+            </div>
+            {{#if repair_status_id}}
+                <input type="hidden" name="repair_status_id" value="{{repair_status_id}}">
+            {{/if}}
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

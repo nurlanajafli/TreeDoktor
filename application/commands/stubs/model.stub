@@ -1,0 +1,27 @@
+<?php
+
+namespace DummyNamespace;
+
+use application\core\Database\EloquentModel;
+
+class DummyClass extends EloquentModel
+{
+    protected $table = '{{table}}';
+
+    protected $primaryKey = '';
+
+    protected $fillable = [
+    ];
+
+    const CREATED_AT = null;
+
+    /**
+     * The supported cast types are: integer, real, float, double, decimal:<digits>, string, boolean,
+     * object, array, collection, date, datetime, and timestamp.
+     * When casting to decimal, you must define the number of digits (decimal:2).
+     * @var array
+     */
+    protected $casts = [
+    ];
+
+}

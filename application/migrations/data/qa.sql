@@ -1,0 +1,22 @@
+
+INSERT INTO `qa` (`qa_id`, `qa_name`, `qa_description`, `qa_type`, `qa_rate`, `qa_status`) VALUES
+('1', 'Client Intake', 'Too long to estimate.\nEstimator didn\'t call \nIssues with the estimate. ', 'complain', 8, 1),
+('2', 'Customer Service', 'Rude, unprofessional, communications issues. \nDidn\'t return phone calls. \nUnable to answer questions.\n', 'complain', 9, 1),
+('3', 'Scheduling', 'Too long to schedule. \nToo many re-schedules. \nCrew showed up expectantly. ', 'complain', 8, 1),
+('4', 'Tree Word.', 'The trees were not done as per description on the estimate. \nToo much/too little was removed. \n', 'complain', 6, 1),
+('5', 'Cleanup', 'The site was not cleanup to the client\'s expectations. ', 'complain', 5, 1),
+('6', 'Damage to the property. ', 'The crew damaged the property. \nHow did we dealt with the damage. ', 'complain', 9, 1),
+('7', 'Communications Issues.', 'It was hard to communicate to (customer services, estimator, crew). ', 'complain', 4, 1),
+('8', 'Crew behavior on site. ', 'Unprofessional, arguing.\nBad language used. \nOther issues.  ', 'complain', 9, 1),
+('9', 'Customer service. ', 'Describe. ', 'suggestion', 0, 1),
+('10', 'Intake process. ', 'Describe.', 'suggestion', 0, 1),
+('11', 'Scheduling', 'Describe.', 'suggestion', 0, 1),
+('12', 'Crew production', 'Describe', 'suggestion', 0, 1),
+('13', 'Cleanup', 'Describe', 'suggestion', 0, 1),
+('14', 'General', 'Be specific. ', 'suggestion', 0, 1),
+('15', 'Estimation. ', 'How helpful the estimator was. \nAnswered all the questions. \nEstimate is easy enough to understand. \nProfessionalism. ', 'complement', 7, 1),
+('16', 'Customer Service', 'Overall helpfulness. \nCommunication. \nResponse time. \nExplained everything. \nProfessionals. ', 'complement', 8, 1),
+('17', 'Tree work', 'Professionalism of the crew. \nAccording to standards.\nAccording to client\'s expectations. ', 'complement', 8, 1),
+('18', 'Crew Communication', 'Professional.\nPolite.\nEverything was explained to customer. ', 'complement', 9, 1),
+('19', 'Cleanup', 'Site cleaned to customer expectations. ', 'complement', 9, 1),
+('20', 'General ', 'Describe. ', 'complement', 8, 1);

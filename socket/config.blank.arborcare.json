@@ -1,0 +1,32 @@
+{
+	"db" : {
+		"socketPath":"/var/run/mysqld/mysqld.sock",
+		"user":"root",
+		"password":"HtM8895w",
+		"database":"crm",
+		"dateStrings":"true"
+	},
+
+	"sslFiles" : {
+		"key":"/etc/letsencrypt/live/arbostar.com/dprivkey.pem",
+		"cert":"/etc/letsencrypt/live/arbostar.com/fullchain.pem",
+		"ca":""
+	},
+
+	"app" : {
+		"ssl":"true",
+		"number":"+18449890844",
+		"backendDomain":"https://arborcare.arbostar.com/",
+		"accountSid":"ACba9a5eeb8b45a12e3973bd16e6ae83f2",
+		"workspaceSid":"WS319bdc8f490f429cf635df5df9a5bd74",
+		"workflowSid":"WW22aa417939b1fe29c3ecb31d190b0722",
+		"taskQueueSid":"WQ3ca4ca3a7989ada419c13583f0976d66",
+		"onlineActivitySid":"WAd69379e3074947734f771826b916b066",
+		"offlineActivitySid":"WAca12bfdad956c08315e3f5d1ea7f692f",
+		"appSid":"APe44e5b40bfddca90743d491896ac8425",
+		"authToken":"59cd6e4b9e26182c4fc30956b950bc5f",
+		"messagingServiceSid":"MG897402c8fabed09d6f0de64e561f5607",
+		"wsport":"8896",
+		"interval":"300000"
+	}
+}

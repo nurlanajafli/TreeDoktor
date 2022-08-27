@@ -1,0 +1,44 @@
+<script id="service-report-row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{service_report_id}}">
+            <td>{{service_report_id}}</td>
+            <td class="hidden-on-tab truncate" data-container="body" data-toggle="tooltip" data-placement="left"
+                data-original-title="{{equipment.eq_name}}">
+                {{#if equipment.trashed}}
+                    <span style="text-decoration: line-through;">{{equipment.eq_name}}</span>
+                {{else}}
+                    <a href="{{equipment.eq_url}}">{{equipment.eq_name}}</a>
+                {{/if}}
+            </td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{service.service_name}}">{{service.service_name}}</td>
+            <td>{{service_report_type_str}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{service_report_note}}">{{service_report_note}}</td>
+            <td>{{counter.counter_value}}</td>
+            <td data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{service_report_created_at}}">{{service_report_created_date}}</td>
+            <td>{{service_report_postponed_to}}</td>
+            <td><a href="{{user.url}}">{{user.firstname}} {{user.lastname}}</a></td>
+            <td>
+                <!--<button data-id="{{service_report_id}}" data-name="{{service.service_name}}"
+                        class="action-view btn btn-default btn-xs">
+                    <i class="fa fa-eye"></i>
+                </button>-->
+                {{#notEq (var "postponeReportType") service_report_type}}
+                    <button data-id="{{service_report_id}}"
+                            title="Edit {{service.service_name}} on {{equipment.eq_name}} Service Report"
+                            class="action-edit btn btn-default btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                {{/notEq}}
+                <button data-id="{{service_report_id}}"
+                        title="{{service.service_name}} on {{equipment.eq_name}} Service Report"
+                        class="action-delete btn btn-xs btn-danger">
+                    <i class="fa fa-trash-o icon-white">
+                    </i>
+                </button>
+            </td>
+        </tr>
+    {{/this}}
+</script>

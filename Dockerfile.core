@@ -1,0 +1,29 @@
+FROM node:14.15.4 AS node
+FROM webdevops/php-nginx:7.4
+
+# Install less, needed by aws cli
+RUN apt-get update && \
+    apt-get install -y less inotify-tools
+
+
+# Install node
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+RUN npm install
+RUN npm install socket.io
+# RUN npm install pm2 -g
+
+
+WORKDIR /tmp/
+
+# Install python for process listener
+RUN apt-get install -y zlib1g-dev procps
+
+# deprecated pulling: wget https://www.python.org/ftp/python/3.5.9/Python-3.5.9.tgz
+COPY deployments/k8s/lib/Python-3.5.9.tgz .
+RUN tar xzf Python-3.5.9.tgz && \
+    cd Python-3.5.9 && \
+    ./configure --enable-optimizations && \
+    make install && \
+    rm -rf /tmp/Python-3.5.9 /tmp/Python-3.5.9.tgz

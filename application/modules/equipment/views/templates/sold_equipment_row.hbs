@@ -1,0 +1,18 @@
+<script id="row-template" type="text/x-handlebars-template">
+    {{#this}}
+        <tr id="row_{{eq_id}}">
+            <td>{{group/group_name}}</td>
+            <td><a href="{{eq_url}}">{{eq_name}}</a></td>
+            <td>{{eq_sold_code}}</td>
+            <td>{{eq_serial}}</td>
+            <td class="truncate" data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{eq_description}}">{{eq_description}}</td>
+            <td data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{eq_created_at}}">{{eq_created_date}}</td>
+            <td data-container="body" data-toggle="tooltip" data-placement="left" title=""
+                data-original-title="{{eq_sold_at}}">{{eq_sold_date}}</td>
+            <td>{{eq_sold_cost}}</td>
+            <td>{{seller.firstname}} {{seller.lastname}}</td>
+        </tr>
+    {{/this}}
+</script>

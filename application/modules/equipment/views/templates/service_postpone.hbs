@@ -1,0 +1,46 @@
+<script id="service-postpone-template" type="text/x-handlebars-template">
+    {{#this}}
+        <div class="modal-body">
+            {{#if service_id}}
+                <input type="hidden" name="service_id" value="{{service_id}}">
+            {{/if}}
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="postpone_date">Postpone To Date</label>
+                <div class="col-sm-7">
+                    <input type="text" class="datepicker form-control text-center" name="postpone_date"
+                           value="{{service_next_date}}" readonly="" data-date-end-date="Infinity"
+                           data-date-start-date="0d"
+                           style="margin-left: 5px;width: 100px;display: inline-block;height: 20px;">
+                    <span class="help-block" id="postpone_date-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="postpone_note">Postpone Note</label>
+                <div class="col-sm-7">
+                <textarea name="postpone_note" class="form-control" rows="3"
+                          placeholder="Input your description here" disabled>{{postpone_note}}</textarea>
+                    <span class="help-block" id="postpone_note-error"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="postpone_counter">Current {{var "DISTANCE_MEASUREMENT"}}
+                                /hrs</label>
+                <div class="col-sm-7">
+                    <div class="input-group">
+                        <input class="form-control" type="number" min="0" step="1" name="counter"
+                               value="" disabled>
+                        <span class="input-group-addon">{{equipment.eq_counter_type_str}}</span>
+                    </div>
+                    <span class="note-block">Last recorded eq. {{var "DISTANCE_MEASUREMENT"}}/hrs:
+                        {{equipment.last_counter}} {{equipment.eq_counter_type_str}}</span>
+                    <span class="help-block" id="counter-error"></span>
+
+                </div>
+            </div>
+            <div class="col-md-12 feedback">
+                <span class="help-block"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    {{/this}}
+</script>

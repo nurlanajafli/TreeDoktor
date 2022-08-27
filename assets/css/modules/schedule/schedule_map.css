@@ -1,0 +1,357 @@
+@media (min-width: 760px)
+{
+    .schedule-modal-header-date{ display: none; }
+    #scheduleWorkordersScrollBlock{ top: 90px; }
+
+    .order-sm-last{
+        order: 2;
+    }
+    .order-sm-first{
+        order: 1;
+    }
+}
+
+@media (min-width: 900px)
+{
+    #scheduleWorkordersScrollBlock{ top: 90px; }
+}
+
+@media (min-width: 992px) {
+    #scheduleWorkordersScrollBlock {
+        top: 55px;
+    }
+}
+#woSearchShow{ display: none; }
+@media (min-width: 1200px)
+{
+    #woSearchShow{ display: inline-block; }
+    #search-workorders-block{
+        right: 13vw!important;
+    }
+
+    .schedule-modal-header-date{ display: none; }
+}
+
+#reloadWorkorders{ display: none}
+
+@media (min-width: 1400px)
+{
+    #reloadWorkorders{ display: inline-block; }
+}
+
+button.gm-ui-hover-effect {
+    visibility: hidden;
+}
+
+.marker-addres-block {
+    opacity: 0;
+    height: 0;
+    display: none;
+}
+
+.active .marker-addres-block {
+    opacity: 1;
+    display: block;
+    height: auto;
+}
+
+.marker-shadow{
+    -webkit-box-shadow: 0px 0px 9px 0px rgba(255, 174, 26, 0.56)!important;
+    -moz-box-shadow: 0px 0px 9px 0px rgba(255, 174, 26, 0.56)!important;
+    box-shadow: 0px 0px 9px 0px rgba(255, 174, 26, 0.56)!important;
+}
+
+.font-10{ font-size: 10px!important; }
+.font-12{ font-size: 12px!important; }
+.text-nowrap{ white-space: nowrap; overflow: hidden;}
+
+#event-date-view,
+.dhx_cal_data #event-date-view div,
+.dhx_cal_header #event-date-view,
+.dhx_cal_header #event-date-view div,
+.dhx_cal_light #event-date-view,
+.dhx_cal_light #event-date-view div,
+.dhx_cal_navline #event-date-view div{
+    box-sizing: border-box!important;
+}
+#workordersCoverSection>div>div{
+    box-sizing: border-box!important;
+}
+/*
+.times-dropdown{
+    width: 3.7vw;
+    padding: 5px 0px 1px!important;
+}
+ */
+.map-workorder-details-label{
+    width:98%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    padding-right: 34px;
+    padding-left: 86px
+}
+
+.workorder-actual-price{
+    position: absolute;
+    left: 8px;
+}
+
+.workorder-actual-price label{
+    color: #fb6b5b!important;
+    font-size: 13px;
+    z-index: 1;
+}
+
+.workorder-original-price{
+    position: absolute;
+    left: 13px;
+    bottom: 0px;
+    padding: 0px 3px;
+    border-radius: 2px;
+    line-height: 13px;
+}
+
+.workorder-original-price label{
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.dhx_cal_light input.input-primary{
+    color: #65bd77;
+    text-align: right;
+    width: 65px;
+    padding: 5px 9px 5px 16px;
+    font-size: 12px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.input-primary{
+    color: #65bd77;
+    border: 1px solid #65bd77;
+    width: auto;
+}
+
+
+
+.dhx_cal_light input.input-primary:hover, .input-primary:hover, .dhx_cal_light input.input-primary:focus{
+    color: #fff;
+    background-color: #65bd77;
+    border-color: #65bd77;
+    outline: none !important;
+}
+
+.dhx_cal_light input.input-danger:hover, .input-danger:hover, .dhx_cal_light input.input-danger:focus{
+    color: #fff;
+    background-color: #fb6b5b;
+    border-color: #fb6b5b;
+    outline: none !important;
+}
+
+.dhx_cal_light input.input-danger{
+    color: #d9534f;
+    text-align: right;
+    width: 65px;
+    padding: 5px 9px 5px 16px;
+    font-size: 12px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.input-danger{
+    color: #d9534f;
+    border: 1px solid #d9534f;
+    width: auto;
+}
+
+#workorders-statuses-dropdown-body{
+    position: absolute;
+    top: 55px;
+    right: 0;
+    bottom: 0px;
+    width: 250px;
+    background: #fff;
+    overflow-y: hidden;
+    z-index: 2;
+}
+
+#workorders-statuses-dropdown-body section{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 17px;
+    overflow: scroll;
+}
+
+#workorders-statuses-dropdown-body .list-group-item.active{
+    border-color: #d3d3d3 !important;
+    background: #f1f1f1!important;
+    color: #080808;
+}
+
+.items-filter{
+    margin-top: -26px!important;
+    border-bottom: 1px solid #cccccc78!important;
+    width: 100%;
+}
+.items-filter, .statuses-dropdown{
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.statuses-dropdown{
+    overflow: hidden;
+    font-size: 14px!important;
+    border-bottom: 1px solid #169148;
+    height: 27px;
+    position: relative;
+    width: 70%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-top: 2px;
+    padding-right: 40px;
+    padding-left: 5px;
+}
+
+.statuses-dropdown:hover{
+    border: none;
+    border-radius: 3px;
+    margin-bottom: 1px;
+}
+
+.items-filter:focus{
+    outline: none!important;
+}
+
+.items-filter-clear{
+    margin-bottom: -15px;
+    margin-top: 5px;
+    line-height: 17px;
+    border-radius: 9px;
+    padding-top: 0;
+}
+
+.items-filter-clear:hover{
+    background: #f0fbff;
+    cursor: pointer;
+}
+
+.cursor-pointer{ cursor: pointer; }
+
+.delete-filter-item{
+    max-width: 93%;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.arb-btn-color{
+    color: #169148;
+}
+
+.status-main-counter{
+    display: inline-block;
+    position: absolute;
+    bottom: 4px;
+    right: 14px;
+    z-index: 1;
+    background: #fff;
+    border: 1px solid #169148;
+    color: #169148;
+}
+
+.statuses-dropdown:hover .status-main-counter{
+    bottom: 5px;
+}
+
+.filters-btn-group{
+    padding-top: 6px;
+}
+
+.filters-btn-group>a{
+    font-size: 18px;
+    display: inline-block;
+}
+
+.workorders-statuses-dropdown{
+    padding-right: 1.5vw;
+}
+
+.xs-width{
+    width: 1.6vw;
+    padding: 0px 0.2vw 0px 0.1vw;
+    text-align: center;
+}
+
+.eventDate, .refresh-filter-block{
+    width: auto;
+}
+
+.refresh-filter-block{
+    margin-left: 1.5vw;
+    padding-top: 6px;
+    padding-right: 0.3vw;
+}
+
+.filter-dates-block{ white-space: nowrap; width: 100%}
+
+#search-workorders-block{
+    position: absolute!important;
+    top: 4px;
+    z-index: 100;
+    left: 1px;
+    width: auto;
+    right: 14vw;
+}
+
+.showFilter .count, .statuses-dropdown .count{
+    display: inline-block;
+    color: #fb6b5b;
+    position: absolute;
+    top: 0px;
+    z-index: 1;
+    left: 20px;
+    font-size: 10px;
+    background: #fff;
+    border: 1px solid #fb6b5b;
+    width: auto;
+    padding: 0px 2px;
+}
+
+.opacity-0{
+    opacity: 0;
+}
+
+.schedule-date-renge-picker .drp-calendar.left .calendar-time select{
+    color: #53b567!important;
+    background: #fff!important;
+    border: none!important;
+    border-bottom: 1px solid #53b567!important;
+    border-radius: 0!important;
+    cursor: pointer!important;
+}
+
+.schedule-date-renge-picker .drp-calendar.left .calendar-time select:hover{
+    background: #aaddb83b!important;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.schedule-date-renge-picker .drp-calendar.right .calendar-time select{
+    color: #fa5542!important;
+    background: #fff!important;
+    border: none!important;
+    border-bottom: 1px solid #fa5542!important;
+    border-radius: 0!important;
+    cursor: pointer!important;
+}
+
+.schedule-date-renge-picker .drp-calendar.right .calendar-time select:hover{
+    background: #fa554236!important;
+    font-weight: 700;
+    box-shadow: none;
+}

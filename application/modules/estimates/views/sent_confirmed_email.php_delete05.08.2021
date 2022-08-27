@@ -1,0 +1,73 @@
+
+<div id="sentConfirmedPdfToEmail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="false">
+	<div class="modal-dialog">
+		<div class="modal-content panel panel-default p-n">
+			<header class="panel-heading">Email Preview</header>
+			<form id="sent_confirmed_pdf_to_email" method="POST" action="<?php //echo base_url('estimates/send_pdf_to_email/') . $estimate_data->estimate_id; ?>">
+			<div class="modal-body">
+				
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">Email To</label>
+							<div class="controls">
+								<input class="form-control" name="email" id="email" type="text" value="<?php echo $client_contact['cc_email'] ?? '';  ?>" style="background-color: #fff;">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Email From</label>
+							<div class="controls">
+								<input class="form-control" name="from_email" id="from_email" type="text" value="<?php echo $estimate_data->user_email; ?>" style="background-color: #fff;">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Email Subject</label>
+							<div class="controls">
+								<input class="form-control" type="text" value="<?php echo $subject;?>" name="subject" id="subject" style="background-color: #fff;">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Email to <?php  echo $client_data->client_name; ?></label>
+							<div class="controls">
+								<textarea class="form-control" name="text" rows="5" type="text" id="confText" value="" style="background-color: #fff;"><?php echo $text; ?></textarea>
+								
+							</div>
+						</div>
+						<input type="hidden" name="client_id" value="<?php echo $estimate_data->client_id;?>">
+						<input type="hidden" name="estimate" value="<?php echo $estimate_data->estimate_id;?>">
+					</div>
+				
+			</div>
+
+			<div class="modal-footer">
+				<div class="pull-right ">
+					<button name="send" id="sent_confirmed_email" class="btn btn-success m-right-5"
+					        >
+						<span class="btntext">Send</span>
+						
+					</button>
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+	    Common.initTinyMCE('#confText');
+	});
+	$(document).on('click', '#sent_confirmed_email', function () {
+		
+		if ($(this).attr('disabled') == 'disabled')
+			return false;
+		$('#confText').val(tinyMCE.editors[0].getContent());
+		$(this).attr('disabled', 'disabled');
+		$.post(baseUrl + 'clients/ajax_send_email', $('#sent_confirmed_pdf_to_email').serialize(), function (resp) {
+			response = $.parseJSON(resp);
+			$('#sent_confirmed_email').removeAttr('disabled');
+			//document.location.href = document.location.href;
+		});
+		return false;
+	});
+</script>
